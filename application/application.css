@@ -1,0 +1,17 @@
+.root{
+	-fx-accent: #226;
+}
+
+.tab-pane .tab-header-area .tab-header-background{
+	-fx-background-color: #F5F5F5;
+}
+
+/*
+.table-row-cell:empty {
+	-fx-background-color: white;
+}
+
+.table-row-cell:empty .table-cell {
+	-fx-border-width: 0px;
+}
+*/
