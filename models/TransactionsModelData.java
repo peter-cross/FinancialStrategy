@@ -1,4 +1,4 @@
-package data;
+package models;
 
 import javafx.stage.Stage;
 
@@ -17,16 +17,16 @@ import entities.TransactionsModel;
 import forms.DialogElement;
 import forms.TableOutput;
 import foundation.AssociativeList;
-import foundation.RegistryItem;
+import views.TransactionsModelView;
 
 /**
  * Class TransactionsModelData - Stores data for displaying Transactions Model
  * @author Peter Cross
  *
  */
-public class TransactionsModelData extends RegistryItem 
+public class TransactionsModelData extends RegistryModel 
 {
-	private static  LinkedHashSet<RegistryItem>  list;  // List of Items
+	private static  LinkedHashSet<RegistryModel>  list;  // List of Items
     
 	/**
 	 * Class default constructor
@@ -52,9 +52,9 @@ public class TransactionsModelData extends RegistryItem
 	
 	/**
 	 * Class constructor with specified Transactions Model
-	 * @param tm TransactionsModel object
+	 * @param tm TransactionsModelData object
 	 */
-	private TransactionsModelData( TransactionsModel tm )
+	public TransactionsModelData( TransactionsModel tm )
 	{
 		super( "Transactions Model" );
 		
@@ -93,7 +93,7 @@ public class TransactionsModelData extends RegistryItem
     public TableOutput getOutput() throws IllegalStateException, SecurityException, SystemException
     {
 		// Create Transactions Model dialog and get results of input
-		AssociativeList output = TransactionsModelDialog.getInstance( fields ).result();
+		AssociativeList output = TransactionsModelView.getInstance( fields ).result();
 		
 		// If there is input or changes
 		if ( output != null )
@@ -178,7 +178,7 @@ public class TransactionsModelData extends RegistryItem
 	/**
 	 * Returns list of TransactionsModelData objects
 	 */
-	public static LinkedHashSet<RegistryItem> getItemsList()
+	public static LinkedHashSet<RegistryModel> getItemsList()
     {
         return list;
     }
@@ -186,7 +186,7 @@ public class TransactionsModelData extends RegistryItem
 	/**
 	 * Creates list of TransactionsModelData objects
 	 */
-	public static LinkedHashSet<RegistryItem>[] createList()
+	public static LinkedHashSet<RegistryModel>[] createList()
     {
         list = new LinkedHashSet<>();
         
@@ -206,7 +206,7 @@ public class TransactionsModelData extends RegistryItem
     
 	/**
 	 * Gets Transactions Models from database
-	 * @return List of TransactionsModel objects
+	 * @return List of TransactionsModelData objects
 	 */
     private static List<TransactionsModel> getTransactionModelsFromDB()
     {
@@ -216,7 +216,7 @@ public class TransactionsModelData extends RegistryItem
         if ( em != null )
         	try
         	{
-        		// Do query for TransactionsModel entity in DB and return results of query
+        		// Do query for TransactionsModelData entity in DB and return results of query
         		return em.createQuery( "SELECT t FROM TransactionsModel AS t" ).getResultList();
             }
         	catch ( Exception e )
@@ -228,11 +228,50 @@ public class TransactionsModelData extends RegistryItem
     }
     
     /**
-     * Removes TransactionsModel data from database 
+     * Removes TransactionsModelData data from database 
      */
     @Override
     public void removeFromDB()
-    { 
-    	Main.removeFromDB( fields.get( "transactionsModel" ) );
+    {
+    	EntityManager em = Main.getEntityManager();
+    	EntityTransaction et = null;
+		
+    	TransactionsModel tm  = fields.get( "transactionsModel" );
+    	
+    	// If EntityManager object is created and TransactionsModelData argument is specified
+        if ( em != null && tm != null  )
+        	try
+        	{
+        		// Get list of T-Accounts for Transactions Model
+        		Vector<TAccount>  accts = tm.getTAccounts();
+        		
+        		// Get list of Transctions for Transactions Model
+        		Vector<Transaction> trs = tm.getTransactions();
+        		
+        		et = em.getTransaction();
+        		
+        		// Start transaction
+				et.begin();
+				
+				// Remove Model's T-Accounts from DB
+				for ( TAccount acct : accts )
+					em.remove( acct );
+				
+				// Remove Model's Transactions from DB
+				for ( Transaction tr : trs )
+					em.remove( tr );
+				
+				// Remove Transactions Model from DB
+				em.remove( tm );
+				
+				// Commit transaction
+				et.commit();
+			}
+	        catch ( Exception e )
+	     	{
+	     		if ( et != null )
+	     			// Rollback changes
+	     			et.rollback();
+	     	}
     }
 }

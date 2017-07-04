@@ -11,10 +11,10 @@ import javax.persistence.GenerationType;
 import java.util.ArrayList;
 
 import application.Main;
-import data.TransactionsGraphics;
-import data.TransactionsModelDialog;
 import foundation.Cipher;
 import interfaces.Utilities;
+import models.TransactionsGraphics;
+import views.TransactionsModelView;
 
 /**
  * Class Transaction - stores transaction parameters
@@ -141,7 +141,7 @@ public class Transaction
 			return row;
 		
 		// Loop for each row starting from next calculated as max row of T-accounts
-		for ( int acctRow = row+1; acctRow < TransactionsModelDialog.ROWS ; acctRow++ )
+		for ( int acctRow = row+1; acctRow < TransactionsModelView.ROWS ; acctRow++ )
 			// If in this row there is no transactions placed yet
 			if ( acct1.getCorrDt().indexOf(acctRow) * acct2.getCorrCr().indexOf(acctRow)  == 1 )
 				return acctRow;
@@ -212,19 +212,15 @@ public class Transaction
 		// Get list of transit T-accounts
 		ArrayList<TAccount> accList = transitTAccounts();
 		
-		// Remove transaction from the ArrayList
-		TransactionsModelDialog.getTransactions().remove( this );
-		
 		// Redraw Cr and Dt T-accounts
 		cr.redrawCrAccount(row);
 		dt.redrawDtAccount(row);
 		
+		TransactionsModelView.addToDelTransactions( this );
+		
 		// Redraw transit accounts
 		for ( TAccount acc : accList )
 			acc.drawTAccount();
-		
-		// Remove current transaction from database
-		Main.removeFromDB( this );
 	}
 	
 	/**
@@ -236,22 +232,22 @@ public class Transaction
 		ArrayList<TAccount> accList = new ArrayList<>();
 		
 		// Loop for each transaction of Transactions Model
-		for ( Transaction tr : TransactionsModelDialog.getTransactions() )
+		for ( Transaction tr : TransactionsModelView.getTransactions() )
 		{
-			TAccount currDt = tr.getDt();
-			TAccount currCr = tr.getCr();
+			TAccount trDt = tr.getDt();
+			TAccount trCr = tr.getCr();
 			
 			// If column of Dt account of current transaction is between columns of Cr and Dt account of the transaction 
 			// and transaction row number is not greater than Max row of Dt account of current transaction
-			if ( currDt.getColumn() > cr.getColumn() && currDt.getColumn() < dt.getColumn() 
-				 && row <= currDt.getMaxRow() )
-				accList.add( currDt );
+			if ( trDt.getColumn() > cr.getColumn() && trDt.getColumn() < dt.getColumn() 
+				 && row <= trDt.getMaxRow() )
+				accList.add( trDt );
 			
 			// If column of Cr account of current transaction is between columns of Cr and Dt account of the transaction 
 			// and transaction row number is not greater than Max row of Cr account of current transaction
-			else if ( currCr.getColumn() > cr.getColumn() && currCr.getColumn() < dt.getColumn() 
-					  && row <= currCr.getMaxRow() )
-				accList.add( currCr );
+			else if ( trCr.getColumn() > cr.getColumn() && trCr.getColumn() < dt.getColumn() 
+					  && row <= trCr.getMaxRow() )
+				accList.add( trCr );
 		}
 		
 		return accList;

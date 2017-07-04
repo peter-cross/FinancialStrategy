@@ -1,25 +1,27 @@
-package foundation;
+package models;
 
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import views.OneColumnView;
 
 import javax.transaction.SystemException;
 import java.util.Date;
 
 import forms.DialogElement;
-import forms.OneColumnDialog;
 import forms.TableElement;
 import forms.TableOutput;
+import foundation.AssociativeList;
+import foundation.Item;
 import interfaces.Constants;
 import interfaces.Utilities;
 
-import static interfaces.Utilities.createDataClass;
+import static interfaces.Utilities.createModelClass;
 
 /**
- * Class RegistryItem - To create Items for Registry
+ * Class RegistryModel - To create Items for Registry
  * @author Peter Cross
  */
-abstract public class RegistryItem extends Item implements Utilities, Constants
+abstract public class RegistryModel extends Item implements Utilities, Constants
 {
     protected AssociativeList	attributesList; // Attributes list   
     protected AssociativeList   fields;         // Items' fields
@@ -57,7 +59,7 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
     {
         TableOutput result = new TableOutput();
         
-        result.header = new OneColumnDialog( this, ITEM_TYPE ).result();
+        result.header = new OneColumnView( this, ITEM_TYPE ).result();
         init( result.header, null );
         
         return result;
@@ -113,7 +115,7 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
         	return getFieldNumber( fieldName );
         }
     	
-    	Class c = createDataClass( typeName );
+    	Class c = createModelClass( typeName );
         
         Object obj = fields.get( fieldName );
         
@@ -364,7 +366,7 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
 	
     /*                        Constructors                                                                                  */
     /************************************************************************************************************************/
-    private RegistryItem()
+    private RegistryModel()
     {
     	createFields();
         
@@ -373,7 +375,7 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
         attributesList.set( "table", createTable() );    
     }
     
-    private RegistryItem( int entity )
+    private RegistryModel( int entity )
     {
     	createFields();
         
@@ -383,19 +385,19 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
         attributesList.set( "table", createTable() );  
     }
     
-    public RegistryItem( String itemType )
+    public RegistryModel( String itemType )
     {
         this();
         ITEM_TYPE = itemType;    
     }
     
-    public RegistryItem( String itemType, int entity )
+    public RegistryModel( String itemType, int entity )
     {
         this( entity );
         ITEM_TYPE = itemType;    
     }
     
-    public RegistryItem( Stage stage, String itemType ) throws Exception
+    public RegistryModel( Stage stage, String itemType ) throws Exception
     {
         this( itemType );
         
@@ -409,7 +411,7 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
         }
     }
     
-    public RegistryItem( Stage stage, String itemType, int entity ) throws Exception
+    public RegistryModel( Stage stage, String itemType, int entity ) throws Exception
     {
         this( itemType, entity );
         
@@ -424,28 +426,28 @@ abstract public class RegistryItem extends Item implements Utilities, Constants
     }
     
     
-    public RegistryItem( Stage stage, String[] headerTabs, String itemType ) throws Exception
+    public RegistryModel( Stage stage, String[] headerTabs, String itemType ) throws Exception
     {
         this( stage, itemType );
         attributesList.set( "headerTabs", headerTabs );
     }
     
-    public RegistryItem( Stage stage, String[] headerTabs, String itemType, int entity ) throws Exception
+    public RegistryModel( Stage stage, String[] headerTabs, String itemType, int entity ) throws Exception
     {
         this( stage, itemType, entity );
         attributesList.set( "headerTabs", headerTabs );
     }
     
-    public RegistryItem( Stage stage, String[] headerTabs, String[] tableTabs, String itemType ) throws Exception
+    public RegistryModel( Stage stage, String[] headerTabs, String[] tableTabs, String itemType ) throws Exception
     {
         this( stage, headerTabs, itemType );
         attributesList.set( "tableTabs", tableTabs );
     }
     
-    public RegistryItem( Stage stage, String[] headerTabs, String[] tableTabs, String itemType, int entity ) throws Exception
+    public RegistryModel( Stage stage, String[] headerTabs, String[] tableTabs, String itemType, int entity ) throws Exception
     {
         this( stage, headerTabs, itemType, entity );
         attributesList.set( "tableTabs", tableTabs );
     }
     
-} // End of interface ** RegistryItem ** 
+} // End of interface ** RegistryModel ** 

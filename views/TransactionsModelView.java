@@ -1,4 +1,4 @@
-package data;
+package views;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -14,25 +14,25 @@ import javafx.geometry.Pos;
 
 import java.util.Vector;
 import java.util.ArrayList;
+import java.util.List;
 
 import application.Main;
 import entities.TAccount;
 import entities.Transaction;
 import entities.TransactionsModel;
+import models.TransactionsGraphics;
 import forms.DialogElement;
-import forms.OneColumnDialog;
 import foundation.AssociativeList;
-import foundation.NodeDialog;
 import foundation.TaskTimer;
 import foundation.UserDialog;
 import interfaces.Utilities;
 
 /**
- * Class TransactionsModel - Modeling accounting transactions
+ * Class TransactionsModelData - Modeling accounting transactions
  * @author Peter Cross
  *
  */
-public class TransactionsModelDialog extends NodeDialog implements Utilities
+public class TransactionsModelView extends NodeView implements Utilities
 {
 	public static final int  COLS = 28, // Number of columns
 							 ROWS = 16; // Number of rows
@@ -55,6 +55,11 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 	private AssociativeList					output;				// Results of input to pass
 	private TextField 						title;				// Model Title
 	
+	private static ArrayList<TAccount>		toAddTAccounts;		// T-Accounts to add
+	private static ArrayList<Transaction>	toAddTransactions;	// Transactions to add
+	private static ArrayList<TAccount>		toDelTAccounts;		// T-Accounts to delete
+	private static ArrayList<Transaction>	toDelTransactions;	// Transactions to delete
+	
 	private long 			lastMouseClickTime = 0l;// To store time stamp when last mouse click happened 
 	private MouseEvent 		mouseEvent;				// To store last mouse event
 	private MouseEventType 	eventType;				// To store last mouse event type
@@ -64,7 +69,7 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 	/**
 	 * Class constructor
 	 */
-	private TransactionsModelDialog()
+	private TransactionsModelView()
 	{
 		super( "Transactions Model" );
 		
@@ -83,6 +88,11 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 		// Create ArrayList for selected T-accounts
 		selectedTAccounts = new ArrayList<>();
 		
+		toAddTAccounts = new ArrayList<>();
+		toAddTransactions = new ArrayList<>();
+		toDelTAccounts = new ArrayList<>();
+		toDelTransactions = new ArrayList<>();
+		
 		output = new AssociativeList();
 		
 		// Create TextField for the model title
@@ -100,7 +110,7 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 	 * Class constructor
 	 * @param fields Stored fields of the document
 	 */
-	private TransactionsModelDialog( AssociativeList fields )
+	private TransactionsModelView( AssociativeList fields )
 	{
 		this();
 		
@@ -191,18 +201,18 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 	 * Creates instance of the class
 	 * @return Instance of this class
 	 */
-	public static TransactionsModelDialog getInstance()
+	public static TransactionsModelView getInstance()
 	{
-		return new TransactionsModelDialog();
+		return new TransactionsModelView();
 	}
 	/**
 	 * Creates instance of the class
 	 * @param fields Fields with initial values
 	 * @return Instance of this class
 	 */
-	public static TransactionsModelDialog getInstance( AssociativeList fields )
+	public static TransactionsModelView getInstance( AssociativeList fields )
 	{
-		return new TransactionsModelDialog(fields);
+		return new TransactionsModelView(fields);
 	}
 	
 	/**
@@ -446,7 +456,7 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 		DialogElement dlg = new DialogElement( infoType );
 		
 		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnDialog( this, "Enter " + infoType, new DialogElement[]{dlg} ).result();
+		String[][] result = new OneColumnView( this, "Enter " + infoType, new DialogElement[]{dlg} ).result();
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0][0] : "";
@@ -476,6 +486,78 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 	}
 	
 	/**
+	 * Adds T-Account to the list of accounts to add
+	 * @param tAcc T-Account to add
+	 */
+	public static void addToAddTAccounts( TAccount tAcc )
+	{
+		toAddTAccounts.add( tAcc );
+	}
+	
+	/**
+	 * Adds T-Account to the list of accounts to delete
+	 * @param tAcc T-Account to add
+	 */
+	public static void addToDelTAccounts( TAccount tAcc )
+	{
+		toDelTAccounts.add( tAcc );
+	}
+	
+	/**
+	 * Gets list of T-Accounts to add
+	 * @return List of T-Accounts
+	 */
+	public static ArrayList<TAccount> getToAddTAccounts()
+	{
+		return toAddTAccounts;
+	}
+	
+	/**
+	 * Gets list of T-Accounts to delete
+	 * @return List of T-Accounts
+	 */
+	public static ArrayList<TAccount> getToDelTAccounts()
+	{
+		return toDelTAccounts;
+	}
+	
+	/**
+	 * Adds transaction to the list of transactions to add
+	 * @param t Transaction to add
+	 */
+	public static void addToAddTransactions( Transaction t )
+	{
+		toAddTransactions.add( t );
+	}
+	
+	/**
+	 * Adds transaction to the list of transactions to delete
+	 * @param t Transaction to add
+	 */
+	public static void addToDelTransactions( Transaction t )
+	{
+		toDelTransactions.add( t );
+	}
+	
+	/**
+	 * Gets list of Transactions to add
+	 * @return List of transactions
+	 */
+	public static ArrayList<Transaction> getToAddTransactions()
+	{
+		return toAddTransactions;
+	}
+	
+	/**
+	 * Gets list of Transactions to delete
+	 * @return List of transactions
+	 */
+	public static ArrayList<Transaction> getToDelTransactions()
+	{
+		return toDelTransactions;
+	}
+	
+	/**
 	 * Clears current cell
 	 * @param e Mouse event
 	 */
@@ -492,6 +574,7 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 		if ( tAcc != null )
 			// Delete T-account from current cell
 			tAcc.deleteTAccount();
+		
 		else
 			// Loop through list of all transactions
 			for ( Transaction t : transactions )
@@ -525,7 +608,8 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 		TAccount acct = new TAccount( enterTextInfo( "Account name" ), e );
 		
 		// Add created T-account to the list of T-accounts
-		accounts.add( acct );
+		//accounts.add( acct );
+		toAddTAccounts.add( acct );
 	  	
 		// Draw T-account name
 		acct.drawAccountName();
@@ -607,7 +691,8 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
 		Transaction tr = new Transaction( acct2, acct1 );
 		
 		// Add transaction to the list of transactions
-		transactions.add( tr );
+		//transactions.add( tr );
+		toAddTransactions.add( tr );
 	}
 	
 	/**
@@ -708,6 +793,21 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
      */
     private void btnOkEventHandler( Event e )
     {
+    	for ( Transaction tr : toDelTransactions )
+    		transactions.remove( tr );
+    	
+    	for ( TAccount tAcc : toDelTAccounts )
+    		accounts.remove( tAcc );
+    	
+    	Main.removeFromDB( toDelTransactions );
+    	Main.removeFromDB( toDelTAccounts );
+    	
+    	toDelTransactions.clear();
+    	toDelTAccounts.clear();
+    	
+    	transactions.addAll( toAddTransactions );
+    	accounts.addAll( toAddTAccounts );
+    	
     	String titleTxt = title.getText();
             
         if ( transactionsModel == null )
@@ -727,6 +827,44 @@ public class TransactionsModelDialog extends NodeDialog implements Utilities
      */
     private void btnCancelEventHandler( Event e )
     {
+    	TAccount dt, cr;
+    	int row;
+    	List<Integer> corrAcc;
+    	
+    	for ( Transaction tr : transactions )
+    	{
+    		dt = tr.getDt();
+    		cr = tr.getCr();
+    		row = tr.getRow();
+    		
+    		corrAcc = dt.getCorrCr();
+    		
+    		if ( !corrAcc.contains(row) )
+    			corrAcc.add( row );
+    		
+    		corrAcc = cr.getCorrDt();
+    		
+    		if ( !corrAcc.contains(row) )
+    			corrAcc.add( row );
+    	}
+    	
+    	for ( Transaction tr : toAddTransactions )
+    	{
+    		dt = tr.getDt();
+    		cr = tr.getCr();
+    		row = tr.getRow();
+    		
+    		corrAcc = dt.getCorrCr();
+    		
+    		if ( accounts.contains(dt) && corrAcc.contains(row) )
+    			corrAcc.remove( (Integer)row );
+    		
+    		corrAcc = cr.getCorrDt();
+    		
+    		if ( accounts.contains(cr) && corrAcc.contains(row) )
+    			corrAcc.remove( (Integer)row );
+    	}
+    	
     	output = null;
         close();
     }

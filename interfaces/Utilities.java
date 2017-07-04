@@ -1,6 +1,8 @@
 package interfaces;
 
 import javafx.stage.Stage;
+import models.RegistryModel;
+import views.OneColumnView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -10,6 +12,9 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
+
+import application.Main;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -18,10 +23,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 
 import forms.DialogElement;
-import forms.OneColumnDialog;
 import foundation.AssociativeList;
 import foundation.Item;
-import foundation.RegistryItem;
 import interfaces.Lambda.ElementValidation;
 
 /**
@@ -31,6 +34,35 @@ import interfaces.Lambda.ElementValidation;
  */
 public interface Utilities extends Encapsulation
 {
+	
+	/**
+     * Displays About box when the program starts
+     */
+    default void openAboutBox()
+    {
+    	try 
+    	{
+			Thread.sleep(100);
+		} 
+    	catch (InterruptedException e) 
+    	{}
+    	
+    	displayAbout();
+    }
+    
+    /** 
+    * Displays About box
+     */
+    default void displayAbout()
+    {
+    	String[] boxTxt = new String[]{ "                     " + Main.TITLE 
+				  + "\n\n",
+				  "Developer: Peter Cross",
+				  "email: peter.cross@email.com" };
+    	displayMessage( boxTxt );
+    }
+    
+    
 	/**
 	 * Invokes dialog for entering text info
 	 * @return Entered text info
@@ -41,7 +73,7 @@ public interface Utilities extends Encapsulation
 		DialogElement dlg = new DialogElement( infoType );
 		
 		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnDialog( owner, "Enter " + infoType, new DialogElement[]{dlg} ).result();
+		String[][] result = new OneColumnView( owner, "Enter " + infoType, new DialogElement[]{dlg} ).result();
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0][0] : "";
@@ -102,16 +134,16 @@ public interface Utilities extends Encapsulation
      * @param index Index number
      * @return Registry Item
      */
-    public static RegistryItem getByIndex( LinkedHashSet<RegistryItem> list, int index )
+    public static RegistryModel getByIndex( LinkedHashSet<RegistryModel> list, int index )
     {
-        RegistryItem itm = null;
+        RegistryModel itm = null;
         
         Iterator it = list.iterator();
         int i = 0;
         
         while ( it.hasNext() )
             if ( i++ == index )
-                itm = (RegistryItem) it.next();
+                itm = (RegistryModel) it.next();
             else
                 it.next();
                 
@@ -123,11 +155,11 @@ public interface Utilities extends Encapsulation
      * @param list  List from which to get a field
      * @param field Field name
      * @param value Value to find
-     * @return RegistryItem descendant object
+     * @return RegistryModel descendant object
      */
-    public static RegistryItem getListElementBy( HashSet list, String field, String value )
+    public static RegistryModel getListElementBy( HashSet list, String field, String value )
     {
-        RegistryItem elm;
+        RegistryModel elm;
         AssociativeList fields;
         
         Iterator it = list.iterator();
@@ -135,11 +167,11 @@ public interface Utilities extends Encapsulation
         // Loop through the list
         while ( it.hasNext() )
         {
-            // Get Item from List and cast to RegistryItem
-            elm = (RegistryItem) it.next();
+            // Get Item from List and cast to RegistryModel
+            elm = (RegistryModel) it.next();
             
-            // Get fields attribute of the RegistryItem
-            fields = ((RegistryItem) elm).getFields();
+            // Get fields attribute of the RegistryModel
+            fields = ((RegistryModel) elm).getFields();
             
             String fieldValue = ((String) fields.get(field)).trim();
             
@@ -159,7 +191,7 @@ public interface Utilities extends Encapsulation
     default String getFieldNumber( String fieldname )
     {
         // Get attribute field
-        AssociativeList fields = ((RegistryItem) this).getFields();
+        AssociativeList fields = ((RegistryModel) this).getFields();
         
         if ( fields == null )
             return "";
@@ -201,9 +233,9 @@ public interface Utilities extends Encapsulation
      * @param valueType String containing class name
      * @return  Class object
      */
-    public static Class createDataClass( String valueType )
+    public static Class createModelClass( String valueType )
     {
-        return tryCreateDataClass( "", valueType );
+        return tryCreateModelClass( "", valueType );
     }
     
     /**
@@ -212,7 +244,7 @@ public interface Utilities extends Encapsulation
      * @param valueType String containing class name
      * @return  Class object
      */
-    static Class tryCreateDataClass( String pckg, String valueType )
+    static Class tryCreateModelClass( String pckg, String valueType )
     {
         Class cls = null; // To store created class 
         
@@ -225,7 +257,7 @@ public interface Utilities extends Encapsulation
             catch ( Exception e )
             {
                 // Try invoke method again for package data
-                return tryCreateDataClass( "data", valueType );
+                return tryCreateModelClass( "models", valueType );
             }
         else if ( !pckg.contains(".") )
             try 
@@ -269,7 +301,7 @@ public interface Utilities extends Encapsulation
         
         return cls;
         
-    } // End of method ** tryCreateDataClass **
+    } // End of method ** tryCreateModelClass **
     
     /**
      * Sets attribute list for the object
@@ -280,7 +312,7 @@ public interface Utilities extends Encapsulation
         Class c = this.getClass();
         
         // Get object's attribute list
-        AssociativeList attributesList = ((RegistryItem) this).getAttributesList();
+        AssociativeList attributesList = ((RegistryModel) this).getAttributesList();
         
         // Get declared fields
         Field[] field = c.getDeclaredFields();
@@ -383,7 +415,7 @@ public interface Utilities extends Encapsulation
             do
             {
             	// Display Dialog window with dialog elements defined above and get input results as a string array
-                result  = new OneColumnDialog( form, prompt, el ).result();
+                result  = new OneColumnView( form, prompt, el ).result();
 
                 // If there is valid input from dialog
                 if ( result != null )

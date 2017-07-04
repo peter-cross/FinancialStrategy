@@ -1,4 +1,4 @@
-package foundation;
+package views;
 
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -13,11 +13,11 @@ import java.net.URL;
 import application.Main;
 
 /**
- * Class NodeDialog - basic dialog form
+ * Class NodeView - basic dialog form
  * @author Peter Cross
  *
  */
-public class NodeDialog extends Stage 
+public class NodeView extends Stage 
 {
 	/*********************  Properties  **************************************************************************/
 	private Node content;	// Content to display
@@ -106,7 +106,7 @@ public class NodeDialog extends Stage
      * Class constructor with window title
      * @param title Title to display
      */
-	public NodeDialog( String title )
+	public NodeView( String title )
 	{
     	this.owner = Main.stage;
 		this.title = title;
@@ -116,7 +116,7 @@ public class NodeDialog extends Stage
 	 * Class constructor with Canvas to display
 	 * @param canvas Canvas object
 	 */
-    public NodeDialog( Canvas canvas )
+    public NodeView( Canvas canvas )
 	{
 		this( "" );
 	}
@@ -127,7 +127,7 @@ public class NodeDialog extends Stage
      * @param width Window width
      * @param height Window height
      */
-    public NodeDialog( String title, double width, double height )
+    public NodeView( String title, double width, double height )
     {
     	this.owner = Main.stage;
 		this.width = width;
@@ -140,7 +140,7 @@ public class NodeDialog extends Stage
      * @param width Window width
      * @param height Window height
      */
-    public NodeDialog( double width, double height )
+    public NodeView( double width, double height )
     {
     	this( "", width, height );
     }

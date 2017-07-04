@@ -3,18 +3,17 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import java.util.Vector;
-
-import entities.TAccount;
-import entities.Transaction;
-import entities.TransactionsModel;
-import forms.Registry;
+import foundation.UserDialog;
 import interfaces.Constants;
+import interfaces.Utilities;
+import views.RegistryView;
 
 /** 
  * Class Main - starts the program
@@ -25,7 +24,7 @@ import interfaces.Constants;
  * 			  mysql-connector-java.jar
  *
  */
-public final class Main extends Application implements Constants
+public final class Main extends Application implements Constants, Utilities
 {
 	public static final String TITLE = "Financial Strategy v.1.0";
 	
@@ -49,12 +48,14 @@ public final class Main extends Application implements Constants
     @Override
     public void start( Stage st ) 
     {
-    	// Create Entity Manager Factory object for Persistence Unit FinancialStrategy
-    	EntityManagerFactory emf = Persistence.createEntityManagerFactory( "FinancialStrategy" );
+    	EntityManagerFactory emf =  null;
     	
     	try
     	{
-    		// Create Entity Manager Object 
+    		// Create Entity Manager Factory object for Persistence Unit FinancialStrategy
+        	emf = Persistence.createEntityManagerFactory( "FinancialStrategy" );
+        	
+        	// Create Entity Manager Object 
     		em = emf.createEntityManager();
         }
     	catch ( Exception e )
@@ -62,19 +63,27 @@ public final class Main extends Application implements Constants
     		em = null;
         }
     	
+    	try
+        {
+        	new UserDialog( this::openAboutBox ).start();
+        }
+        catch ( Exception e ) { }
+    	
+    	// Create Registry object for displaying TransactionsModelData Registry Items
+		stage = new RegistryView( st, "Transaction Models", "TransactionsModelData" );
+    	
+		// Display created Registry with specified with and height
+		((RegistryView)stage).display( WIDTH, HEIGHT );
+    	
     	if ( em != null )
     	{
-    		// Create Registry object for displaying TransactionsModelData Registry Items
-    		stage = new Registry( st, "Transaction Models", "TransactionsModelData" );
-        	
-    		// Display created Registry with specified with and height
-    		((Registry)stage).display( WIDTH, HEIGHT );
-        	
-        	em.clear();
+    		em.clear();
         	em.close();
         	emf.close();
     	}
     } // End of method ** start **
+    
+    
     
     /**
      * Returns Entity Manager object
@@ -102,8 +111,13 @@ public final class Main extends Application implements Constants
         		// Start transaction
 				et.begin();
 				
-				// Remove object's data from DB
-				em.remove( obj );
+				if ( obj instanceof List )
+		    		for ( Object o : (List<Object>)obj )
+						// Remove object's data from DB
+						em.remove( o );
+		    	else
+					// Remove object's data from DB
+					em.remove( obj );
 				
 				// Commit transaction
 				et.commit();
@@ -115,49 +129,5 @@ public final class Main extends Application implements Constants
 	     			et.rollback();
 	     	}
     }
-	
-    /**
-     * Removes Transaction Model object from database
-     * @param tm Transaction Model object
-     */
-    public static void removeFromDB( TransactionsModel tm )
-    {
-    	EntityTransaction et = null;
-		
-    	// If EntityManager object is created and TransactionsModel argument is specified
-        if ( em != null && tm != null  )
-        	try
-        	{
-        		// Get list of T-Accounts for Transactions Model
-        		Vector<TAccount>  accts = tm.getTAccounts();
-        		
-        		// Get list of Transctions for Transactions Model
-        		Vector<Transaction> trs = tm.getTransactions();
-        		
-        		et = em.getTransaction();
-        		
-        		// Start transaction
-				et.begin();
-				
-				// Remove Model's T-Accounts from DB
-				for ( TAccount acct : accts )
-					em.remove( acct );
-				
-				// Remove Model's Transactions from DB
-				for ( Transaction tr : trs )
-					em.remove( tr );
-				
-				// Remove Transactions Model from DB
-				em.remove( tm );
-				
-				// Commit transaction
-				et.commit();
-			}
-	        catch ( Exception e )
-	     	{
-	     		if ( et != null )
-	     			// Rollback changes
-	     			et.rollback();
-	     	}
-    }
+    
 } // End of class ** Main **

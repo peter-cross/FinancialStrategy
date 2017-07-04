@@ -1,6 +1,7 @@
-package forms;
+package views;
 
 import javafx.stage.Stage;
+import models.RegistryModel;
 import javafx.stage.FileChooser;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,36 +21,39 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
-import java.util.Locale;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.io.File;
 import java.time.LocalDate;
 
+import forms.DialogElement;
+import forms.TreeDialog;
+
 import foundation.AssociativeList;
-import foundation.RegistryItem;
 import foundation.Item;
-import foundation.NodeDialog;
 import interfaces.Encapsulation;
 import interfaces.Utilities;
 import interfaces.Lambda.DialogAction;
 
-import static interfaces.Utilities.createDataClass;
+import static interfaces.Utilities.createModelClass;
 
 /**
  * Class OneColumnDialog - One column input dialog form
  * @author Peter Cross
  *
  */
-public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilities
+public class OneColumnView extends NodeView implements Encapsulation, Utilities
 {
     /*          Properties   	                                                                                      */
     /******************************************************************************************************************/
     protected AssociativeList	attributesList;     // Form attributes List
-    protected RegistryItem      regItem;            // Original Registry Item
+    protected RegistryModel      regItem;            // Original Registry Item
     protected DialogElement[][] dialogElement;		// Array of dialog elements
     
     protected Pane 			content;
@@ -79,10 +83,29 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      * Get Registry Item for the dialogue
      * @return Registry Item
      */
-    public RegistryItem getRegistryItem()
+    public RegistryModel getRegistryItem()
     {
         return regItem;
     }
+    
+    /**
+     * Creates change listener for dialog fields
+     * @param el Dialog element parameters
+     * @return Created ChangeListener object
+     */
+    private ChangeListener fieldChangeListener( DialogElement el )
+    {
+    	return new ChangeListener() 
+        {
+            @Override
+            public void changed( ObservableValue observable, Object oldValue, Object curValue ) 
+            {
+               // Invoke specified lambda expression with parameters
+               el.onChange.run( attributesList ); 
+            }
+        };
+    }
+    
     /**
      * Sets change listener for ComboBox
      * @param comboBox ComboBox dialog element
@@ -92,18 +115,8 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     {
         // If action on dialog elemnt change is specified
         if ( el.onChange != null )
-        {
             // Add event listener on dialog element change 
-            comboBox.valueProperty().addListener( new ChangeListener() 
-            {
-                @Override
-                public void changed( ObservableValue observable, Object oldValue, Object curValue ) 
-                {
-                   // Invoke specified lambda expression with parameters
-                   el.onChange.run( attributesList ); 
-                }
-            } );
-        }
+        	comboBox.valueProperty().addListener( fieldChangeListener(el) );
     }
     
     /**
@@ -114,17 +127,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     private void setOnChangeListener( TextField textField, DialogElement el )
     {
     	if ( el.onChange != null )
-    	{
-    		textField.textProperty().addListener( new ChangeListener()
-			{
-				@Override
-				public void changed( ObservableValue observable, Object oldValue, Object curValue ) 
-				{
-					// Invoke specified lambda expression with parameters
-	                el.onChange.run( attributesList );
-				}
-			});
-    	}
+    		textField.textProperty().addListener( fieldChangeListener(el) );
     }
     
     /**
@@ -144,7 +147,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
 
                 // If text value is found in the list of choices
                 if ( ind != -1 )
-                    // Assign it as a default coice
+                    // Assign it as a default choice
                     el.defaultChoice = ind;
             }
             // If there is the only choice in the list of choices
@@ -161,8 +164,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
             // If action on dialog element change is specified
             if ( el.onChange != null )
                 // Invoke specified lambda expression with parameters
-                //el.onChange.run( textChoices[el.defaultChoice], attributesList );
-            	el.onChange.run( attributesList );
+                el.onChange.run( attributesList );
         }
     }
     
@@ -192,17 +194,14 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      */
     private String[] getListValues( LinkedHashSet list )
     {
-        Item itm;
-        
-        // Get size of the reference list
-        int sze = list.size();
-
         // Create array for reference list values
-        String[] values = new String[sze];
+        String[] values = new String[list.size()];
 
         Iterator it = list.iterator();
+        
         int p = 0;
-
+        Item itm;
+        
         // Loop for each list element
         while ( it.hasNext() )
         {
@@ -224,10 +223,12 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
         // If there are choices specified for the current element
         if ( el.textChoices.length > 0 )
             return el.textChoices;
+        
         // If List reference is passed
         else if ( el.list != null)
             // Assign String values as text choices
             return getListValues( el.list );  
+        
         else
             return new String[]{};
     }
@@ -266,44 +267,20 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      */
     protected Pane createContent()
     {
+    	// If dialog elements are not specified - just exit
+        if (  dialogElement == null || dialogElement.length < 1 )
+            return null;
+        
         Pane pane;
         
-        // Create Scene object for current dialog form
+        // If scene is not created yet
         if ( scene == null )
-        {
-            // Create vertical box for scene content
-            VBox sceneBox = new VBox();
-            sceneBox.setStyle( "-fx-padding: 5;" );
-            
-            // Create scene object with vertical box as content
-            scene = new Scene( sceneBox );
-            // Get pane element from scene
-            pane = (Pane) scene.getRoot();
-            
-            // Create label element for title
-            Label ttl = new Label( title );
-            // Set mono space font for the label
-            ttl.setFont( new Font( "Arial", 15 ) );
-            ttl.setMaxWidth( Long.MAX_VALUE );
-            // Position title in the middle
-            ttl.setAlignment( Pos.CENTER );
-            
-            // Create box element for the title
-            VBox title = new VBox( ttl );
-            
-            // Specify style for box rendering
-            title.setStyle("-fx-border-style: solid inside;"
-                        +"-fx-border-color: #DDD;"
-                        +"-fx-background-color: transparent;"
-                        +"-fx-border-width: 0 0 1 0;"
-                        +"-fx-padding: 10 15 15 15;");
-            // Add box element to pane
-            pane.getChildren().add( title );
-        }
+        	// Create Scene object for current dialog form
+            pane = createScenePane();
         
         // Otherwise
         else
-            // Get pane element from scene
+            // Get Pane element from scene
             pane = (Pane) scene.getRoot();
         
         // Store form properties in attributes list
@@ -313,17 +290,51 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
         attributesList.set( "dialogElement", dialogElement );
         
         // Set default date settings
-        Locale.setDefault( Locale.US );
+        Locale.setDefault( Locale.CANADA );
 
-        // If dialog elements are not specified - just exit
-        if (  dialogElement == null || dialogElement.length < 1 )
-            return null;
-        else
-            // Return scene Pane object
-            return pane;
+        // Return scene Pane object
+        return pane;
         
-    } // End of method ** setScene **
+    } // End of method ** createContent **
 	
+    /**
+     * Creates Pane for new Scene
+     * @return Pane object
+     */
+    private Pane createScenePane()
+    {
+    	// Create vertical box for scene content
+        VBox sceneBox = new VBox();
+        sceneBox.setStyle( "-fx-padding: 5;" );
+        
+        // Create scene object with vertical box as content
+        scene = new Scene( sceneBox );
+        // Get pane element from scene
+        Pane pane = (Pane) scene.getRoot();
+        
+        // Create label element for title
+        Label ttl = new Label( title );
+        // Set mono space font for the label
+        ttl.setFont( new Font( "Arial", 15 ) );
+        ttl.setMaxWidth( Long.MAX_VALUE );
+        // Position title in the middle
+        ttl.setAlignment( Pos.CENTER );
+        
+        // Create box element for the title
+        VBox title = new VBox( ttl );
+        
+        // Specify style for box rendering
+        title.setStyle("-fx-border-style: solid inside;"
+                    +"-fx-border-color: #DDD;"
+                    +"-fx-background-color: transparent;"
+                    +"-fx-border-width: 0 0 1 0;"
+                    +"-fx-padding: 10 15 15 15;");
+        // Add box element to pane
+        pane.getChildren().add( title );
+    	
+    	return pane;
+    }
+    
     /**
      * Creates Label for dialog element on the form
      * @param grid Grid object of the form
@@ -464,19 +475,9 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      */
     protected void createTreeList( GridPane grid, DialogElement el, int col, int row )
     {
-        final int   PREF_WIDTH = 230,
-                    PREF_HEIGHT = 20;
-
         // Create text field element
-        TextField textField = new TextField();
-        textField.setPrefWidth( PREF_WIDTH );
-        textField.setEditable( false );
-        textField.setPrefHeight( PREF_HEIGHT );
-        textField.setStyle("-fx-background-color: #F7F7F7;"
-                          +"-fx-border-width: 1 0 1 1;"
-                          +"-fx-border-color: #AAA;"
-                          +"-fx-padding: 3;");
-
+        TextField textField = textFieldForTreeList();
+        
         // Create button element
         Button btn = new Button("...");
         btn.setPrefWidth(10);
@@ -491,7 +492,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
             // Set text field to specified text value
             textField.setText( el.textValue );
 		
-        // If element's width is spcified
+        // If element's width is specified
         if ( el.width > 0 )
             // Set width of the tree item
             treeItemField.setMaxWidth( el.width );
@@ -501,11 +502,49 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
 
         // Save current stage to pass to event handler
         final Stage st = (Stage) this;
-        // Save tecxt field to pass to event handler
-        final TextField field = textField;
-		
+        
         // Set event handler on press button event
-        btn.setOnAction( e -> 
+        btn.setOnAction( treeBtnEventHandler( el, btn, textField ) );
+        
+        // Specify grid for TreeItem field
+        GridPane.setConstraints( treeItemField, col, row );
+
+        // Add TreeItem field to the grid
+        grid.getChildren().add( treeItemField );
+        
+    } // End of method ** createTreeList **
+    
+    /**
+     * Creates TextField field to TreeList dialog element
+     * @return TexField object
+     */
+    private TextField textFieldForTreeList()
+    {
+    	final int   PREF_WIDTH = 230,
+                	PREF_HEIGHT = 20;
+
+	    // Create text field element
+	    TextField textField = new TextField();
+	    textField.setPrefWidth( PREF_WIDTH );
+	    textField.setEditable( false );
+	    textField.setPrefHeight( PREF_HEIGHT );
+	    textField.setStyle("-fx-background-color: #F7F7F7;"
+	                      +"-fx-border-width: 1 0 1 1;"
+	                      +"-fx-border-color: #AAA;"
+	                      +"-fx-padding: 3;");
+    	return textField;
+    }
+    
+    /**
+     * Creates Event Handler for Tree button
+     * @param el Dialog element parameters
+     * @param btn Tree button object
+     * @param field TextField for results of selecting by Tree button
+     * @return EventHandler object
+     */
+    private EventHandler<ActionEvent> treeBtnEventHandler( DialogElement el, Button btn, final TextField field )
+    {
+    	return e -> 
         {
             // Get TreeDialog object created and saved in attributes list
             TreeDialog obj = (TreeDialog) attributesList.get( el.labelName + "Object" );
@@ -517,15 +556,8 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
             if ( result != null && !result.isEmpty() )
                 // Save full file path to text field
                 field.setText( result );
-        } );
-
-        // Specify grid for TreeItem field
-        GridPane.setConstraints( treeItemField, col, row );
-
-        // Add TreeItem field to the grid
-        grid.getChildren().add( treeItemField );
-        
-    } // End of method ** createTreeList **
+        };
+    }
 	
     /**
      * Creates File Chooser element on the form
@@ -536,25 +568,15 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      */
     protected void createFileChooser( GridPane grid, DialogElement el, int col, int row )
     {
-        final int   PREF_WIDTH = 330,
-                    PREF_HEIGHT = 20;
-
         // Create text field element
-        TextField textField = new TextField();
-        textField.setPrefWidth( PREF_WIDTH );
-        textField.setEditable( false );
-        textField.setStyle("-fx-background-color: #F7F7F7;"
-                          +"-fx-border-width: 1 0 1 1;"
-                          +"-fx-border-color: #AAA;"
-                          +"-fx-padding: 3;");
-
+        TextField textField = textFieldForFileChooser();
+        
         // Create button element
         Button btn = new Button("...");
         btn.setPrefWidth(10);
 
         // Create horizontal box element for file field
         HBox fileField = new HBox(); 
-        textField.setPrefHeight( PREF_HEIGHT );
         // Add text field and button to box element
         fileField.getChildren().addAll( textField, btn );
 
@@ -568,50 +590,19 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
             // Set text field's width
             fileField.setMaxWidth( el.width );
 
-        // Create file chooser element
-        FileChooser fileChooser = new FileChooser();
-
-        // Save current stage element and text field
+        // Save current stage element
         final Stage st = (Stage) this;
-        final TextField field = textField;
-		
+        
         // If it's a dialog to save a file
         if ( el.valueType.contains("Save") )
-        {
-            // Set title for file chooser window
-            fileChooser.setTitle( "Save to file" );
-
             // Set event handler on press button event
-            btn.setOnAction( e -> 
-            {
-                // Display Save file dialog window
-                File file = fileChooser.showSaveDialog(st);
-
-                // If file was specified
-                if ( file != null )
-                    // Save full file path to text field
-                    field.setText( file.getPath() );
-            } );	
-        }
+        	btn.setOnAction( saveToFileEventHandler( st, textField ) );
+        
         // If it's a dialog to open a file
         else if ( el.valueType.contains("Open") )
-        {
-            // Set file chooser window title
-            fileChooser.setTitle( "Open file" );
-
             // Set event handler on press button event
-            btn.setOnAction( e -> 
-            {
-                // Open file chooser dialog window
-                File file = fileChooser.showOpenDialog(st);
-
-                // If file was specified
-                if ( file != null )
-                    // Save file full path to text field
-                    field.setText( file.getPath() );
-            } );
-        }
-		
+        	btn.setOnAction( openFileEventHandler( st, textField ) );
+        
         // Save text field to associative elements list
         attributesList.set( el.labelName, textField );
 
@@ -624,6 +615,79 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     } // End of method ** createFileChooser **
 
     /**
+     * Creates TextField field for FileChooser dialog element
+     * @return Created TextField object
+     */
+    private TextField textFieldForFileChooser()
+    {
+    	final int PREF_WIDTH = 330;
+    	final int PREF_HEIGHT = 20;
+
+        // Create text field element
+	    TextField textField = new TextField();
+	    textField.setPrefWidth( PREF_WIDTH );
+	    textField.setPrefHeight( PREF_HEIGHT );
+        textField.setEditable( false );
+	    textField.setStyle("-fx-background-color: #F7F7F7;"
+	                      +"-fx-border-width: 1 0 1 1;"
+	                      +"-fx-border-color: #AAA;"
+	                      +"-fx-padding: 3;");
+	    return textField;
+    }
+    
+    /**
+     * Creates Event Handler for Save To File action
+     * @param st Stage object
+     * @param field TextField object for file path
+     * @return EventHandler object
+     */
+    private EventHandler<ActionEvent> saveToFileEventHandler( final Stage st, final TextField field )
+    {
+    	return e -> 
+        {
+        	// Create file chooser element
+            FileChooser fileChooser = new FileChooser();
+
+            // Set title for file chooser window
+            fileChooser.setTitle( "Save to file" );
+
+            // Display Save file dialog window
+            File file = fileChooser.showSaveDialog(st);
+
+            // If file was specified
+            if ( file != null )
+                // Save full file path to text field
+                field.setText( file.getPath() );
+        };
+    }
+    
+    /**
+     * Creates Event Handler for Open File action
+     * @param st Stage object
+     * @param field TextField object for file path
+     * @return EventHandler object
+     */
+    private EventHandler<ActionEvent> openFileEventHandler( final Stage st, final TextField field )
+    {
+    	return e -> 
+        {
+        	// Create file chooser element
+            FileChooser fileChooser = new FileChooser();
+
+            // Set file chooser window title
+            fileChooser.setTitle( "Open file" );
+
+            // Open file chooser dialog window
+            File file = fileChooser.showOpenDialog(st);
+
+            // If file was specified
+            if ( file != null )
+                // Save file full path to text field
+                field.setText( file.getPath() );
+        };
+    }
+    
+    /**
      * Creates Numerator element on the form
      * @param grid Grid object of the form
      * @param el Dialog element
@@ -632,25 +696,15 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      */
     protected void createNumerator( GridPane grid, DialogElement el, int col, int row )
     {
-        final int   PREF_WIDTH = 100,
-                    PREF_HEIGHT = 20;
-
         // Create text field element
-        TextField textField = new TextField();
-        textField.setPrefWidth( PREF_WIDTH );
-        textField.setEditable( true );
-        textField.setStyle("-fx-background-color: #F7F7F7;"
-                          +"-fx-border-width: 1 0 1 1;"
-                          +"-fx-border-color: #AAA;"
-                          +"-fx-padding: 3;");
-
+        TextField textField = textFieldForNumerator();
+        
         // Create button element
         Button btn = new Button( "#" );
         btn.setPrefWidth(30);
 
         // Create horizontal box element for numerator field
         HBox numeratorField = new HBox(); 
-        textField.setPrefHeight( PREF_HEIGHT );
         // Add text field and button to box element
         numeratorField.getChildren().addAll( textField, btn );
 
@@ -664,15 +718,52 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
             // Set text field's width
             numeratorField.setMaxWidth( el.width );
 
-        // Save current text field
-        final TextField field = textField;
-	
         // Set event handler on press button event
-        btn.setOnAction( e -> 
+        btn.setOnAction( numeratorEventHandler( textField ) );
+        
+        // Save text field to associative elements list
+        attributesList.set( el.labelName, textField );
+
+        // Specify grid for file field
+        GridPane.setConstraints( numeratorField, col, row );
+
+        // Add file field to the grid
+        grid.getChildren().add( numeratorField );
+    }
+    
+    /**
+     * Creates TextField field for Numerator dialog element
+     * @return Created TextField object
+     */
+    private TextField textFieldForNumerator()
+    {
+    	final int   PREF_WIDTH = 100,
+                	PREF_HEIGHT = 20;
+
+	    // Create text field element
+	    TextField textField = new TextField();
+	    textField.setPrefWidth( PREF_WIDTH );
+	    textField.setPrefHeight( PREF_HEIGHT );
+	    textField.setEditable( true );
+	    textField.setStyle("-fx-background-color: #F7F7F7;"
+	                      +"-fx-border-width: 1 0 1 1;"
+	                      +"-fx-border-color: #AAA;"
+	                      +"-fx-padding: 3;");
+	    return textField;
+    }
+    
+    /**
+     * Creates Event Handler for Numerator action
+     * @param field TextField object for Numerator value
+     * @return EventHandler object for ActionEvent
+     */
+    private EventHandler<ActionEvent> numeratorEventHandler( final TextField field )
+    {
+    	return e -> 
         {
             try
             {
-                Class c = createDataClass( regItem.getClass().getSimpleName() );
+                Class c = createModelClass( regItem.getClass().getSimpleName() );
                 
                 String numerator = (String)c.getMethod( "getNumerator" ).invoke( regItem );
                 
@@ -707,16 +798,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
             }
             catch ( Exception ex )
             { }
-        } );
-        
-        // Save text field to associative elements list
-        attributesList.set( el.labelName, textField );
-
-        // Specify grid for file field
-        GridPane.setConstraints( numeratorField, col, row );
-
-        // Add file field to the grid
-        grid.getChildren().add( numeratorField );
+        };
     }
     
     /**
@@ -782,9 +864,11 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     {
         // Create grid for current tab
         GridPane grid = new GridPane();
+        
         grid.setPadding( new Insets( 10, 10, 10, 10 ) );
         grid.setHgap( 5 );
         grid.setVgap( 5 );
+        
         grid.setStyle("-fx-border-style: solid inside;"
                      +"-fx-border-color: #FFF;"
                      +"-fx-border-width: 1 0 0 0;");
@@ -837,21 +921,27 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
         // If there is a check box for the current dialog element
         if ( !el.checkBoxlabel.isEmpty() )
             createCheckBox( grid, el, 1,  row );
+        
         // If List reference or text choices are passed
         else if ( el.valueType.contains( "List" ) || el.list != null || el.textChoices.length > 0 )
             createComboBox( grid, el, 1,  row );
+        
         // If it's a Tree List field
         else if ( el.valueType.contains( "Tree" ) )
             createTreeList( grid, el, 1,  row );
+        
         // If it's a Date field
         else if ( el.valueType.contains( "Date" ) )
             createDatePicker( grid, el, 1,  row );
+        
         // If it's a File field
         else if ( el.valueType.contains( "File" ) )
             createFileChooser( grid, el, 1,  row );
+        
         // If it's a Numerator field
         else if ( el.valueType.contains( "Numerator" ) )
             createNumerator( grid, el, 1,  row );
+        
         // Otherwise
         else 
             createTextField( grid, el, 1,  row );
@@ -914,57 +1004,88 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
 
         // If it's a combo box
         if ( obj instanceof ComboBox )
-        {
-            // Cast object to ComboBox
-            ComboBox comboBox = (ComboBox) obj;
-
-            // Get text value of current combo box value selected
-            el = (String) comboBox.getSelectionModel().getSelectedItem();
-
-            // If value is specified
-            if ( el == null )
-                // Get text value of combo box and save to element content array
-                el = comboBox.getEditor().getText();			
-        }
+        	el = getValueOf( (ComboBox) obj );
+        	
         // If it's a check box
         else if ( obj instanceof CheckBox )
-        {
-            // Cast object to CheckBox
-            CheckBox checkBox = (CheckBox) obj;
-
-            // Get text value of current check box
-            el = ( checkBox.isSelected() ? "1" : "0" );
-        }
+        	el = getValueOf( (CheckBox) obj );
+        	
         // If it's a date field
         else if ( obj instanceof DatePicker )
-        {
-            // cast object to DatePicker
-            DatePicker datePicker = (DatePicker) obj;
-
-            // Get value of date picker
-            Object val = datePicker.getValue();
-
-            // If value is specified
-            if ( val != null )
-                // Convert value to string and save to element content array
-                el = val.toString();
-            else
-                el = "";
-        }
-        // Otherwise, if it's a text field
+        	el = getValueOf( (DatePicker) obj );
+        	
+        // Otherwise - assume it's a text field
         else
-        {
-            // Cast object to TextField
-            TextField textField = (TextField) obj;
-
-            // Get text value of text field
-            el = textField.getText();
-        }
-		
+        	el = getValueOf( (TextField) obj );
+        	
         return el;
         
     } // End of method ** getFieldValue **
 	
+    /**
+     * Gets text value of ComboBox element
+     * @param comboBox ComboBox element
+     * @return Text value
+     */
+    private String getValueOf( ComboBox comboBox )
+    {
+    	String el;
+
+    	// Get text value of current combo box value selected
+        el = (String) comboBox.getSelectionModel().getSelectedItem();
+
+        // If value is specified
+        if ( el == null )
+            // Get text value of combo box and save to element content array
+            el = comboBox.getEditor().getText();	
+    	
+        return el;
+    }
+    
+    /**
+     * Gets text value of CheckBox element
+     * @param checkBox CheckBox element
+     * @return Text value
+     */
+    private String getValueOf( CheckBox checkBox )
+    {
+    	// Get text value of current check box
+        return ( checkBox.isSelected() ? "1" : "0" );
+    }
+    
+    /**
+     * Gets text value of DatePicker element
+     * @param datePicker DatePicker element
+     * @return Text value
+     */
+    private String getValueOf( DatePicker datePicker )
+    {
+    	String el;
+    	
+        // Get value of date picker
+        Object val = datePicker.getValue();
+
+        // If value is specified
+        if ( val != null )
+            // Convert value to string and save to element content array
+            el = val.toString();
+        else
+            el = "";
+        
+        return el;
+    }
+    
+    /**
+     * Gets text value of TextField element
+     * @param textField TextField element
+     * @return Text value
+     */
+    private String getValueOf( TextField textField )
+    {
+    	// Get text value of text field
+        return textField.getText();
+    }
+    
     /**
      * Validates dialog form elements
      * @return True if dialog elements passed validation, or false otherwise
@@ -995,7 +1116,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
                 // Get value for current dialog element by label name
                 Object obj = attributesList.get( el.labelName );
 
-                // Get text field's value and strore in output array
+                // Get text field's value and store in output array
                 elementContent[t][i] = getFieldValue( obj );
 
                 // If there is lambda expression for validating field value
@@ -1023,32 +1144,11 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     protected void addButtons()
     {
         // Create OK button element
-        Button btnOK = new Button( "OK" );
-        btnOK.setPadding( new Insets( 5, 20, 5, 20 ) );
-
-        // Set event handler for press button event
-        btnOK.setOnAction( e -> 
-        {
-            // If dialog elements passed validation
-            if ( validateDialogElements() )
-            {
-                // If there is another lambda expression to execute specified
-                if ( code != null )
-                    // Run that lambda expression
-                    code.run( null );
-
-                // Close dialog window
-                close();
-            }
-        } );
-		
+    	Button btnOK = buttonOK();
+        
         // Create Cancel button object
-        Button btnCancel = new Button( "Cancel " );
-        btnCancel.setPadding( new Insets( 5, 20, 5, 20 ) );
-
-        // Set event handler for press button event
-        btnCancel.setOnAction( e -> close() );
-
+    	Button btnCancel = buttonCancel();
+        
         // Get pane from Scene object
         Pane pane = (Pane) scene.getRoot();
 
@@ -1069,6 +1169,58 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
 
     } // End of method ** addButtons **
 	
+    /**
+     * Creates button OK object
+     * @return Button object
+     */
+    private Button buttonOK()
+    {
+    	Button btn = new Button( "OK" );
+        btn.setPadding( new Insets( 5, 20, 5, 20 ) );
+
+        // Set event handler for press button event
+        btn.setOnAction( btnOkEventHandler() );
+        
+        return btn;
+    }
+    
+    /**
+     * Creates button Cancel object
+     * @return Button object
+     */
+    private Button buttonCancel()
+    {
+    	Button btn = new Button( "Cancel " );
+        btn.setPadding( new Insets( 5, 20, 5, 20 ) );
+
+        // Set event handler for press button event
+        btn.setOnAction( e -> close() );
+
+        return btn;
+    }
+    
+    /**
+     * Creates Event Handler for OK button action
+     * @return EventHandler object for ActionEvent
+     */
+    private EventHandler<ActionEvent> btnOkEventHandler()
+    {
+    	return e -> 
+        {
+            // If dialog elements passed validation
+            if ( validateDialogElements() )
+            {
+                // If there is another lambda expression to execute specified
+                if ( code != null )
+                    // Run that lambda expression
+                    code.run( null );
+
+                // Close dialog window
+                close();
+            }
+        };
+    }
+    
     /**
      * Get dialog elements attributes list
      * @return Attributes List
@@ -1105,7 +1257,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     /**
      * Class default constructor
      */
-    public OneColumnDialog()
+    public OneColumnView()
     {
     	super( "" );
     	
@@ -1113,11 +1265,11 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
     }
     
     /**
-     * Class constructor with specified RegistryItem and item title
-     * @param doc RegistryItem  object
+     * Class constructor with specified RegistryModel and item title
+     * @param doc RegistryModel  object
      * @param title Title for dialog form
      */
-    public OneColumnDialog( RegistryItem doc, String title )
+    public OneColumnView( RegistryModel doc, String title )
     {
     	super( title );
     	
@@ -1139,7 +1291,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      * @param tabs Array of tabs
      * @param dlg Dialog elements for each tab
      */
-    public OneColumnDialog( Stage stage, String title, String[] tabs, DialogElement[]... dlg )
+    public OneColumnView( Stage stage, String title, String[] tabs, DialogElement[]... dlg )
     {
     	super( title );
     	
@@ -1159,7 +1311,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      * @param dlg Array of dialog elements
      * @param code Action code to execute
      */
-    public OneColumnDialog( Stage stage, String title, DialogElement[] dlg, DialogAction code )
+    public OneColumnView( Stage stage, String title, DialogElement[] dlg, DialogAction code )
     {
         this( stage, title, dlg );
         this.code = code;
@@ -1171,7 +1323,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      * @param title Dialog form title
      * @param dlg Array of dialog elements
      */
-    public OneColumnDialog( Stage stage, String title, DialogElement[] dlg )
+    public OneColumnView( Stage stage, String title, DialogElement[] dlg )
     {
     	super( title );
     	
@@ -1188,7 +1340,7 @@ public class OneColumnDialog extends NodeDialog implements Encapsulation, Utilit
      * @param stage Stage where to display
      * @param dlgEl Array of dialog elements
      */
-    public OneColumnDialog( Stage stage, DialogElement[] dlgEl )
+    public OneColumnView( Stage stage, DialogElement[] dlgEl )
     {
     	super( "" );
     	

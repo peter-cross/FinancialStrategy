@@ -1,7 +1,7 @@
 package foundation;
 
 import interfaces.Encapsulation;
-import static interfaces.Utilities.createDataClass;
+import static interfaces.Utilities.createModelClass;
 
 /**
  * Class Data
@@ -77,7 +77,7 @@ public class Data implements Encapsulation
     {
         try 
         {
-            Class classType = createDataClass( type );
+            Class classType = createModelClass( type );
             this.value = classType.newInstance();
         } 
         catch ( Exception e ) 

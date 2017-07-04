@@ -1,4 +1,4 @@
-package forms;
+package views;
 
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -22,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import models.RegistryModel;
 
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -34,25 +35,24 @@ import java.util.LinkedHashSet;
 import java.text.DecimalFormat;
 
 import application.Main;
+import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.Cipher;
 import foundation.Data;
-import foundation.RegistryItem;
-import foundation.UserDialog;
 import interfaces.Buttons;
 import interfaces.Constants;
 import interfaces.Encapsulation;
 import interfaces.Utilities;
 
 import static interfaces.Utilities.attrName;
-import static interfaces.Utilities.createDataClass;
+import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.getByIndex;
 
 /**
  * Class Registry
  * @author Peter Cross
  */
-public class Registry extends Stage implements Buttons, Encapsulation, Constants, Utilities
+public class RegistryView extends Stage implements Buttons, Encapsulation, Constants, Utilities
 {
     /*          Properties   	                                                                                      */
     /******************************************************************************************************************/
@@ -66,7 +66,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     private String                              	tabsType;      // Value type of Tab Items
     private int                                     numCols = 0;   // Number of columns to display
     
-    private LinkedHashSet<RegistryItem>[]               list;      // List of Registry Items to display
+    private LinkedHashSet<RegistryModel>[]               list;      // List of Registry Items to display
     private ArrayList<TableView<ArrayList<Data>>>       table;     // Table to display content
     private ArrayList<ObservableList<ArrayList<Data>>>  data;      // data model of TableView object
     
@@ -210,7 +210,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      */
     private TableView createTableView( int tabNum )
     {
-        RegistryItem        item = null;    // To store a sample of Registry Item
+        RegistryModel        item = null;    // To store a sample of Registry Item
         AssociativeList     attributesList; // To store Registry Item's attributes list
         DialogElement[][]   header;         // To store header elements of Registry Items
         String[]            column;         // to store column names to display
@@ -249,7 +249,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
             
             // Create String array for column names
             column = new String[ header.length * header[0].length ];
-            // Create String array for current RegistryItem object attribute names
+            // Create String array for current RegistryModel object attribute names
             attributeName = new String[ header.length * header[0].length ];
             
             int numCol = 0;
@@ -358,8 +358,6 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         
         try
         {
-        	new UserDialog( this::openAboutBox ).start();
-        	
         	// Show dialog element and wait
             showAndWait();
         }
@@ -369,21 +367,6 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         }
     } // End of method ** displayForm **
 
-    
-    /**
-     * Displays About box when the program starts
-     */
-    private void openAboutBox()
-    {
-    	try 
-    	{
-			Thread.sleep(100);
-		} 
-    	catch (InterruptedException e) 
-    	{}
-    	
-    	displayAbout();
-    }
     
     /**
      * Updates table content after changes
@@ -402,9 +385,9 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     /**
      * Adds new Registry Item to the display list and data model
      * @param tabNum Tab number
-     * @param newItem RegistryItem object to add
+     * @param newItem RegistryModel object to add
      */    
-    protected void add( int tabNum, RegistryItem newItem )
+    protected void add( int tabNum, RegistryModel newItem )
     {
         // Create TableView object for selected tab
         TableView<ArrayList<Data>> tbl = table.get(tabNum);
@@ -412,10 +395,10 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         // Get items for current table view
         ObservableList items = (ObservableList) tbl.getItems();
         
-        // If new RegistryItem is specified
+        // If new RegistryModel is specified
         if ( newItem != null )
         {
-        	// Add new RegistryItem to table view
+        	// Add new RegistryModel to table view
         	setInTableView( items, newItem );
         	
         	// Add empty row to table view
@@ -427,7 +410,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
             // Highlight current row number 
             tbl.getSelectionModel().select( items.size()-2 );
             
-        } // End If ** new RegistryItem is specified **
+        } // End If ** new RegistryModel is specified **
             
     } // End of method ** add **
     
@@ -437,15 +420,15 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      * @param regItem Registry Item to set in Table View
      * @param rowNum Row number
      */
-    private void setInTableView( ObservableList items, RegistryItem regItem, int rowNum )
+    private void setInTableView( ObservableList items, RegistryModel regItem, int rowNum )
     {
     	// Get current row of items list
         ArrayList<Data> row = (ArrayList) items.get( rowNum );
         
-        // Get attributes list for new RegistryItem
+        // Get attributes list for new RegistryModel
         AssociativeList attributesList = regItem.getAttributesList();
         
-        // Get header elements of the new RegistryItem
+        // Get header elements of the new RegistryModel
         DialogElement[][] header = (DialogElement[][]) attributesList.get( "header" );
         
         // Get fields attribute of Registry Item
@@ -470,7 +453,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      * @param items Items of Table View
      * @param regItem Registry Item to set in Table View
      */
-    private void setInTableView( ObservableList items, RegistryItem regItem )
+    private void setInTableView( ObservableList items, RegistryModel regItem )
     {
     	setInTableView( items, regItem, items.size() - 1 );
     }
@@ -498,7 +481,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      * @param tabNum Tab number
      * @param itemToRemove Registry Item to remove
      */
-    protected void remove( int tabNum, RegistryItem  itemToRemove )
+    protected void remove( int tabNum, RegistryModel  itemToRemove )
     {
         list[tabNum].remove( itemToRemove );
     
@@ -510,16 +493,16 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      * @param st Stage to display created item on
      * @return Created new Registry Item
      */
-    protected RegistryItem newRegistryItem( int tabNum, Stage st )
+    protected RegistryModel newRegistryItem( int tabNum, Stage st )
     {
         // If value type for new Registry Item is not specified
         if ( valueType == null || valueType.isEmpty() )
             return null;
         
-        RegistryItem obj = null;    // To store created new RegistryItem object
+        RegistryModel obj = null;    // To store created new RegistryModel object
         
-        // Get class for new RegistryItem object
-        Class cls = createDataClass( valueType );
+        // Get class for new RegistryModel object
+        Class cls = createModelClass( valueType );
         
         try 
         {
@@ -529,16 +512,16 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
                 // Get class constructor with parameter stage
                 Constructor cnstr = cls.getConstructor( Stage.class );
 
-                // Create RegistryItem object with class constructor
-                obj = (RegistryItem) cnstr.newInstance( st );
+                // Create RegistryModel object with class constructor
+                obj = (RegistryModel) cnstr.newInstance( st );
             }
             else
             {
                 // Get class constructor with parameter stage and entity
                 Constructor cnstr = cls.getConstructor( Stage.class, int.class );
 
-                // Create RegistryItem object with class constructor
-                obj = (RegistryItem) cnstr.newInstance( st, tabNum );
+                // Create RegistryModel object with class constructor
+                obj = (RegistryModel) cnstr.newInstance( st, tabNum );
             }
             
             // Add created Registry Item to Registry List
@@ -552,7 +535,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     } // End of method ** newRegistryItem **
     
     /**
-     * Opens dialog to edit RegistryItem object
+     * Opens dialog to edit RegistryModel object
      * @param tabNum Tab number
      */
     protected void editRegistryItem( int tabNum )
@@ -563,14 +546,14 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         // Get items for for current table view
         ObservableList items = (ObservableList) tbl.getItems();
     
-        RegistryItem regItem; // To store RegistryItem to edit
+        RegistryModel regItem; // To store RegistryModel to edit
         
         // Get current Table View row number
         int rowNum = tbl.getSelectionModel().getSelectedIndex();
         
         // If row number is specified and is valid
         if ( rowNum >= 0 && rowNum < list[tabNum].size() )
-            // Get RegistryItem to edit from display list
+            // Get RegistryModel to edit from display list
             regItem = getByIndex( list[tabNum], rowNum  );
         else
             return;
@@ -583,10 +566,10 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         	// Set stage attribute to current Registry form
         	attrList.set( "stage", this );
         	
-        	// Open dialog window to edit RegistryItem
+        	// Open dialog window to edit RegistryModel
             regItem.display( ); 
             
-            // Set RegistryItem in TableView in specified row
+            // Set RegistryModel in TableView in specified row
             setInTableView( items, regItem, rowNum );
             
             // Update Table
@@ -615,7 +598,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         // Get current Table View row number
         int rowNum = tbl.getSelectionModel().getSelectedIndex();
         
-        // If either row number is not specified or it's just a free row for new RegistryItem
+        // If either row number is not specified or it's just a free row for new RegistryModel
         if ( rowNum < 0 ^ rowNum == list[tabNum].size() )
             return;
         
@@ -629,20 +612,20 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         // Update TableView
         updateTableView( tabNum );
             
-        // If there is RegistryItem before deleted row
+        // If there is RegistryModel before deleted row
         if ( rowNum - 1 >= 0 )
-            // Highlight RegistryItem before deleted row
+            // Highlight RegistryModel before deleted row
             tbl.getSelectionModel().select( rowNum - 1 );
         
         // otherwise
         else
-            // Highlight RegistryItem which goes after deleted row
+            // Highlight RegistryModel which goes after deleted row
             tbl.getSelectionModel().select( rowNum );
         
     } // End of method ** deleteRegistryItem **
     
     /**
-     * Removes from TableView RegistryItem in specified row
+     * Removes from TableView RegistryModel in specified row
      * @param items Items of TableView Data model
      * @param tabNum Tab number
      * @param rowNum Row number
@@ -652,7 +635,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     	// Remove current row from Table View
         items.remove( rowNum );
         
-        RegistryItem regItem = getByIndex( list[tabNum], rowNum  );
+        RegistryModel regItem = getByIndex( list[tabNum], rowNum  );
         
         try
         {
@@ -968,7 +951,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     
     /**
      * Creates Columns for TableView
-     * @param header Array with Header elements of RegistryItem
+     * @param header Array with Header elements of RegistryModel
      * @param column Array of columns
      * @param columnsWidth Columns width
      * @param tbl TableView in which to create columns
@@ -1047,12 +1030,12 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     /**
      * Create Matrix with Data Model for Table View
      * @param tabNum Tab number for Table View
-     * @param attributeName Array with RegistryItem attribute names
+     * @param attributeName Array with RegistryModel attribute names
      * @return Data Model for Table View
      */
     private ArrayList<ArrayList<Data>> createTableMatrix( int tabNum, String[] attributeName )
     {
-    	RegistryItem        item = null; // To store retrieved RegistryItem
+    	RegistryModel        item = null; // To store retrieved RegistryModel
     	
     	if ( list == null )
     		return null;
@@ -1170,18 +1153,6 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
     }
     
     /**
-     * Displays About box
-     */
-    private void displayAbout()
-    {
-    	String[] boxTxt = new String[]{ "                     " + Main.TITLE 
-				  + "\n\n              Transactions Modeling Software",
-				  "Developer: Peter Cross",
-				  "email: peter.cross@email.com" };
-    	displayMessage( boxTxt );
-    }
-    
-    /**
      * Creates Event Handler for printing Registry Item
      * @param tabPane TabPane object for current Tab
      * @return Event Handler for printing Registry Item
@@ -1259,7 +1230,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      * @param title Registry title 
      * @param valueType RegistryIem type
      */
-    public Registry( Stage stage, String title, String valueType )
+    public RegistryView( Stage stage, String title, String valueType )
     {
         this.table = new ArrayList<>(1);
         this.data = new ArrayList<>(1);
@@ -1268,7 +1239,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         this.title = title;
         this.valueType = valueType;
         
-        Class c = createDataClass( valueType );
+        Class c = createModelClass( valueType );
         
         Cipher.getInstance();
     	
@@ -1288,13 +1259,13 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
      * @param valueType RegistryIem type
      * @param tabsType Type of tabs items
      */
-    public Registry( Stage stage, String title, String valueType, String tabsType )
+    public RegistryView( Stage stage, String title, String valueType, String tabsType )
     {
         this( stage, title, valueType );
         
         HashSet tabList =  null;
         
-        Class c = createDataClass( tabsType );
+        Class c = createModelClass( tabsType );
         
         try
         {
@@ -1304,7 +1275,7 @@ public class Registry extends Stage implements Buttons, Encapsulation, Constants
         catch ( Exception e )
         {}
         
-        c = createDataClass( valueType );
+        c = createModelClass( valueType );
         
         try
         {

@@ -1,6 +1,8 @@
 package entities;
 
 import javafx.scene.input.MouseEvent;
+import models.TransactionsGraphics;
+import views.TransactionsModelView;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,11 +13,10 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 
 import java.util.List;
+import java.util.Vector;
 import java.util.ArrayList;
 
 import application.Main;
-import data.TransactionsGraphics;
-import data.TransactionsModelDialog;
 import foundation.Cipher;
 
 /**
@@ -59,8 +60,8 @@ public class TAccount
 	public TAccount( String acctName, MouseEvent e )
 	{
 		name = Cipher.crypt(acctName);
-		col = TransactionsModelDialog.getColumn(e);
-		row = TransactionsModelDialog.getRow(e);
+		col = TransactionsModelView.getColumn(e);
+		row = TransactionsModelView.getRow(e);
 		
 		corrDt = new ArrayList<>(); 
 		corrCr = new ArrayList<>();
@@ -289,8 +290,16 @@ public class TAccount
 			// Draw vertical line for T-account for the whole height of cell
 			tg.drawAccountVerticalLine( acctRow, col );
 			
+			Vector<Transaction> transactions = new Vector( TransactionsModelView.getTransactions() );
+			
+			List<Transaction> toDel = TransactionsModelView.getToDelTransactions();
+			transactions.removeAll( toDel );
+			
+			List<Transaction> toAdd = TransactionsModelView.getToAddTransactions();
+			transactions.addAll( toAdd );
+			
 			// Draw transaction that goes though specified row and column
-			tg.drawTransitTransaction( acctRow, col, TransactionsModelDialog.getTransactions() );
+			tg.drawTransitTransaction( acctRow, col, transactions );
 		}
 	}
 	
@@ -332,7 +341,7 @@ public class TAccount
 		// Loop for each row starting with T-account's row till specified row
 		for ( int r = row; r <= accRow; r++ )
 			// Draw transit transaction for current row and specified column
-			tg.drawTransitTransaction( r, col, TransactionsModelDialog.getTransactions() );
+			tg.drawTransitTransaction( r, col, TransactionsModelView.getTransactions() );
 	}
 	
 	/**
@@ -352,7 +361,7 @@ public class TAccount
 		// Loop for each row starting with T-account's row till specified row
 		for ( int r = row; r <= accRow; r++ )
 			// Draw transit transaction for current row and specified column
-			tg.drawTransitTransaction( r, col, TransactionsModelDialog.getTransactions() );
+			tg.drawTransitTransaction( r, col, TransactionsModelView.getTransactions() );
 	}
 	
 	/**
@@ -363,7 +372,7 @@ public class TAccount
 		ArrayList<Transaction> transList = new ArrayList<>();
 		
 		// Loop through list of all transactions
-		for ( Transaction t : TransactionsModelDialog.getTransactions() )
+		for ( Transaction t : TransactionsModelView.getTransactions() )
 			// If T-account belongs to current transaction
 			if ( this == t.getDt() || this == t.getCr() )
 				// Add transaction to list of T-account transactions
@@ -385,14 +394,10 @@ public class TAccount
 			tg.clearCellContent( r, col );
 		
 		// Loop for each row starting with T-account's row till the bottom of the grid
-		for ( int r = row; r < TransactionsModelDialog.ROWS; r++ )
+		for ( int r = row; r < TransactionsModelView.ROWS; r++ )
 			// Redraw transit transaction line if there is one
-			tg.drawTransitTransaction( r, col, TransactionsModelDialog.getTransactions() );
+			tg.drawTransitTransaction( r, col, TransactionsModelView.getTransactions() );
 		
-		// Remove T-account from list of Transactions Model's T-accounts
-		TransactionsModelDialog.getTAccounts().remove( this );
-		
-		// Remove T-account from database
-		Main.removeFromDB( this );
+		TransactionsModelView.addToDelTAccounts( this );
 	}
 }

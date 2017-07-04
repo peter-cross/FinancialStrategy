@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import foundation.Cipher;
 
 /**
- * Class TransactionsModel - stores Transactions' Models
+ * Class TransactionsModelData - stores Transactions' Models
  * @author Peter Cross
  *
  */
