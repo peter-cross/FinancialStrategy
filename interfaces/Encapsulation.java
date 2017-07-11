@@ -112,8 +112,7 @@ public interface Encapsulation extends Cloneable
                 // Restore access property attribute
                 field.setAccessible( access );
             }
-            catch ( Exception e1 )
-            { }
+            catch ( Exception e1 ) { }
         }
 		
     } // End of method ** set **

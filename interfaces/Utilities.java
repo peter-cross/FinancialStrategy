@@ -1,30 +1,29 @@
 package interfaces;
 
 import javafx.stage.Stage;
-import models.RegistryModel;
-import views.OneColumnView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+
 import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
-
-import application.Main;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.text.SimpleDateFormat;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
+import application.Main;
 import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.Item;
+import models.RegistryItemModel;
+import views.OneColumnView;
 import interfaces.Lambda.ElementValidation;
 
 /**
@@ -34,7 +33,6 @@ import interfaces.Lambda.ElementValidation;
  */
 public interface Utilities extends Encapsulation
 {
-	
 	/**
      * Displays About box when the program starts
      */
@@ -44,14 +42,13 @@ public interface Utilities extends Encapsulation
     	{
 			Thread.sleep(100);
 		} 
-    	catch (InterruptedException e) 
-    	{}
+    	catch (InterruptedException e) {}
     	
     	displayAbout();
     }
     
     /** 
-    * Displays About box
+     * Displays About box
      */
     default void displayAbout()
     {
@@ -134,16 +131,16 @@ public interface Utilities extends Encapsulation
      * @param index Index number
      * @return Registry Item
      */
-    public static RegistryModel getByIndex( LinkedHashSet<RegistryModel> list, int index )
+    public static RegistryItemModel getByIndex( LinkedHashSet<RegistryItemModel> list, int index )
     {
-        RegistryModel itm = null;
+        RegistryItemModel itm = null;
         
         Iterator it = list.iterator();
         int i = 0;
         
         while ( it.hasNext() )
             if ( i++ == index )
-                itm = (RegistryModel) it.next();
+                itm = (RegistryItemModel) it.next();
             else
                 it.next();
                 
@@ -151,15 +148,41 @@ public interface Utilities extends Encapsulation
     }
     
     /**
+     * Gets List index for Registry Item in LinkedHashSet
+     * @param list List of Registry Items
+     * @param item Registry Item to find index
+     * @return Index of Registry Item
+     */
+    public static int getListIndex( LinkedHashSet<RegistryItemModel> list, RegistryItemModel item )
+    {
+    	Iterator it = list.iterator();
+    	
+    	RegistryItemModel itm = null;
+        int idx = 0;
+        
+        while ( it.hasNext() )
+        {
+        	itm = (RegistryItemModel) it.next();
+        	
+        	if ( itm == item )
+        		return idx;
+        	else
+        		idx++;
+        }
+    	
+    	return -1;
+    }
+    
+    /**
      * Gets List element by value of field name
      * @param list  List from which to get a field
      * @param field Field name
      * @param value Value to find
-     * @return RegistryModel descendant object
+     * @return RegistryItemModel descendant object
      */
-    public static RegistryModel getListElementBy( HashSet list, String field, String value )
+    public static RegistryItemModel getListElementBy( HashSet list, String field, String value )
     {
-        RegistryModel elm;
+        RegistryItemModel elm;
         AssociativeList fields;
         
         Iterator it = list.iterator();
@@ -167,13 +190,39 @@ public interface Utilities extends Encapsulation
         // Loop through the list
         while ( it.hasNext() )
         {
-            // Get Item from List and cast to RegistryModel
-            elm = (RegistryModel) it.next();
+            // Get Item from List and cast to RegistryItemModel
+            elm = (RegistryItemModel) it.next();
             
-            // Get fields attribute of the RegistryModel
-            fields = ((RegistryModel) elm).getFields();
+            // Get fields attribute of the RegistryItemModel
+            fields = ((RegistryItemModel) elm).getFields();
             
             String fieldValue = ((String) fields.get(field)).trim();
+            
+            // If field value matches
+            if ( fieldValue.equals(value) )
+                return elm;
+        }
+        
+        return null;
+    }
+    
+    public static RegistryItemModel getListElementBy( HashSet list, String field, Object value )
+    {
+        RegistryItemModel elm;
+        AssociativeList fields;
+        
+        Iterator it = list.iterator();
+        
+        // Loop through the list
+        while ( it.hasNext() )
+        {
+            // Get Item from List and cast to RegistryItemModel
+            elm = (RegistryItemModel) it.next();
+            
+            // Get fields attribute of the RegistryItemModel
+            fields = ((RegistryItemModel) elm).getFields();
+            
+            Object fieldValue = fields.get(field);
             
             // If field value matches
             if ( fieldValue.equals(value) )
@@ -191,7 +240,7 @@ public interface Utilities extends Encapsulation
     default String getFieldNumber( String fieldname )
     {
         // Get attribute field
-        AssociativeList fields = ((RegistryModel) this).getFields();
+        AssociativeList fields = ((RegistryItemModel) this).getFields();
         
         if ( fields == null )
             return "";
@@ -285,8 +334,7 @@ public interface Utilities extends Encapsulation
                         {
                             cls = Class.forName( pckg + ".accgroups." + valueType );
                         }
-                        catch ( Exception e3 )
-                        { }    
+                        catch ( Exception e3 ) { }    
                     }                
                 }
             }
@@ -296,8 +344,7 @@ public interface Utilities extends Encapsulation
                 // Create class object by its name of data object
                 cls = Class.forName( pckg + "." + valueType );
             }
-            catch ( Exception e )
-            { }
+            catch ( Exception e ) { }
         
         return cls;
         
@@ -312,7 +359,7 @@ public interface Utilities extends Encapsulation
         Class c = this.getClass();
         
         // Get object's attribute list
-        AssociativeList attributesList = ((RegistryModel) this).getAttributesList();
+        AssociativeList attributesList = ((RegistryItemModel) this).getAttributesList();
         
         // Get declared fields
         Field[] field = c.getDeclaredFields();
@@ -324,8 +371,7 @@ public interface Utilities extends Encapsulation
                 // Set field values in attributes list under their names
                 attributesList.set( fld.getName(), this.get( fld.getName() ) );
             }
-            catch ( Exception e )
-            {}
+            catch ( Exception e ) {}
         
     } // End of method ** setAttributesList **
     
@@ -499,6 +545,7 @@ public interface Utilities extends Encapsulation
         // If only one message line in array
         else if ( arrayCount( msg ) == 1 )
             displayMessage( msg[0] );
+        
         else
         {
             String output = ""; // To store output string
@@ -796,10 +843,9 @@ public interface Utilities extends Encapsulation
 
             // If strings are equal
             if ( comparisonResult == 0 )
-            {
                 // Return the array current index
                 return i;
-            }
+            
             // If the key is inside the current array chunk
             else if ( comparisonResult < 0 && comparisonResult > minComparisonResult )
             {
@@ -893,12 +939,12 @@ public interface Utilities extends Encapsulation
 
     } // End of method ** selectionSort **
    
-   /**
-    * Swaps array elements
-    * @param arr Array to swap in
-    * @param i First element to swap
-    * @param j Second element to swap
-    */
+    /**
+     * Swaps array elements
+     * @param arr Array to swap in
+     * @param i First element to swap
+     * @param j Second element to swap
+     */
     default void swap( Object[] arr, int i, int j )
     {
         // Store value of array element at position i

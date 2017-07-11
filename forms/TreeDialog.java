@@ -31,11 +31,11 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
     protected Stage 	stage;          // Stage object for window
     protected String	title;          // Window title
     protected TreeList	nodes;          // Nodes to display in window
-    protected Node	btn;            // Button which evoked this dialog
+    protected Node		btn;            // Button which evoked this dialog
     protected String	returnValue;    // Selected value
     
     private int		width = 254,    // Window width
-                        height = 150;   // Window heihgt
+                    height = 150;   // Window height
     /**
      * Creates items of Tree dialog
      * @param <T>   Type parameter
@@ -115,7 +115,7 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
         TreeView<T> treeView = new TreeView<>( createTree() );
         // Make tree view non-editable
         treeView.setEditable( false );
-        // Set up preferred heihgt  and width
+        // Set up preferred height  and width
         treeView.setPrefHeight( height );
         treeView.setMaxWidth( width );
 
@@ -169,7 +169,7 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
             // Get list of stylesheets for created Scene object
             ObservableList<String> style = scene.getStylesheets();
 
-            // Add stylesheet to the scne's  list of stylesheets
+            // Add stylesheet to the scene's  list of stylesheets
             style.add( styleSheet.toExternalForm() );
         }
 
@@ -205,7 +205,7 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
         // Get coordinates of scene window
         Point2D windowCoord = new Point2D( sc.getWindow().getX(), sc.getWindow().getY() );
 
-        // Calculate absolute coorinates of the button
+        // Calculate absolute coordinates of the button
         double x = point.getX() + sceneCoord.getX() + windowCoord.getX();
         double y = point.getY() + sceneCoord.getY() + windowCoord.getY();
 

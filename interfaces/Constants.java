@@ -24,13 +24,13 @@ public interface Constants
     // All declared fields are implicitly: public static final
 	
     int	YES 	= 0,	
-        NO 	= 1,
+        NO 		= 1,
         CANCEL	= 2,
 
         TODAY	= 0,
         DATE	= 1,
         PERIOD	= 2,
-        ALL	= 3,
+        ALL		= 3,
 
         WIDTH 	= windowSize.width - taskBarWidth, 	 //800, //
         HEIGHT 	= windowSize.height - taskBarHeight; //550; //

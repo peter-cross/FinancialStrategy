@@ -1,8 +1,6 @@
 package entities;
 
 import javafx.scene.input.MouseEvent;
-import models.TransactionsGraphics;
-import views.TransactionsModelView;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,8 +14,9 @@ import java.util.List;
 import java.util.Vector;
 import java.util.ArrayList;
 
-import application.Main;
 import foundation.Cipher;
+import models.TransactionsGraphics;
+import views.TransactionsModelView;
 
 /**
  * Class TAccount - to store information for T-accounts
@@ -30,19 +29,20 @@ public class TAccount
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long 		taccountId;
+	
 	private String 		name;		// Account name
 	private int 		col;		// Cell column number
 	private int 		row;		// Cell row number
 	
 	@ElementCollection( fetch=FetchType.EAGER )
 	@Column( name="VALUE" )
-	private List<Integer> corrDt; // List of rows for transactions with corresponding debit accounts
+	private List<Integer> corrDt; // List of rows for transactions with corresponding Dt accounts
 	
 	@ElementCollection( fetch=FetchType.EAGER )
 	@Column( name="VALUE" )
-	private List<Integer> corrCr; // List of rows for transactions with corresponding credit accounts
+	private List<Integer> corrCr; // List of rows for transactions with corresponding Cr accounts
 	
-	private static TransactionsGraphics tg;
+	private static TransactionsGraphics tg;	// Transactions graphics canvas
 	
 	/**
 	 * Class default constructor
@@ -187,7 +187,7 @@ public class TAccount
 		// Loop for each row of T-account
 		for ( int r = row; r <= getMaxRow(); r++ )
 		{
-			// Check if in current row there is corresponding debit or credit account
+			// Check if in current row there is corresponding DT or CR account
 			int idx1 = corrDt.indexOf(r),
 				idx2 = corrCr.indexOf(r);
 			
@@ -290,12 +290,17 @@ public class TAccount
 			// Draw vertical line for T-account for the whole height of cell
 			tg.drawAccountVerticalLine( acctRow, col );
 			
+			// Create copy of Transaction Model transactions
 			Vector<Transaction> transactions = new Vector( TransactionsModelView.getTransactions() );
 			
+			// Get list of transactions that have to be deleted from DB
 			List<Transaction> toDel = TransactionsModelView.getToDelTransactions();
+			// Remove these transactions from copy of existing Transaction Model transactions
 			transactions.removeAll( toDel );
 			
+			// Get list of transactions that have to be added to DB
 			List<Transaction> toAdd = TransactionsModelView.getToAddTransactions();
+			// Add these transactions to the copy of existing Transaction Model transactions
 			transactions.addAll( toAdd );
 			
 			// Draw transaction that goes though specified row and column
@@ -352,10 +357,10 @@ public class TAccount
 	{
 		clearAccountRowContent();
 		
-		// For debit account delete row of corresponding credit account
+		// For DT account delete row of corresponding credit account
 		delCorrCrAccount( accRow );
 		
-		// Redraw Transaction debit account
+		// Redraw Transaction DT account
 		drawTAccount();
 		
 		// Loop for each row starting with T-account's row till specified row
@@ -398,6 +403,7 @@ public class TAccount
 			// Redraw transit transaction line if there is one
 			tg.drawTransitTransaction( r, col, TransactionsModelView.getTransactions() );
 		
+		// Add this T-account to the list of T-accounts that have to be deleted from DB
 		TransactionsModelView.addToDelTAccounts( this );
 	}
 }

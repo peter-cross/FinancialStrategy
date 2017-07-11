@@ -46,4 +46,9 @@ public interface Lambda
     	void run( Object element );
     }
 	
+    // Interface for performing action on any type of object
+    public interface ObjectAction
+    {
+    	void  perform( Object o );
+    }    
 } // End of interface ** Lambda **

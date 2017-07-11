@@ -8,12 +8,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import foundation.Cipher;
 
 /**
- * Class TransactionsModelData - stores Transactions' Models
+ * Class TransactionsSimulationModel - stores Transactions' Models
  * @author Peter Cross
  *
  */
@@ -34,6 +35,10 @@ public class TransactionsModel
 	// Transactions of Transactions Model
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
 	private Vector<Transaction> transactions;
+	
+	// Legal Entity to which Transaction Model belongs
+	@ManyToOne( fetch=FetchType.EAGER )
+	private LegalEntity lglEntity;
 	
 	/**
 	 * Class default constructor
@@ -56,6 +61,12 @@ public class TransactionsModel
 		this.transactions = transactions;
 	}
 	
+	// Class constructor with all info for Transactions Model and Legal Entity it belongs to
+	public TransactionsModel( String name, Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
+	{
+		this(name, taccounts, transactions);
+		this.lglEntity = lglEntity;
+	}
 	/**
 	 * Class constructor with List of T-accounts and list of transactions
 	 * @param taccounts
@@ -65,6 +76,13 @@ public class TransactionsModel
 	{
 		this.taccounts = taccounts;
 		this.transactions = transactions;
+	}
+	
+	// Class constructor with List of T-accounts and list of transactions and Legal Entity Transaction Model belongs to
+	public TransactionsModel( Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
+	{
+		this(taccounts, transactions);
+		this.lglEntity = lglEntity;
 	}
 	
 	/**
@@ -98,5 +116,22 @@ public class TransactionsModel
 	public String getName()
 	{
 		return Cipher.decrypt(name);
+	}
+	
+	/**
+	 * Returns Legal Entity of Transactions Model
+	 */
+	public LegalEntity getLegalEntity()
+	{
+		return lglEntity;
+	}
+	
+	/**
+	 * Sets Legal Entity of Transactions Model
+	 * @param legalEntity Legal Entity current Transactions Model belongs to
+	 */
+	public void setLegalEntity( LegalEntity legalEntity )
+	{
+		lglEntity = legalEntity;
 	}
 }

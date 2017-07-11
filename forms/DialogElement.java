@@ -25,13 +25,13 @@ public class DialogElement implements Encapsulation
 
     public String[]             textChoices;	// Array containing list of choices
     public LinkedHashSet        list;			// Reference to list
-    public int			defaultChoice;			// Default choice for list of choices
+    public int					defaultChoice;	// Default choice for list of choices
 
-    public String 		textValue;			// Text value of the element
-    public boolean		editable;			// Editable column or not
-    public ElementValidation	validation;	// Lambda expression with validation code
-    public OnElementChange	onChange;		// Lambda expression invoked on element change
-    public int			width;				// Width of the field
+    public String 				textValue;		// Text value of the element
+    public boolean				editable;		// Editable column or not
+    public ElementValidation	validation;		// Lambda expression with validation code
+    public OnElementChange		onChange;		// Lambda expression invoked on element change
+    public int					width;			// Width of the field
 
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/

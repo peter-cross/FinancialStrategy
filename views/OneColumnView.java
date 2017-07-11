@@ -1,7 +1,6 @@
 package views;
 
 import javafx.stage.Stage;
-import models.RegistryModel;
 import javafx.stage.FileChooser;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,12 +28,12 @@ import javafx.geometry.Pos;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
-import java.io.File;
 import java.time.LocalDate;
+import java.io.File;
 
+import models.RegistryItemModel;
 import forms.DialogElement;
 import forms.TreeDialog;
-
 import foundation.AssociativeList;
 import foundation.Item;
 import interfaces.Encapsulation;
@@ -52,12 +51,11 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
 {
     /*          Properties   	                                                                                      */
     /******************************************************************************************************************/
-    protected AssociativeList	attributesList;     // Form attributes List
-    protected RegistryModel      regItem;            // Original Registry Item
-    protected DialogElement[][] dialogElement;		// Array of dialog elements
+    protected AssociativeList		attributesList;     // Form attributes List
+    protected RegistryItemModel		regItem;            // Original Registry Item
+    protected DialogElement[][] 	dialogElement;		// Array of dialog elements
     
-    protected Pane 			content;
-    protected Stage 		owner;
+    protected Pane 			content;	// Content pane
     protected Scene			scene;		// Dialog element scene
     protected DialogAction 	code;		// Lambda expression for field value validation
 
@@ -65,10 +63,9 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
     protected String[][]	elementContent;	// Content of form fields in text format
     protected String[]		tabs;			// Tab names
     
-    /*          Methods                                                                                               */
-    /**
+    /*          Methods                                                                                              
      ****************************************************************************************************************
-    */
+     */
 
     /**
      * Gets Scene object for the dialogue
@@ -83,7 +80,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
      * Get Registry Item for the dialogue
      * @return Registry Item
      */
-    public RegistryModel getRegistryItem()
+    public RegistryItemModel getRegistryItem()
     {
         return regItem;
     }
@@ -411,7 +408,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // Create combo box element and fill it with elements list
         ComboBox comboBox = fillComboBox( el );
         
-        // If dialog eleemnt's width is specified
+        // If dialog element's width is specified
         if ( el.width > 0 )
             // Set combo box width
             comboBox.setMaxWidth( el.width );
@@ -500,9 +497,6 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // Save field value and field type to associative elements list
         attributesList.set( el.labelName, textField );
 
-        // Save current stage to pass to event handler
-        final Stage st = (Stage) this;
-        
         // Set event handler on press button event
         btn.setOnAction( treeBtnEventHandler( el, btn, textField ) );
         
@@ -796,8 +790,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
                     field.setText( newNumber );
                 }
             }
-            catch ( Exception ex )
-            { }
+            catch ( Exception ex ) { }
         };
     }
     
@@ -1060,7 +1053,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
      */
     private String getValueOf( DatePicker datePicker )
     {
-    	String el;
+    	String el = "";
     	
         // Get value of date picker
         Object val = datePicker.getValue();
@@ -1069,8 +1062,6 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         if ( val != null )
             // Convert value to string and save to element content array
             el = val.toString();
-        else
-            el = "";
         
         return el;
     }
@@ -1148,7 +1139,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         
         // Create Cancel button object
     	Button btnCancel = buttonCancel();
-        
+    	
         // Get pane from Scene object
         Pane pane = (Pane) scene.getRoot();
 
@@ -1195,7 +1186,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
 
         // Set event handler for press button event
         btn.setOnAction( e -> close() );
-
+        
         return btn;
     }
     
@@ -1265,11 +1256,11 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
     }
     
     /**
-     * Class constructor with specified RegistryModel and item title
-     * @param doc RegistryModel  object
+     * Class constructor with specified RegistryItemModel and item title
+     * @param doc RegistryItemModel  object
      * @param title Title for dialog form
      */
-    public OneColumnView( RegistryModel doc, String title )
+    public OneColumnView( RegistryItemModel doc, String title )
     {
     	super( title );
     	

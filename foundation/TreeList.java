@@ -19,7 +19,7 @@ public class TreeList extends List implements Utilities
             // Allocate additional memory, if necessary
             list = allocateMemory( list );
 
-        // Create TreeItem onject for current item
+        // Create TreeItem object for current item
         list[pointer++] = new TreeItem( item );
     }
 

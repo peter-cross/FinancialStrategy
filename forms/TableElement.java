@@ -17,11 +17,11 @@ public class TableElement implements Encapsulation
     /******************************************************************************************************************/
     public String                   columnName;		// Column name for the element
     public boolean                  editable;		// Editable column or not
-    public int                      width;		// Width of the column
+    public int                      width;			// Width of the column
 
     public String                   valueType;		// Value type of the element
     public String[]                 textChoices;	// Array containing list of choices
-    public LinkedHashSet            list;		// Reference to list
+    public LinkedHashSet            list;			// Reference to list
     public int                      checkBox;		// Check box value
     public String                   checkBoxlabel;	// Label for check box
     public String[]                 textValue;		// Text values of the element

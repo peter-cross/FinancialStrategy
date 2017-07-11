@@ -11,7 +11,7 @@ public abstract class List implements Encapsulation
     /*          Properties   	                                                                                      */
     /******************************************************************************************************************/
     protected Item[] 	list;       // List array
-    protected int 	pointer;    // List pointer
+    protected int 		pointer;    // List pointer
 
     /*          Methods                                                                                               */
     /******************************************************************************************************************/

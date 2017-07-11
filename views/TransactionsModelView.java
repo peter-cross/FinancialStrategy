@@ -16,7 +16,9 @@ import java.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.Database;
 import application.Main;
+import entities.LegalEntity;
 import entities.TAccount;
 import entities.Transaction;
 import entities.TransactionsModel;
@@ -28,7 +30,7 @@ import foundation.UserDialog;
 import interfaces.Utilities;
 
 /**
- * Class TransactionsModelData - Modeling accounting transactions
+ * Class TransactionsSimulationModel - Modeling accounting transactions
  * @author Peter Cross
  *
  */
@@ -50,6 +52,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private static Vector<TAccount>				accounts;		// To store T-accounts
 	private ArrayList<ArrayList<TAccount>> 		grid;			// To store cell accounts as a grid
 	private TransactionsGraphics				tg;				// Graphics object for displaying transactions
+	private LegalEntity							legalEntity;	// Legal entity of Transactions Model
+	
 	
 	private ArrayList<TAccount>				selectedTAccounts;	// To store selected T-accounts
 	private AssociativeList					output;				// Results of input to pass
@@ -67,7 +71,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private boolean 		newAbout = false;		// To indicate that About box was displayed for new model
 	
 	/**
-	 * Class constructor
+	 * Class default constructor
 	 */
 	private TransactionsModelView()
 	{
@@ -76,24 +80,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Set dialog graphics
 		setGraphics();
 		
-		// Create ArrayList for transactions
-		transactions = new Vector<>();
-		
-		// Create ArrayList for T-Accounts
-		accounts = new Vector<>();
-		
-		// Create ArrayList for the grid
-		grid = new ArrayList<>();
-		
-		// Create ArrayList for selected T-accounts
-		selectedTAccounts = new ArrayList<>();
-		
-		toAddTAccounts = new ArrayList<>();
-		toAddTransactions = new ArrayList<>();
-		toDelTAccounts = new ArrayList<>();
-		toDelTransactions = new ArrayList<>();
-		
-		output = new AssociativeList();
+		createArrays();
 		
 		// Create TextField for the model title
 		title = new TextField();
@@ -113,6 +100,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private TransactionsModelView( AssociativeList fields )
 	{
 		this();
+		
+		legalEntity = fields.get( "legalEntity" );
 		
 		// Get Transactions Model
 		transactionsModel = fields.get( "transactionsModel" );
@@ -157,6 +146,31 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Get cell width and height
 		CELL_WIDTH  = tg.getCellWidth();
 		CELL_HEIGHT = tg.getCellHeight();
+	}
+	
+	/**
+	 * Creates all arrays for model instance
+	 */
+	private void createArrays()
+	{
+		// Create ArrayList for transactions
+		transactions = new Vector<>();
+		
+		// Create ArrayList for T-Accounts
+		accounts = new Vector<>();
+		
+		// Create ArrayList for the grid
+		grid = new ArrayList<>();
+		
+		// Create ArrayList for selected T-accounts
+		selectedTAccounts = new ArrayList<>();
+		
+		toAddTAccounts = new ArrayList<>();
+		toAddTransactions = new ArrayList<>();
+		toDelTAccounts = new ArrayList<>();
+		toDelTransactions = new ArrayList<>();
+		
+		output = new AssociativeList();
 	}
 	
 	/**
@@ -691,7 +705,6 @@ public class TransactionsModelView extends NodeView implements Utilities
 		Transaction tr = new Transaction( acct2, acct1 );
 		
 		// Add transaction to the list of transactions
-		//transactions.add( tr );
 		toAddTransactions.add( tr );
 	}
 	
@@ -753,6 +766,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     {
     	Button btn = new Button( "OK" );
         btn.setPadding( new Insets( 5, 28, 5, 28 ) );
+        
         // Set event handler for the button
         btn.setOnAction( this::btnOkEventHandler );
         
@@ -767,6 +781,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     {
     	Button btn = new Button( "Cancel" );
         btn.setPadding( new Insets( 5, 20, 5, 20 ) );
+        
         // Set event handler for the button
         btn.setOnAction( this::btnCancelEventHandler );
         
@@ -781,6 +796,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     {
     	Button btn = new Button( "About" );
     	btn.setPadding( new Insets( 5, 23, 5, 23 ) );
+    	
     	// Set event handler for the button
         btn.setOnAction( this::btnAboutEventHandler );
     	
@@ -799,8 +815,8 @@ public class TransactionsModelView extends NodeView implements Utilities
     	for ( TAccount tAcc : toDelTAccounts )
     		accounts.remove( tAcc );
     	
-    	Main.removeFromDB( toDelTransactions );
-    	Main.removeFromDB( toDelTAccounts );
+    	Database.removeFromDB( toDelTransactions );
+    	Database.removeFromDB( toDelTAccounts );
     	
     	toDelTransactions.clear();
     	toDelTAccounts.clear();
@@ -811,12 +827,13 @@ public class TransactionsModelView extends NodeView implements Utilities
     	String titleTxt = title.getText();
             
         if ( transactionsModel == null )
-    		transactionsModel = new TransactionsModel( titleTxt, accounts, transactions );
+    		transactionsModel = new TransactionsModel( titleTxt, accounts, transactions, legalEntity );
         else
         	transactionsModel.setName( titleTxt );
     	
     	output.set( "transactionsModel", transactionsModel );
     	output.set( "title" , titleTxt );
+    	output.set( "legalEntity", legalEntity );
     
     	close();
     }

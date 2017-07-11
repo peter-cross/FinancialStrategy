@@ -4,13 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 import java.util.ArrayList;
 
-import application.Main;
 import foundation.Cipher;
 import interfaces.Utilities;
 import models.TransactionsGraphics;
@@ -28,14 +26,14 @@ public class Transaction
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long 	 transactionId;
 	
-	private int 	 row;			// Row number of transaction
-	private String	 description;	// Transaction description
+	private int 	 row;					// Row number of transaction
+	private String	 description;			// Transaction description
 	@ManyToOne( fetch=FetchType.EAGER )
-	private TAccount dt;			// Debit account for transaction
+	private TAccount dt;					// DT account for transaction
 	@ManyToOne( fetch=FetchType.EAGER )
-	private TAccount cr;			// Credit account for transaction
+	private TAccount cr;					// CR account for transaction
 	
-	private static TransactionsGraphics tg;
+	private static TransactionsGraphics tg; // Transactions Graphics canvas
 	
 	/**
 	 * Class default constructor
@@ -47,8 +45,8 @@ public class Transaction
 	
 	/**
 	 * Class constructor with provided all transaction info
-	 * @param dt Dt T-account
-	 * @param cr Cr T-account
+	 * @param dt DT T-account
+	 * @param cr CR T-account
 	 * @param description Transaction description
 	 */
 	public Transaction( TAccount dt, TAccount cr, String description )
@@ -65,8 +63,8 @@ public class Transaction
 	
 	/**
 	 * Class constructor with specified transaction accounts only
-	 * @param dt Dt T-account
-	 * @param cr Cr T-account
+	 * @param dt DT T-account
+	 * @param cr CR T-account
 	 */
 	public Transaction( TAccount dt, TAccount cr )
 	{
@@ -93,7 +91,7 @@ public class Transaction
 	}
 	
 	/**
-	 * Returns transaction Dt account
+	 * Returns transaction DT account
 	 */
 	public TAccount getDt()
 	{
@@ -101,7 +99,7 @@ public class Transaction
 	}
 	
 	/**
-	 * Returns transaction Cr account
+	 * Returns transaction CR account
 	 */
 	public TAccount getCr()
 	{
@@ -154,7 +152,7 @@ public class Transaction
 	 */
 	public void drawTransaction()
 	{
-		// Draw Cr and Dt accounts
+		// Draw CR and DT T-accounts
 		cr.drawTAccount();
 		dt.drawTAccount();
 		
@@ -212,13 +210,14 @@ public class Transaction
 		// Get list of transit T-accounts
 		ArrayList<TAccount> accList = transitTAccounts();
 		
-		// Redraw Cr and Dt T-accounts
+		// Redraw CR and DT T-accounts
 		cr.redrawCrAccount(row);
 		dt.redrawDtAccount(row);
 		
+		// Add current transaction to the list of transactions that have to be deleted from DB
 		TransactionsModelView.addToDelTransactions( this );
 		
-		// Redraw transit accounts
+		// Redraw transit T-accounts
 		for ( TAccount acc : accList )
 			acc.drawTAccount();
 	}

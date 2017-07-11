@@ -1,5 +1,6 @@
 package views;
 
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -10,7 +11,7 @@ import javafx.geometry.Pos;
 
 import java.net.URL;
 
-import application.Main;
+import application.Controller;
 
 /**
  * Class NodeView - basic dialog form
@@ -20,8 +21,8 @@ import application.Main;
 public class NodeView extends Stage 
 {
 	/*********************  Properties  **************************************************************************/
-	private Node content;	// Content to display
-	private Stage owner;	// Parent window
+	private Node 	content;	// Content to display
+	protected Stage owner;		// Parent window
 	
 	private double width, height;	// Window width and height
 	private String title;			// Window title
@@ -44,9 +45,11 @@ public class NodeView extends Stage
         if ( owner != null )
         	initOwner( owner );
         
+        initModality( Modality.NONE );
+        
         // Display and wait of click button event
         showAndWait();
-	}
+    }
 	
 	/**
 	 * Displays provided content
@@ -92,7 +95,9 @@ public class NodeView extends Stage
             // Add StyleSheet to the style object
             style.add( styleSheet.toExternalForm() );
         }
-
+        
+        stackPane.setFocusTraversable( true );
+		
         return scene;
         
     } // End of method ** createScene **
@@ -108,7 +113,7 @@ public class NodeView extends Stage
      */
 	public NodeView( String title )
 	{
-    	this.owner = Main.stage;
+    	this.owner = Controller.getStage();
 		this.title = title;
 	}
     
@@ -129,7 +134,7 @@ public class NodeView extends Stage
      */
     public NodeView( String title, double width, double height )
     {
-    	this.owner = Main.stage;
+    	this.owner = Controller.getStage();
 		this.width = width;
     	this.height = height;
     	this.title = title;

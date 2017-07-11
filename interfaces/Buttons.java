@@ -1,11 +1,11 @@
 package interfaces;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 
 public interface Buttons 
 {
@@ -15,7 +15,7 @@ public interface Buttons
      * @param handler Event Handler for the button
      * @return Button object with Event Handler
      */
-    default Button newActionButton( String btnName, EventHandler handler )
+    public static Button newActionButton( String btnName, EventHandler handler )
     {
     	// Create new button object
     	Button btn = new Button( btnName );
@@ -23,7 +23,8 @@ public interface Buttons
         btn.setPadding( new Insets( 5, 20, 5, 20 ) );
         // Set event handler for press button event
         btn.setOnAction( handler );
-        
+        btn.setFocusTraversable( true );
+		
         return btn;
     }
     
@@ -46,8 +47,9 @@ public interface Buttons
         // Align buttons box to the right
         buttons.setAlignment( Pos.CENTER_RIGHT );
 
-        // Add OK and Cancel buttons to buttons box
-        buttons.getChildren().addAll( btn );
+        for ( Button b : btn )
+            if ( b != null )
+                buttons.getChildren().add( b );
 		
         // Add buttons box to the pane
         pane.getChildren().addAll( buttons );
