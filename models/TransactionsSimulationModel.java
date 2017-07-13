@@ -219,53 +219,53 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 * Creates list of TransactionsSimulationModel objects
 	 */
 	public static  LinkedHashSet[] createList()
-    {
-        Class c = createModelClass( "LegalEntityModel" );
-        
-        try
         {
-            // Get list of Legal Entities
-            LinkedHashSet entities = ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0];
-            
-            int numEntities = entities.size();
-            
-            // Create arrays for Legal Entities list with size equal to number of Legal Entities
-            list = new LinkedHashSet[ numEntities ];
-        }
-        catch ( Exception e )
-        {
-            // Create arrays for one Legal Entity
-            list = new LinkedHashSet[1];
-        }
-        
-        // Create ArrayList for list of Legal Entities for each Legal Entity
-        for ( int i = 0; i < list.length; i++ )
-            list[i] = new LinkedHashSet<>();
-        
-        // Get list of Transaction Models from database
-        List<TransactionsModel> dbTrModels = getTransactionModelsFromDB();
-        
-        // If list is not empty
-        if ( dbTrModels != null && dbTrModels.size() > 0 )
-        	// Loop for each Transactions Model
-        	for ( TransactionsModel tm : dbTrModels )
-        	{
-        		// Create TransactionsSimulationModel object based on provided Transactions Model
-        		LegalEntity lglEntity = tm.getLegalEntity();
-        		
-        		int entity = 0;
-        		
-        		if ( lglEntity != null )
-        		{
-        			LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
-            		
-            		if ( lglEntityModel != null )
-            			entity = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
-            	}
-        			
-        		list[entity].add( new TransactionsSimulationModel( tm, lglEntity.getName() ) );
-        	}
-        
+            Class c = createModelClass( "LegalEntityModel" );
+
+            try
+            {
+                // Get list of Legal Entities
+                LinkedHashSet entities = ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0];
+
+                int numEntities = Math.max( entities.size(), 1 );
+
+                // Create arrays for Legal Entities list with size equal to number of Legal Entities
+                list = new LinkedHashSet[ numEntities ];
+            }
+            catch ( Exception e )
+            {
+                // Create arrays for one Legal Entity
+                list = new LinkedHashSet[1];
+            }
+
+            // Create ArrayList for list of Legal Entities for each Legal Entity
+            for ( int i = 0; i < list.length; i++ )
+                list[i] = new LinkedHashSet<>();
+
+            // Get list of Transaction Models from database
+            List<TransactionsModel> dbTrModels = getTransactionModelsFromDB();
+
+            // If list is not empty
+            if ( dbTrModels != null && dbTrModels.size() > 0 )
+                // Loop for each Transactions Model
+                for ( TransactionsModel tm : dbTrModels )
+                {
+                    // Create TransactionsSimulationModel object based on provided Transactions Model
+                    LegalEntity lglEntity = tm.getLegalEntity();
+
+                    int entity = 0;
+
+                    if ( lglEntity != null )
+                    {
+                        LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
+
+                        if ( lglEntityModel != null )
+                                entity = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
+                    }
+
+                    list[entity].add( new TransactionsSimulationModel( tm, lglEntity.getName() ) );
+                }
+        	
         return list;
     }
     

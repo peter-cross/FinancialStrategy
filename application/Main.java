@@ -36,14 +36,10 @@ public final class Main extends Application implements Utilities
     public void start( Stage st ) 
     {
     	Database.start();
-    	
-    	try
-        {
-            // Invoke openAboutBox in a separate Event Dispatch Thread
-    		new UserDialog( this::openAboutBox ).start();
-        }
-        catch ( Exception e ) { }
-    	
+        
+    	// Invoke openAboutBox in a separate Event Dispatch Thread
+    	new UserDialog( this::openAboutBox ).start();
+        
     	// Create instance of GUI Controller
     	Controller.getInstance(st);
     

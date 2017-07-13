@@ -27,12 +27,6 @@ public class Controller implements Constants
 	{
 		stage = st;
 		
-		// Create Registry for Primary View and save it
-    	primaryView = new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnLegalEntities() );
-	    
-    	// Create Registry for Secondary View stage and save it
-    	secondaryView = new RegistryView( stage, "Legal Entities", "LegalEntityModel", btnTransactionModels() );
-        
 		// Open Transaction Models Journal first
 		openTransactionModelsJournal();
 	}
@@ -55,10 +49,14 @@ public class Controller implements Constants
      */
     private <E> void openLegalEntitiesJournal( E e )
     {
-        // Hide Primary View
-        primaryView.close();
+        if ( primaryView != null )
+	    	// Hide Primary View
+	        primaryView.close();
         
-        secondaryView.display( WIDTH, HEIGHT );
+        // Create Registry for Secondary View stage and save it
+    	secondaryView = new RegistryView( stage, "Legal Entities", "LegalEntityModel", btnTransactionModels() );
+        
+    	secondaryView.display( WIDTH, HEIGHT );
     }
     
     // Opens Legal Entities Journal without any events
@@ -73,9 +71,13 @@ public class Controller implements Constants
      */
     private <E> void openTransactionModelsJournal( E e )
     {
-    	// Hide Secondary View
-    	secondaryView.close();
-        
+    	if ( secondaryView != null )
+	    	// Hide Secondary View
+	    	secondaryView.close();
+    	
+    	// Create Registry for Primary View and save it
+    	primaryView = new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnLegalEntities() );
+	    
     	primaryView.display( WIDTH, HEIGHT );
     }
     

@@ -157,24 +157,28 @@ public class LegalEntityModel extends RegistryItemModel
     private void saveToDB()
     {
     	String	iD = fields.get( "iD" ),						// Legal Entity ID in the system
-				name = fields.get( "name" ),					// Common name
-				legalName = fields.get( "legalName" ),			// Official legal name
-				phone = fields.get( "phone" ),					// Phone number
-				contact = fields.get( "contact" ),				// Contact in the company
-				address = fields.get( "address" );				// Company address
+                name = fields.get( "name" ),					// Common name
+                legalName = fields.get( "legalName" ),			// Official legal name
+                phone = fields.get( "phone" ),					// Phone number
+                contact = fields.get( "contact" ),				// Contact in the company
+                address = fields.get( "address" );				// Company address
     	
     	// Get Legal Entity object from the fields of current model
     	LegalEntity legalEntity = fields.get( "legalEntity" );
     	
     	// If Legal Entity object is not created yet
     	if ( legalEntity == null  )
-    		// Create instance of Legal Entity
-    		legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address );
+        {
+            // Create instance of Legal Entity
+            legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address );
+            fields.set( "legalEntity", legalEntity );
+        }
+            
     	
     	// Otherwise
     	else
-    		// Update Legal Entity information
-    		legalEntity.update( iD, name, legalName, phone, contact, address );
+            // Update Legal Entity information
+            legalEntity.update( iD, name, legalName, phone, contact, address );
     	
     	try
     	{
@@ -216,13 +220,17 @@ public class LegalEntityModel extends RegistryItemModel
     @Override
     public void removeFromDB()
     { 
-    	// Get Legal Entity from the fields
+        // Get Legal Entity from the fields
     	LegalEntity legalEntity = fields.get( "legalEntity" );
     	
-    	// If Legal Entity is created as an object
+    	fields.set( "legalEntity", null );
+        
+        // If Legal Entity is created as an object
     	if ( legalEntity != null )
-    		// Remove Legal Entity data from database
-    		Database.removeFromDB( legalEntity ) ;
+           // Remove Legal Entity data from database
+            Database.removeFromDB( legalEntity ) ;
+        
+        list.remove( this );
     }
     
     /**
@@ -240,19 +248,25 @@ public class LegalEntityModel extends RegistryItemModel
      */
     public static LinkedHashSet[] createList()
     {
-        list = new LinkedHashSet<>();
-        
-        // Get list of Legal Entities from database
-        List<LegalEntity> dbLglEntities = getFromDB();
-        
-        // If list is not empty
-        if ( dbLglEntities != null && dbLglEntities.size() > 0 )
-        	// Loop for each Legal Entity
-        	for ( LegalEntity le : dbLglEntities )
-        		// Create LegalEntityModel object based on provided Legal Entity
-        		list.add( new LegalEntityModel(le) );
+        if ( list == null )
+            createNewList();
         
         return new LinkedHashSet[] { list };
+    }
+    
+    public static void createNewList()
+    {
+        list = new LinkedHashSet<>();
+        	
+        // Get list of Legal Entities from database
+        List<LegalEntity> dbLglEntities = getFromDB();
+
+        // If list is not empty
+        if ( dbLglEntities != null && dbLglEntities.size() > 0 )
+            // Loop for each Legal Entity
+            for ( LegalEntity le : dbLglEntities )
+                    // Create LegalEntityModel object based on provided Legal Entity
+                    list.add( new LegalEntityModel(le) );
     }
     
     /**
@@ -274,7 +288,7 @@ public class LegalEntityModel extends RegistryItemModel
         super( stage, "Legal Entity", null );
         
         if ( stage != null )
-        	list.add( this );
+            list.add( this );
     }
     
     /**

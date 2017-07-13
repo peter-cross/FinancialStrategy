@@ -118,7 +118,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
             return;
         
         // If tabs are specified but Table Views are not created yet
-        if ( tabs != null && tabs.length > 0 && table.isEmpty() )
+        if ( tabs != null && tabs.length > 0 && tabs[0] != null && table.isEmpty() )
         {
         	TabPane tabPane = tabPaneForMultipleTabs();
         	
@@ -1320,7 +1320,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         }
         catch ( Exception e ) {}
         
-        int arrSize = ( tabList != null ? tabList.size() : 1 );
+        int arrSize = ( tabList != null && tabList.size() > 0 ? tabList.size() : 1 );
         
         // Create main arrays for Table View
         this.table = new ArrayList<>( arrSize );
