@@ -23,8 +23,8 @@ public class Database
 	 */
 	public static void start()
 	{
-		// Get instance of Entity Manager
-    	em = getEntityManager();
+		// Create instance of Entity Manager
+    	em = createEntityManager();
 	}
 	
 	/**
@@ -110,22 +110,27 @@ public class Database
      */
     public static EntityManager getEntityManager()
     {
-    	// If instance of Entity Manager is not created yet
-    	if ( em == null )
-    		try
-        	{
-        		// Create Entity Manager Factory object for Persistence unit "FinancialStrategy"
-        		EntityManagerFactory emf = Persistence.createEntityManagerFactory( "FinancialStrategy" );
-            	
-            	// Create instance of Entity Manager 
-        		return emf.createEntityManager();
-            }
-        	catch ( Exception e )
-        	{
-        		return null;
-            }
-    	else
-	    	// Return instance of Entity Manager
-	    	return em;
+    	// Return instance of Entity Manager
+	    return em;
     } 
+    
+    /**
+     * Creates Entity Manager object
+     * @return EntityManager object
+     */
+    private static EntityManager createEntityManager()
+    {
+    	try
+    	{
+    		// Create Entity Manager Factory object for Persistence unit "FinancialStrategy"
+    		EntityManagerFactory emf = Persistence.createEntityManagerFactory( "FinancialStrategy" );
+        	
+        	// Create instance of Entity Manager 
+    		return emf.createEntityManager();
+        }
+    	catch ( Exception e )
+    	{
+    		return null;
+    	}
+    }
 }

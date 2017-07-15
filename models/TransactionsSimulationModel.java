@@ -219,10 +219,12 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 * Creates list of TransactionsSimulationModel objects
 	 */
 	public static  LinkedHashSet[] createList()
-        {
-            Class c = createModelClass( "LegalEntityModel" );
+    {
+		Class c = createModelClass( "LegalEntityModel" );
 
-            try
+        if ( list == null )
+        {
+        	try
             {
                 // Get list of Legal Entities
                 LinkedHashSet entities = ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0];
@@ -237,7 +239,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
                 // Create arrays for one Legal Entity
                 list = new LinkedHashSet[1];
             }
-
+            
             // Create ArrayList for list of Legal Entities for each Legal Entity
             for ( int i = 0; i < list.length; i++ )
                 list[i] = new LinkedHashSet<>();
@@ -265,7 +267,35 @@ public class TransactionsSimulationModel extends RegistryItemModel
 
                     list[entity].add( new TransactionsSimulationModel( tm, lglEntity.getName() ) );
                 }
+        }
+        else
+        {
+        	int numEntities = 1;
         	
+        	try
+            {
+                // Get list of Legal Entities
+                LinkedHashSet entities = ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0];
+
+                numEntities = Math.max( entities.size(), 1 );
+            }
+            catch ( Exception e ) { }
+        	
+        	if ( numEntities != list.length )
+        	{
+        		LinkedHashSet[] newList = new LinkedHashSet[numEntities];
+        		
+        		int newSize = Math.min( numEntities, list.length );
+        		
+        		System.arraycopy( list, 0, newList, 0, newSize );
+        		
+        		list = newList;
+        		
+        		for ( int i = newSize; i < list.length; i++ )
+                    list[i] = new LinkedHashSet<>();
+        	}
+        }
+	
         return list;
     }
     
