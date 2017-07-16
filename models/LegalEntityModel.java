@@ -10,8 +10,10 @@ import java.util.List;
 
 import application.Database;
 import entities.LegalEntity;
+import entities.TransactionsModel;
 import forms.DialogElement;
 import forms.TableOutput;
+import interfaces.Utilities;
 
 import static interfaces.Utilities.getListElementBy;
 
@@ -216,21 +218,60 @@ public class LegalEntityModel extends RegistryItemModel
     
     /**
      * Removes Legal Entity data from database
+     * @throws Exception 
      */
     @Override
-    public void removeFromDB()
+    public void removeFromDB() throws Exception
     { 
-        // Get Legal Entity from the fields
+    	// Get Entity Manager
+    	EntityManager em = Database.getEntityManager();
+    	
+    	// Get Legal Entity from the fields
     	LegalEntity legalEntity = fields.get( "legalEntity" );
     	
-    	fields.set( "legalEntity", null );
+    	//fields.set( "legalEntity", null );
         
         // If Legal Entity is created as an object
     	if ( legalEntity != null )
-           // Remove Legal Entity data from database
-            Database.removeFromDB( legalEntity ) ;
-        
-        list.remove( this );
+    	{
+    		List<TransactionsModel> tms = null;
+    		
+    		try
+        	{
+        		// Do query for TransactionsSimulationModel entity in DB and return results of query
+    			tms = em.createQuery( "SELECT t FROM TransactionsModel AS t WHERE t.lglEntity = :lglEntity" )
+    				    .setParameter( "lglEntity", legalEntity )
+    				    .getResultList();
+            }
+        	catch ( Exception e ) {}
+    		
+    		int choice = -1;
+    		
+    		if ( tms != null && tms.size() > 0 )
+    		{
+    			choice = Utilities.getYesNo( "There are Transaction Models for selected Legal Entity.\nDo you want to delete this entity with all Transaction Models?" );
+    			
+    			if ( choice == 0  )
+    			{
+    				for ( TransactionsModel tm : tms  )
+        				Database.removeFromDB( tm );
+        			
+        			// Remove Legal Entity data from database
+    	            Database.removeFromDB( legalEntity ) ;
+    	            list.remove( this );
+    			}
+    			else
+    				throw new Exception( "Can't delete" );
+    		}
+    		else
+    		{
+    			// Remove Legal Entity data from database
+	            Database.removeFromDB( legalEntity );
+	            list.remove( this );
+    		}
+	    }
+    	else
+    		list.remove( this );
     }
     
     /**

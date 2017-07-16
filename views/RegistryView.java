@@ -612,7 +612,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
             return;
         
         // Ask user to confirm deleting current Registry Item
-        if ( getYesNo( "Do you want to delete current item?" ) != YES )
+        if ( Utilities.getYesNo( "Do you want to delete current item?" ) != YES )
             return;
             
         // Remove from TableView RegistryItem in specified row
@@ -641,10 +641,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
      */
     private void removeFromTableView( ObservableList items, int tabNum, int rowNum )
     {
-    	// Remove current row from Table View
-        items.remove( rowNum );
-        
-        RegistryItemModel regItem = getByIndex( list[tabNum], rowNum  );
+    	RegistryItemModel regItem = getByIndex( list[tabNum], rowNum  );
         
         try
         {
@@ -655,8 +652,14 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         	regItem = null;
         }
         
-        // Remove current row from display list
-        list[tabNum].remove( rowNum );
+        if ( regItem != null )
+        {
+        	// Remove current row from Table View
+            items.remove( rowNum );
+            
+            // Remove current row from display list
+            list[tabNum].remove( rowNum );
+        }
     }
     
     /**

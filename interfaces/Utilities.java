@@ -610,7 +610,7 @@ public interface Utilities extends Encapsulation
      * @param options Available options array
      * @return Selected option index
      */
-    default int getChoice( String promptMsg, Object[] options )
+    static int getChoice( String promptMsg, Object[] options )
     {
         // Create Alert box 
         Alert alert = new Alert( AlertType.CONFIRMATION );
@@ -653,7 +653,7 @@ public interface Utilities extends Encapsulation
      * @param promptMsg Statement to confirm
      * @return Selected choice
      */
-    default int getYesNo( String promptMsg )
+    static int getYesNo( String promptMsg )
     {
         // Get selected choice and return it
     	return getChoice( promptMsg, new String[] { "Yes", "No" } );

@@ -5,7 +5,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import entities.TAccount;
+import entities.Transaction;
+import entities.TransactionsModel;
+
 import java.util.List;
+import java.util.Vector;
 
 import interfaces.Lambda.ObjectAction;
 
@@ -102,6 +107,43 @@ public class Database
 	     			// Rollback transaction because something failed
 	     			et.rollback();
 	     	}
+    }
+    
+    public static void removeFromDB( TransactionsModel tm )
+    {
+    	EntityTransaction et = null;
+		
+    	// If EntityManager object is created and TransactionsSimulationModel argument is specified
+        if ( em != null && tm != null  )
+        {
+        	try
+        	{
+        		et = em.getTransaction();
+        		
+        		// Start transaction
+				et.begin();
+				
+				// Remove Model's T-Accounts from DB
+				for ( TAccount acct : tm.getTAccounts() )
+					em.remove( acct );
+				
+				// Remove Model's Transactions from DB
+				for ( Transaction tr : tm.getTransactions() )
+					em.remove( tr );
+				
+				// Remove Transactions Model from DB
+				em.remove( tm );
+				
+				// Commit transaction
+				et.commit();
+			}
+	        catch ( Exception e )
+	     	{
+	     		if ( et != null )
+	     			// Rollback changes
+	     			et.rollback();
+	     	}
+    	}
     }
     
     /**

@@ -8,6 +8,7 @@ import javax.transaction.SystemException;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 import application.Database;
@@ -18,6 +19,8 @@ import entities.TransactionsModel;
 import forms.DialogElement;
 import forms.TableOutput;
 import foundation.AssociativeList;
+import interfaces.Encapsulation;
+import interfaces.Utilities;
 import views.TransactionsModelView;
 
 import static interfaces.Utilities.createModelClass;
@@ -30,8 +33,10 @@ import static interfaces.Utilities.getListIndex;
  */
 public class TransactionsSimulationModel extends RegistryItemModel 
 {
-	private static	LinkedHashSet[] list;       // List of Transaction Simulation Models for each Legal Entity
+	private static	LinkedHashSet[] list;       			// List of Transaction Simulation Models for each Legal Entity
     
+	private static	ArrayList<LegalEntityModel> entities;	// List of Legal Entities
+	
 	/**
 	 * Class default constructor
 	 */
@@ -220,85 +225,109 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 */
 	public static  LinkedHashSet[] createList()
     {
-		Class c = createModelClass( "LegalEntityModel" );
-
-        if ( list == null )
-        {
-        	try
-            {
-                // Get list of Legal Entities
-                LinkedHashSet entities = ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0];
-
-                int numEntities = Math.max( entities.size(), 1 );
-
-                // Create arrays for Legal Entities list with size equal to number of Legal Entities
-                list = new LinkedHashSet[ numEntities ];
-            }
-            catch ( Exception e )
-            {
-                // Create arrays for one Legal Entity
-                list = new LinkedHashSet[1];
-            }
-            
-            // Create ArrayList for list of Legal Entities for each Legal Entity
-            for ( int i = 0; i < list.length; i++ )
-                list[i] = new LinkedHashSet<>();
-
-            // Get list of Transaction Models from database
-            List<TransactionsModel> dbTrModels = getTransactionModelsFromDB();
-
-            // If list is not empty
-            if ( dbTrModels != null && dbTrModels.size() > 0 )
-                // Loop for each Transactions Model
-                for ( TransactionsModel tm : dbTrModels )
-                {
-                    // Create TransactionsSimulationModel object based on provided Transactions Model
-                    LegalEntity lglEntity = tm.getLegalEntity();
-
-                    int entity = 0;
-
-                    if ( lglEntity != null )
-                    {
-                        LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
-
-                        if ( lglEntityModel != null )
-                                entity = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
-                    }
-
-                    list[entity].add( new TransactionsSimulationModel( tm, lglEntity.getName() ) );
-                }
-        }
+		if ( list == null )
+        	initEmptyList();
         else
-        {
-        	int numEntities = 1;
+        	createNewList();
         	
-        	try
-            {
-                // Get list of Legal Entities
-                LinkedHashSet entities = ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0];
-
-                numEntities = Math.max( entities.size(), 1 );
-            }
-            catch ( Exception e ) { }
-        	
-        	if ( numEntities != list.length )
-        	{
-        		LinkedHashSet[] newList = new LinkedHashSet[numEntities];
-        		
-        		int newSize = Math.min( numEntities, list.length );
-        		
-        		System.arraycopy( list, 0, newList, 0, newSize );
-        		
-        		list = newList;
-        		
-        		for ( int i = newSize; i < list.length; i++ )
-                    list[i] = new LinkedHashSet<>();
-        	}
-        }
-	
         return list;
     }
     
+	/**
+	 * Initializes empty list of Registryitems
+	 */
+	private static void initEmptyList()
+	{
+		Class c = createModelClass( "LegalEntityModel" );
+
+		try
+        {
+            // Get list of Legal Entities
+            entities = new ArrayList( ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0] );
+
+            int numEntities = Math.max( entities.size(), 1 );
+
+            // Create arrays for Legal Entities list with size equal to number of Legal Entities
+            list = new LinkedHashSet[ numEntities ];
+        }
+        catch ( Exception e )
+        {
+            // Create arrays for one Legal Entity
+            list = new LinkedHashSet[1];
+        }
+        
+        // Create ArrayList for list of Legal Entities for each Legal Entity
+        for ( int i = 0; i < list.length; i++ )
+            list[i] = new LinkedHashSet<>();
+
+        initFromDB();
+	}
+	
+	/**
+	 * Creates new list of Registry Items
+	 */
+	private static void createNewList()
+	{
+		Class c = createModelClass( "LegalEntityModel" );
+
+		int numEntities = 1;
+    	ArrayList<LegalEntityModel>  newEntities = null;
+    	
+    	try
+        {
+            // Get new list of Legal Entities
+    		newEntities = new ArrayList( ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0] );
+
+            numEntities = Math.max( newEntities.size(), 1 );
+        }
+        catch ( Exception e ) { }
+    	
+    	LinkedHashSet[] newList = new LinkedHashSet[numEntities];
+		
+		for ( int i = 0; i < numEntities; i++ )
+    	{
+    		int idx = entities.indexOf( newEntities.get(i) );
+        		
+    		if ( idx >= 0 )
+    			newList[i] = list[idx];
+    		else
+    			newList[i] = new LinkedHashSet<>();
+    	}
+		
+		list = newList;
+		entities = newEntities;
+	}
+	
+	/**
+	 * Initializes Transaction Models by data from database
+	 */
+	private static void initFromDB()
+	{
+		// Get list of Transaction Models from database
+        List<TransactionsModel> dbTrModels = getTransactionModelsFromDB();
+
+        // If list is not empty
+        if ( dbTrModels != null && dbTrModels.size() > 0 )
+            // Loop for each Transactions Model
+            for ( TransactionsModel tm : dbTrModels )
+            {
+                // Create TransactionsSimulationModel object based on provided Transactions Model
+                LegalEntity lglEntity = tm.getLegalEntity();
+
+                int entity = 0;
+
+                if ( lglEntity != null )
+                {
+                    LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
+
+                    if ( lglEntityModel != null )
+                            entity = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
+                }
+
+                list[entity].add( new TransactionsSimulationModel( tm, lglEntity.getName() ) );
+            }
+	}
+	
     /**
 	 * Gets Transactions Models from database
 	 * @return List of TransactionsSimulationModel objects
@@ -328,46 +357,24 @@ public class TransactionsSimulationModel extends RegistryItemModel
     @Override
     public void removeFromDB()
     {
-    	EntityManager em = Database.getEntityManager();
-    	EntityTransaction et = null;
-		
     	TransactionsModel tm  = fields.get( "transactionsModel" );
     	
     	// If EntityManager object is created and TransactionsSimulationModel argument is specified
-        if ( em != null && tm != null  )
-        	try
+        if ( tm != null  )
+        {
+        	LegalEntity entity = tm.getLegalEntity();
+        	
+        	if ( entity != null )
         	{
-        		// Get list of T-Accounts for Transactions Model
-        		Vector<TAccount>  accts = tm.getTAccounts();
+        		LegalEntityModel entityModel = LegalEntityModel.getByEntity( entity );
         		
-        		// Get list of Transactions for Transactions Model
-        		Vector<Transaction> trs = tm.getTransactions();
-        		
-        		et = em.getTransaction();
-        		
-        		// Start transaction
-				et.begin();
-				
-				// Remove Model's T-Accounts from DB
-				for ( TAccount acct : accts )
-					em.remove( acct );
-				
-				// Remove Model's Transactions from DB
-				for ( Transaction tr : trs )
-					em.remove( tr );
-				
-				// Remove Transactions Model from DB
-				em.remove( tm );
-				
-				// Commit transaction
-				et.commit();
-			}
-	        catch ( Exception e )
-	     	{
-	     		if ( et != null )
-	     			// Rollback changes
-	     			et.rollback();
-	     	}
+        		int idx = entities.indexOf( entityModel );
+            	if ( idx >= 0 )
+            		list[idx].remove( this );
+        	}
+        	
+        	Database.removeFromDB( tm );
+        }
     }
 
 	@Override

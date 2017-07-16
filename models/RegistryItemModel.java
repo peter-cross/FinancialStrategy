@@ -39,7 +39,7 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
     abstract protected DialogElement[][] createHeader();
     
     // Method stub for removing registry item from DB
-    public void removeFromDB()
+    public void removeFromDB() throws Exception
     { 
     	return;
     }
