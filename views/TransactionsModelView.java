@@ -242,7 +242,11 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	public static Vector<Transaction> getTransactions()
 	{
-		return transactions;
+		Vector<Transaction> trList = new Vector(transactions);
+		trList.addAll(toAddTransactions);
+		trList.removeAll(toDelTransactions);
+		
+		return trList;
 	}
 	
 	/**
@@ -250,7 +254,11 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	public static Vector<TAccount> getTAccounts()
 	{
-		return accounts;
+		Vector<TAccount> tAccList = new Vector(accounts);
+		tAccList.addAll(toAddTAccounts);
+		tAccList.removeAll(toDelTAccounts);
+		
+		return tAccList;
 	}
 	
 	/**
@@ -591,7 +599,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		else
 			// Loop through list of all transactions
-			for ( Transaction t : transactions )
+			for ( Transaction t : getTransactions() )
 				// If in current row there is transaction
 				if ( t.getRow() == row )
 					// If current column belongs to transaction
