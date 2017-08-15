@@ -22,17 +22,26 @@ public class TreeItem extends Item implements Encapsulation
             nodes.addItem( obj );    
     }
 	
+    /**
+     * Class constructor
+     * @param item Item to add to tree list
+     */
     public TreeItem ( Object item )
     {
         value = Data.create( item );
         nodes = new TreeList();
     }
 	
-    public TreeItem ( Object item, Object... node )
+    /**
+     * Class constructor
+     * @param item Item to add to tree list
+     * @param nodes Nodes to add to tree list
+     */
+    public TreeItem ( Object item, Object... nodes )
     {
         this( item );
 
-        addNodes( node );
+        addNodes( nodes );
     }	
 	
 } // End of class ** TreeItem **

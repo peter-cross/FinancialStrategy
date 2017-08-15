@@ -3,7 +3,7 @@ package foundation;
 import interfaces.Encapsulation;
 
 /**
- * Class List
+ * Class List - to store list of Item objects
  * @author Peter Cross
  */
 public abstract class List implements Encapsulation
@@ -152,6 +152,9 @@ public abstract class List implements Encapsulation
 	
     /*          Constructor                                                                                         */
     /******************************************************************************************************************/
+    /**
+     * Class default constructor
+     */
     public List()
     {
         pointer = 0;

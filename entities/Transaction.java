@@ -33,10 +33,14 @@ public class Transaction
 	@ManyToOne( fetch=FetchType.EAGER )
 	private TAccount cr;					// CR account for transaction
 	
-	private static TransactionsGraphics tg; // Transactions Graphics canvas
+	@ManyToOne( fetch=FetchType.EAGER )
+	private ChartOfAccounts chartOfAccounts;	  // Chart of Accounts to which transaction belongs
+	
+	private static TransactionsGraphics[] tg; 	  // Transactions Graphics canvas
+	private static String[]				  charts; // Chart of Accounts for Legal Entity
 	
 	/**
-	 * Class default constructor
+	 * Class mandatory constructor
 	 */
 	public Transaction()
 	{
@@ -48,8 +52,9 @@ public class Transaction
 	 * @param dt DT T-account
 	 * @param cr CR T-account
 	 * @param description Transaction description
+	 * @param chart Chart Of Accounts to which transaction belongs
 	 */
-	public Transaction( TAccount dt, TAccount cr, String description )
+	public Transaction( TAccount dt, TAccount cr, String description, ChartOfAccounts chart )
 	{
 		this.dt = dt;
 		this.cr = cr;
@@ -59,6 +64,8 @@ public class Transaction
 		
 		cr.addCorrDtAccount( row );
 		dt.addCorrCrAccount( row );
+                
+		chartOfAccounts = chart;
 	}
 	
 	/**
@@ -68,7 +75,7 @@ public class Transaction
 	 */
 	public Transaction( TAccount dt, TAccount cr )
 	{
-		this( dt, cr, "" );
+		this( dt, cr, "", dt.getChartOfAccounts() );
 		
 		createTransaction();
 	}
@@ -77,9 +84,30 @@ public class Transaction
 	 * Set graphics context for drawing transactions
 	 * @param trGraph Transactions Graphics object
 	 */
-	public static void setGraphics( TransactionsGraphics trGraph )
+	public static void setGraphics( TransactionsGraphics[] trGraph )
 	{
 		tg = trGraph;
+	}
+	
+	/**
+	 * Sets names for Chart Of Accounts array
+	 * @param chartOfAccounts Array of Chart Of Accounts' names
+	 */
+	public static void setChartsOfAccounts( String[] chartOfAccounts )
+	{
+		charts = chartOfAccounts;
+	}
+	
+	/**
+	 * Gets transaction's Chart Of Accounts index
+	 * @return
+	 */
+	public int chartIndex()
+	{
+		if ( charts != null && charts.length > 0 && chartOfAccounts != null )
+			return Math.max( 0, Utilities.indexOf( charts, chartOfAccounts.getName() ) );
+		else
+			return 0;
 	}
 	
 	/**
@@ -104,6 +132,14 @@ public class Transaction
 	public TAccount getCr()
 	{
 		return cr;
+	}
+	
+	/**
+	 * Returns Chart Of Accounts to which transaction belongs
+	 */
+	public ChartOfAccounts getChartOfAccounts()
+	{
+		return chartOfAccounts;
 	}
 	
 	/**
@@ -168,7 +204,9 @@ public class Transaction
 	 */
 	private void drawTransactionMiddlePart()
 	{
-		tg.drawTransactionMiddlePart( row, cr.getColumn()+1, dt.getColumn()-1 );
+		int idx = chartIndex();
+		
+		tg[idx].drawTransactionMiddlePart( row, cr.getColumn()+1, dt.getColumn()-1 );
 	}
 	
 	/**
@@ -176,7 +214,9 @@ public class Transaction
 	 */
 	private void drawTransactionDescription()
 	{
-		tg.drawText( Cipher.decrypt(description), row, cr.getColumn()+1, 0.6 );
+		int idx = chartIndex();
+		
+		tg[idx].drawText( Cipher.decrypt(description), row, cr.getColumn()+1, 0.6 );
 	}
 	
 	/**
@@ -190,8 +230,10 @@ public class Transaction
 		// Draw middle part of transaction
 		drawTransactionMiddlePart();
 		
+		int idx = chartIndex();
+		
 		// Enter transaction description
-		setDescription( Utilities.enterTextInfo( tg.getOwner(), "Transaction description") );
+		setDescription( Utilities.enterTextInfo( tg[idx].getOwner(), "Transaction description") );
 		
 		// Draw transaction description on canvas
 		drawTransactionDescription();
@@ -202,10 +244,12 @@ public class Transaction
 	 */
 	public void deleteTransaction()
 	{
+		int idx = chartIndex();
+		
 		// Loop for each transaction column
 		for ( int col =  cr.getColumn(); col <= dt.getColumn(); col++ )
 			// Clear content of transaction cells
-			tg.clearCellContent( row, col );
+			tg[idx].clearCellContent( row, col );
 		
 		// Get list of transit T-accounts
 		ArrayList<TAccount> accList = transitTAccounts();

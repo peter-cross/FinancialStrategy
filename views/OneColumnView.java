@@ -55,9 +55,9 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
     protected RegistryItemModel		regItem;            // Original Registry Item
     protected DialogElement[][] 	dialogElement;		// Array of dialog elements
     
-    protected Pane 			content;	// Content pane
-    protected Scene			scene;		// Dialog element scene
-    protected DialogAction 	code;		// Lambda expression for field value validation
+    protected Pane 			content;		// Content pane
+    protected Scene			scene;			// Dialog element scene
+    protected DialogAction 	code;			// Lambda expression for field value validation
 
     protected String		title;			// Form title
     protected String[][]	elementContent;	// Content of form fields in text format
@@ -140,7 +140,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
             if ( el.textValue != null && !el.textValue.isEmpty() )
             {
                 // Find the key index in the key array
-                int ind = indexOf( textChoices, el.textValue );
+                int ind = Utilities.indexOf( textChoices, el.textValue );
 
                 // If text value is found in the list of choices
                 if ( ind != -1 )
@@ -478,7 +478,9 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // Create button element
         Button btn = new Button("...");
         btn.setPrefWidth(10);
-
+        // Set event handler on press button event
+        btn.setOnAction( treeBtnEventHandler( el, btn, textField ) );
+        
         // Create horizontal box element for TreeItem field
         HBox treeItemField = new HBox(); 
         // Add text field and button to box element
@@ -497,9 +499,6 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // Save field value and field type to associative elements list
         attributesList.set( el.labelName, textField );
 
-        // Set event handler on press button event
-        btn.setOnAction( treeBtnEventHandler( el, btn, textField ) );
-        
         // Specify grid for TreeItem field
         GridPane.setConstraints( treeItemField, col, row );
 
@@ -938,6 +937,9 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // Otherwise
         else 
             createTextField( grid, el, 1,  row );
+        
+        if ( el.onChange != null )
+        	el.onChange.run( attributesList );
     }
     
     /**
@@ -1245,6 +1247,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
 	
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
+    
     /**
      * Class default constructor
      */

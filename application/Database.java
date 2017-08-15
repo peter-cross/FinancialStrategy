@@ -5,12 +5,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import java.util.List;
+
 import entities.TAccount;
 import entities.Transaction;
 import entities.TransactionsModel;
-
-import java.util.List;
-import java.util.Vector;
 
 import interfaces.Lambda.ObjectAction;
 
@@ -109,6 +108,10 @@ public class Database
 	     	}
     }
     
+    /**
+     * Removes TransactionModel object from database
+     * @param tm TransactionModel object
+     */
     public static void removeFromDB( TransactionsModel tm )
     {
     	EntityTransaction et = null;

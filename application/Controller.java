@@ -1,24 +1,32 @@
 package application;
 
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-
-import interfaces.Constants;
+import javafx.event.Event;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import views.NodeView;
 import views.RegistryView;
+import interfaces.Constants;
+import interfaces.Utilities;
+import foundation.AssociativeList;
 
-import static interfaces.Buttons.newActionButton;
+import static interfaces.Buttons.newMenuButton;
 
 /**
  * Class Controller - GUI controller implementation
  * @author Peter Cross
  *
  */
-public class Controller implements Constants
+public class Controller implements Constants, Utilities
 {
 	private static RegistryView  primaryView;	// Primary view stage
     private static RegistryView  secondaryView;	// Secondary view stage
     private static Stage 		 stage;			// Stage object for displaying GUI
 	
+    // List of registries to display menu items
+    private static AssociativeList registries;
+    
     /**
      * Class constructor
      * @param st Stage to display GUI
@@ -26,6 +34,8 @@ public class Controller implements Constants
     private Controller( Stage st )
 	{
 		stage = st;
+		
+		setRegistries();
 		
 		// Open Transaction Models Journal first
 		openTransactionModelsJournal();
@@ -43,67 +53,105 @@ public class Controller implements Constants
     	return stage;
     }
     
-	/**
-     * Opens Legal Entities Journal
-     * @param e Event
-     */
-    private <E> void openLegalEntitiesJournal( E e )
-    {
-        if ( primaryView != null )
-	    	// Hide Primary View
-	        primaryView.close();
-        
-        // Create Registry for Secondary View stage and save it
-    	secondaryView = new RegistryView( stage, "Legal Entities", "LegalEntityModel", btnTransactionModels() );
-        
-    	secondaryView.display( WIDTH, HEIGHT );
-    }
-    
-    // Opens Legal Entities Journal without any events
-    private void openLegalEntitiesJournal()
-    {
-    	openLegalEntitiesJournal(null);
-    }
-    
-    /**
-     * Opens Transaction Models Journal 
-     * @param e Event
-     */
-    private <E> void openTransactionModelsJournal( E e )
+    // Opens Transaction Models Journal without any events
+    private void openTransactionModelsJournal()
     {
     	if ( secondaryView != null )
 	    	// Hide Secondary View
 	    	secondaryView.close();
     	
-    	// Create Registry for Primary View and save it
-    	primaryView = new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnLegalEntities() );
-	    
-    	primaryView.display( WIDTH, HEIGHT );
-    }
-    
-    // Opens Transaction Models Journal without any events
-    private void openTransactionModelsJournal()
-    {
-    	openTransactionModelsJournal(null);
+    	displayRegistry( "Transactions Simulation Models", primaryView );
     }
     
     /**
-     * Creates Button object for invoking Legal Entities Journal
-     * @return Create Button object
+     * Displays a registry in a window
+     * @param registryName Name of a registry to display
      */
-    private Button btnLegalEntities()
+    public static void displayRegistry( String registryName )
     {
-        // Invoke method for creating Action Button and return created object
-    	return newActionButton( "Legal Entities", this::openLegalEntitiesJournal );
+    	displayRegistry( registryName, secondaryView );
+    }
+    
+    public static void displayRegistry( String registryName, RegistryView  view )
+    {
+        try
+        {
+            // Get Registry object for specified registry name and display it
+        	view = registries.get( registryName );
+        	view.display( WIDTH, HEIGHT );
+        }
+        catch ( Exception e ) {}
     }
     
     /**
-     * Creates Button object for invoking Transaction Models Journal
+     * Displays a registry in a window
+     * @param registryName Name of a registry to display
+     * @param width Window width
+     */
+    public static void displayRegistry( String registryName, int width )
+    {
+    	displayRegistry( registryName, width, secondaryView );
+    }
+    
+    public static void displayRegistry( String registryName, int width, RegistryView  view )
+    {
+        try
+        {
+            // Get Registry object for specified registry name and display it
+        	view = registries.get( registryName );
+        	view.display( width );
+        }
+        catch ( Exception e ) {}
+    }
+    
+    /**
+     * Creates Button object for invoking Menu
      * @return Create Button object
      */
-    private Button btnTransactionModels()
+    private ButtonBase btnReferences()
     {
-    	// Invoke method for creating Action Button and return created object
-    	return newActionButton( "Transaction Models", this::openTransactionModelsJournal );
+    	SubMenu menu = new SubMenu( "" );
+    	
+    	MenuItem[] menuItems = new MenuItem[6];
+    	menuItems[0] = menu.createMenuItem( "Legal Entities", WIDTH*0.95 );
+    	menuItems[1] = menu.createMenuItem( "List of Charts Of Accounts", WIDTH*0.5 );
+    	menuItems[2] = menu.createMenuItem( "Charts Of Accounts", WIDTH*0.5 );
+    	menuItems[3] = menu.createMenuItem( "Currencies", WIDTH*0.4 );
+    	menuItems[4] = menu.createMenuItem( "Clock", this::clock );
+    	menuItems[5] = menu.createMenuItem( "About", this::about );
+    	
+    	return newMenuButton( "Menu", menuItems );
     }
+    
+    /**
+     * Sets registries to display through menu
+     */
+    private void setRegistries()
+    {
+    	registries = new AssociativeList();
+		
+    	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnReferences() ) );
+    	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LegalEntityModel" ) );
+    	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "ChartOfAccountsModel" ) );
+    	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAccountModel", "ChartOfAccountsModel" ) );
+    	registries.set( "Currencies", 						new RegistryView( stage, "List of Currencies", "CurrencyModel" ) );
+    }
+    
+    private void about( Event e )
+    {
+    	Utilities.displayAbout();
+    }
+    
+    /**
+     * Invokes Clock to display
+     * @param e Event
+     * @return Dialog object
+     */
+    private NodeView clock( Event e )
+    {
+    	NodeView dlg = new NodeView( "Clock", 480, 480 );
+    	dlg.display( Clock.getInstance() );
+    	
+    	return dlg;
+    }    
 }

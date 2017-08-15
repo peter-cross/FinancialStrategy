@@ -1,17 +1,19 @@
 package models;
 
 import javafx.stage.Stage;
-
 import javax.persistence.EntityManager;
-import javax.transaction.SystemException;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
+import entities.ChartOfAccounts;
 import entities.LegalEntity;
 import entities.TransactionsModel;
+import views.OneColumnTableView;
 import forms.DialogElement;
+import forms.TableElement;
 import forms.TableOutput;
 import interfaces.Utilities;
 
@@ -37,7 +39,11 @@ public class LegalEntityModel extends RegistryItemModel
         
     } // End of method ** getByName **
     
-    
+    /**
+     * Gets Legal Entity Model by database entity object
+     * @param entity Legal Entity database entity object
+     * @return Legal Entity Model object
+     */
     public static LegalEntityModel getByEntity( LegalEntity entity )
     {
     	return (LegalEntityModel) getListElementBy( list, "legalEntity", entity );
@@ -52,7 +58,7 @@ public class LegalEntityModel extends RegistryItemModel
     {
         return (LegalEntityModel) getListElementBy( list, "iD", ID );
         
-    } // End of method ** getByName **
+    } // End of method ** getByID **
     
     /**
      * Creates header element settings of the form
@@ -109,6 +115,33 @@ public class LegalEntityModel extends RegistryItemModel
     }
 
     /**
+     * Creates table elements of model form
+     */
+    @Override
+    protected TableElement[][] createTable()
+    {
+        TableElement[][] table = new TableElement[1][2];
+        TableElement tblEl;
+        
+        tblEl = new TableElement( "Chart Of Accounts Name" );
+        tblEl.width = 200;
+        tblEl.editable = false;
+        tblEl.textValue = (String[]) fields.get( "chartName" );
+        tblEl.valueType = "Text";
+        table[0][0] = tblEl;
+        
+        tblEl = new TableElement( "Chart Of Accounts" );
+        tblEl.width = 250;
+        tblEl.editable = false;
+        tblEl.textValue = (String[]) fields.get( "chartOfAccounts" );
+        tblEl.valueType = "List";
+        tblEl.list = ChartOfAccountsModel.getItemsList();
+        table[0][1] = tblEl;
+        
+        return table;
+    }
+    
+    /**
      * Initializes fields of the form with given values of header and table
      * @param header Text values of the header
      * @param table Text values of table part
@@ -125,25 +158,66 @@ public class LegalEntityModel extends RegistryItemModel
             fields.set( "contact", 	header[0][4] );
             fields.set( "address", 	header[0][5] );
         }
+        
+        if ( table != null )
+        {
+            int numCharts = table[0].length;
+            
+            String[] chartNames = new String[numCharts],
+                     chartOfAccounts = new String[numCharts];
+            
+            for ( int i = 0; i < numCharts; i++ )
+            {
+            	chartNames[i] = table[0][i][0];
+            	chartOfAccounts[i] = table[0][i][1];
+            }
+            
+            fields.set( "chartName", chartNames );
+            fields.set( "chartOfAccounts", chartOfAccounts );
+        }
+        else
+        {
+        	fields.set( "chartName", new String[] {} );
+            fields.set( "chartOfAccounts", new String[] {} );
+        }
     }
     
     /**
-     * Displays form for entering or editing model data
+     * Displays model dialog form
      */
     @Override
-    public TableOutput getOutput() throws IllegalStateException, SecurityException, SystemException 
+    public void display()
     {
-    	// Invoke inherited class method
-    	TableOutput output = super.getOutput();
-    	String[][] header = output.header;
-    	
-    	// If there is data entered or changed
-    	if ( header != null && header.length > 0 && header[0].length > 0 )
+        // Create header elements array and add it to attributes list
+        attributesList.set( "header", createHeader() );
+        // Create table elements array and add it to attributes list
+        attributesList.set( "table", createTable() );
+        
+        // Add output results to attributes list
+        attributesList.set( "output", getOutput() );
+    }
+    
+    /**
+     * Invokes model dialog form and returns results of interaction with the form
+     */
+    @Override
+    public TableOutput getOutput()
+    {
+        // Display input form and get the results of input
+        TableOutput result =  new OneColumnTableView( this, "Legal Entity", 5 ).result();
+        
+        // Assign the input results to object properties
+        init( result.header, result.table );
+        
+        // If there is data entered or changed
+    	if ( result.header != null && result.header.length > 0 && result.header[0].length > 0 )
     		// Save data to database
     		saveToDB();
-    		
-    	return output;
-    }
+    	
+        // Return the input result
+        return result;
+        
+    } // End of method ** getOutput **
     
     /**
      * Returns Legal Entity database entity object for current model
@@ -154,9 +228,18 @@ public class LegalEntityModel extends RegistryItemModel
     }
     
     /**
+     * Gets string array of Legal Entity Charts of Accounts
+     * @return String array
+     */
+    public String[] getChartOfAccounts()
+    {
+    	return (String[]) fields.get( "chartOfAccounts" );
+    }
+    
+    /**
      * Saves Legal Entity data to Database
      */
-    private void saveToDB()
+    protected void saveToDB()
     {
     	String	iD = fields.get( "iD" ),						// Legal Entity ID in the system
                 name = fields.get( "name" ),					// Common name
@@ -165,6 +248,19 @@ public class LegalEntityModel extends RegistryItemModel
                 contact = fields.get( "contact" ),				// Contact in the company
                 address = fields.get( "address" );				// Company address
     	
+    	List<String> chartNames = new ArrayList<String>();
+    	for ( String chName : (String[]) fields.get( "chartName" ) )
+    		chartNames.add( chName );
+    	
+    	ArrayList<ChartOfAccounts> chartOfAccounts = new ArrayList<>();
+    	for ( String chart : (String[]) fields.get( "chartOfAccounts" ) )
+    	{
+    		ChartOfAccountsModel chModel = ChartOfAccountsModel.getByName( chart );
+    		
+    		if ( chModel != null )
+    			chartOfAccounts.add( chModel.getChartOfAccounts() );
+    	}	
+    	
     	// Get Legal Entity object from the fields of current model
     	LegalEntity legalEntity = fields.get( "legalEntity" );
     	
@@ -172,15 +268,14 @@ public class LegalEntityModel extends RegistryItemModel
     	if ( legalEntity == null  )
         {
             // Create instance of Legal Entity
-            legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address );
+            legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address, chartNames, chartOfAccounts );
             fields.set( "legalEntity", legalEntity );
         }
             
-    	
     	// Otherwise
     	else
             // Update Legal Entity information
-            legalEntity.update( iD, name, legalName, phone, contact, address );
+            legalEntity.update( iD, name, legalName, phone, contact, address, chartNames, chartOfAccounts );
     	
     	try
     	{
@@ -197,23 +292,9 @@ public class LegalEntityModel extends RegistryItemModel
 	 * Gets Legal Entities from database
 	 * @return List of LegalEntity objects
 	 */
-    private static List<LegalEntity> getFromDB()
+    public static List<LegalEntity> getFromDB()
     {
-    	// Get Entity Manager
-    	EntityManager em = Database.getEntityManager();
-    	
-        if ( em != null )
-        	try
-        	{
-        		// Do query for LegalEntity entity in DB and return results of query
-        		return em.createQuery( "SELECT t FROM LegalEntity AS t" ).getResultList();
-            }
-        	catch ( Exception e )
-        	{
-        		return null;
-        	}
-		
-        return null;
+    	return getFromDB( "LegalEntity" );
     }
     
     /**
@@ -229,9 +310,7 @@ public class LegalEntityModel extends RegistryItemModel
     	// Get Legal Entity from the fields
     	LegalEntity legalEntity = fields.get( "legalEntity" );
     	
-    	//fields.set( "legalEntity", null );
-        
-        // If Legal Entity is created as an object
+    	// If Legal Entity is created as an object
     	if ( legalEntity != null )
     	{
     		List<TransactionsModel> tms = null;
@@ -295,19 +374,14 @@ public class LegalEntityModel extends RegistryItemModel
         return new LinkedHashSet[] { list };
     }
     
+    /**
+     * Creates new list of Legal Entity models
+     */
     public static void createNewList()
     {
         list = new LinkedHashSet<>();
         	
-        // Get list of Legal Entities from database
-        List<LegalEntity> dbLglEntities = getFromDB();
-
-        // If list is not empty
-        if ( dbLglEntities != null && dbLglEntities.size() > 0 )
-            // Loop for each Legal Entity
-            for ( LegalEntity le : dbLglEntities )
-                    // Create LegalEntityModel object based on provided Legal Entity
-                    list.add( new LegalEntityModel(le) );
+        createNewList( list, "LegalEntityModel" );
     }
     
     /**
@@ -333,6 +407,16 @@ public class LegalEntityModel extends RegistryItemModel
     }
     
     /**
+     * Create instance of LegalEntityModel 
+     * @param le LegalEntity database entity object
+     * @return LegalEntityModel object
+     */
+    public static LegalEntityModel getInstance( Object le )
+    {
+    	return new LegalEntityModel( (LegalEntity) le );
+    }
+    
+    /**
      * Class constructor for recreating Legal Entity from database data
      * @param le Legal Entity database entity object
      */
@@ -347,6 +431,9 @@ public class LegalEntityModel extends RegistryItemModel
         fields.set( "phone", le.getPhone()  );
         fields.set( "contact", le.getContact() );
         fields.set( "address", le.getAddress() );
+        
+        fields.set( "chartName", le.getChartNames() ); 
+		fields.set( "chartOfAccounts", le.getChartOfAccounts() );
     }
 
 } // End of class ** LegalEntityModel **

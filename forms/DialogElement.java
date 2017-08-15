@@ -35,6 +35,10 @@ public class DialogElement implements Encapsulation
 
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
+    
+    /**
+     * Class default constructor
+     */
     public DialogElement( )
     {
         labelName = "";
@@ -47,6 +51,10 @@ public class DialogElement implements Encapsulation
         valueType = "";
     }
 	
+    /**
+     * Class constructor
+     * @param label Label for dialog element
+     */
     public DialogElement( String label )
     {
         this();

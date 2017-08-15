@@ -3,8 +3,11 @@ package views;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.collections.ObservableList;
@@ -14,10 +17,12 @@ import javafx.geometry.Pos;
 
 import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import application.Database;
 import application.Main;
+import entities.ChartOfAccounts;
 import entities.LegalEntity;
 import entities.TAccount;
 import entities.Transaction;
@@ -28,6 +33,7 @@ import foundation.AssociativeList;
 import foundation.TaskTimer;
 import foundation.UserDialog;
 import interfaces.Utilities;
+import models.ChartOfAccountsModel;
 
 /**
  * Class TransactionsSimulationModel - Modeling accounting transactions
@@ -39,36 +45,37 @@ public class TransactionsModelView extends NodeView implements Utilities
 	public static final int  COLS = 28, // Number of columns
 							 ROWS = 16; // Number of rows
 	
-	private static final int STROKE = 1; // Line stroke
-	
+	private static final int STROKE = 1; 			// Line stroke
 	private static final int SHIFT_X = 1 + STROKE,	// +7 Shift on canvas horizontally
-			  				 SHIFT_Y = 4 + STROKE; // +16 Shift on canvas vertically	
-			
-	private static double 	 CELL_WIDTH,  // cell width
-							 CELL_HEIGHT; // cell height
+			  				 SHIFT_Y = 4 + STROKE; 	// +16 Shift on canvas vertically	
+	private static double 	 CELL_WIDTH,  			// Cell width
+							 CELL_HEIGHT; 			// Cell height
 	
-	private static TransactionsModel			transactionsModel;
-	private static Vector<Transaction>			transactions;	// To store all transactions
-	private static Vector<TAccount>				accounts;		// To store T-accounts
-	private ArrayList<ArrayList<TAccount>> 		grid;			// To store cell accounts as a grid
-	private TransactionsGraphics				tg;				// Graphics object for displaying transactions
-	private LegalEntity							legalEntity;	// Legal entity of Transactions Model
-	
-	
-	private ArrayList<TAccount>				selectedTAccounts;	// To store selected T-accounts
-	private AssociativeList					output;				// Results of input to pass
-	private TextField 						title;				// Model Title
+	private static TransactionsModel		transactionsModel;
+	private static Vector<Transaction>		transactions;		// To store all transactions
+	private static Vector<TAccount>			accounts;			// To store T-accounts
+	private LegalEntity						legalEntity;		// Legal entity of Transactions Model
 	
 	private static ArrayList<TAccount>		toAddTAccounts;		// T-Accounts to add
 	private static ArrayList<Transaction>	toAddTransactions;	// Transactions to add
 	private static ArrayList<TAccount>		toDelTAccounts;		// T-Accounts to delete
 	private static ArrayList<Transaction>	toDelTransactions;	// Transactions to delete
 	
+	private ArrayList<TAccount>				selectedTAccounts;	// To store selected T-accounts
+	private AssociativeList					output;				// Results of input to pass
+	private TextField 						title;				// Model Title
+	
 	private long 			lastMouseClickTime = 0l;// To store time stamp when last mouse click happened 
 	private MouseEvent 		mouseEvent;				// To store last mouse event
-	private MouseEventType 	eventType;				// To store last mouse event type
+	private MouseEventType  eventType;				// To store last mouse event type
 	
 	private boolean 		newAbout = false;		// To indicate that About box was displayed for new model
+	private String[]		tabs;					// Tab names
+    
+	private TabPane 		tabPane;				// TabPane object for document with multiple tabs
+	
+	private ArrayList<ArrayList<TAccount>>[] grid; 	// To store cell accounts as a grid
+	private TransactionsGraphics[]			 tg;	// Graphics object for displaying transactions
 	
 	/**
 	 * Class default constructor
@@ -77,20 +84,11 @@ public class TransactionsModelView extends NodeView implements Utilities
 	{
 		super( "Transactions Model" );
 		
-		// Set dialog graphics
-		setGraphics();
-		
 		createArrays();
 		
 		// Create TextField for the model title
 		title = new TextField();
 		title.setPrefWidth( 300 );
-		
-		// Add event handlers for the canvas
-		addEventHandlers();
-		
-		// Invoke initialization
-		init();
 	}
 	
 	/**
@@ -106,9 +104,20 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Get Transactions Model
 		transactionsModel = fields.get( "transactionsModel" );
 		
+		if ( legalEntity != null )
+                    tabs = legalEntity.getChartOfAccounts();
+                else
+                    tabs = new String[] {};
+        
+		// Set dialog graphics
+		setGraphics();
+		
+		// Invoke initialization
+		init();
+	
 		if ( transactionsModel == null )
 			return;
-		
+				
 		// Get transactions of Transactions Model
 		Vector<Transaction> trs = transactionsModel.getTransactions();
 				
@@ -140,12 +149,29 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void setGraphics()
 	{
-		// Create Transactions Graphics object
-		tg = new TransactionsGraphics(this);
+		int tgSize = Math.max( 1, tabs.length );
+		
+		tg = new TransactionsGraphics[tgSize];
+		
+		for ( int i = 0; i < tgSize; i++ )
+                {
+                    // Create Transactions Graphics object
+                    tg[i] = new TransactionsGraphics(this);
+                        
+                    // Add event handler for Mouse Click event
+                    tg[i].addEventHandler( MouseEvent.MOUSE_CLICKED, this::clickedEventHandler );
+                }
 		
 		// Get cell width and height
-		CELL_WIDTH  = tg.getCellWidth();
-		CELL_HEIGHT = tg.getCellHeight();
+		CELL_WIDTH  = TransactionsGraphics.getCellWidth();
+		CELL_HEIGHT = TransactionsGraphics.getCellHeight();
+		
+		// Set Graphics object for TAccount and Transaction objects
+		TAccount.setGraphics(tg);
+		Transaction.setGraphics(tg);
+		
+		TAccount.setChartsOfAccounts( tabs );
+		Transaction.setChartsOfAccounts( tabs );
 	}
 	
 	/**
@@ -158,9 +184,6 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		// Create ArrayList for T-Accounts
 		accounts = new Vector<>();
-		
-		// Create ArrayList for the grid
-		grid = new ArrayList<>();
 		
 		// Create ArrayList for selected T-accounts
 		selectedTAccounts = new ArrayList<>();
@@ -201,8 +224,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Loop for each model T-account
 		for ( TAccount acct : accounts )
 		{
+			int idx = acct.chartIndex();
+			
 			// Set T-account in grid
-			grid.get( acct.getRow() ).set( acct.getColumn(), acct );
+			grid[idx].get( acct.getRow() ).set( acct.getColumn(), acct );
 			
 			// If T-account is not in list
 			if ( !acctList.contains( acct ) )
@@ -219,6 +244,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	{
 		return new TransactionsModelView();
 	}
+	
 	/**
 	 * Creates instance of the class
 	 * @param fields Fields with initial values
@@ -226,7 +252,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	public static TransactionsModelView getInstance( AssociativeList fields )
 	{
-		return new TransactionsModelView(fields);
+		return new TransactionsModelView( fields );
 	}
 	
 	/**
@@ -250,6 +276,32 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
+	 * Returns transactions list for specified Chart Of Accounts
+	 * @param chartNum Chart Of Accounts index
+	 * @return List of transactions for specified Chart Of Accounts
+	 */
+	public static Vector<Transaction> getTransactions( int chartNum )
+	{
+		Vector<Transaction> trList = getTransactions();
+		
+		Iterator<Transaction> it = trList.iterator();
+		
+		List<Transaction> toRemove = new ArrayList<>();
+		
+		while ( it.hasNext() )
+		{
+			Transaction tr = it.next();
+			
+			if ( tr.chartIndex() != chartNum )
+				toRemove.add(tr);
+		}
+		
+		trList.removeAll( toRemove );
+		
+		return trList;
+	}
+	
+	/**
 	 * Returns Transaction Model's T-accounts 
 	 */
 	public static Vector<TAccount> getTAccounts()
@@ -262,15 +314,6 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Creates event handlers for the canvas
-	 */
-	private void addEventHandlers()
-	{
-		// Add event handler for Mouse Click event
-		addEventHandler( MouseEvent.MOUSE_CLICKED, this::clickedEventHandler );
-	}
-	
-	/**
 	 * Handles MouseClick event
 	 * @param e Event on which this method is invoked
 	 */
@@ -279,22 +322,29 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Period in milliseconds between mouse clicks to detect DoubleClick event
 		final long DBL_CLK_TIME = 250;
 		
+		try
+		{
+			// If DoubleClick happened and clicks are within acceptable time interval
+			if ( ((MouseEvent) e).getClickCount() == 2 && System.currentTimeMillis() - lastMouseClickTime < DBL_CLK_TIME  )
+				// Assign event type Mouse DoubleClick event
+				eventType = MouseEventType.DOUBLE_CLICK;
+			
+			// Otherwise
+			else
+				// Assign event type Mouse Click event
+				eventType = MouseEventType.CLICK;
+		}
+		catch ( Exception ex )
+		{
+			// Assign event type Mouse Click event
+			eventType = MouseEventType.CLICK;
+		}
+		
 		// Cast event to MouseEvent and save it
 		mouseEvent = (MouseEvent) e;
 		
-		// If DoubleClick happened and clicks are within acceptable time interval
-		if ( mouseEvent.getClickCount() == 2 && System.currentTimeMillis() - lastMouseClickTime < DBL_CLK_TIME  )
-			// Assign event type Mouse DoubleClick event
-			eventType = MouseEventType.DOUBLE_CLICK;
-		
-		// Otherwise
-		else
-			// Assign event type Mouse Click event
-			eventType = MouseEventType.CLICK;
-		
 		// Save time stamp when event happened
 		lastMouseClickTime = System.currentTimeMillis();
-		
 	}
 	
 	/**
@@ -307,8 +357,11 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		createEmptyGrid();
 		
-		// Draw grid on canvas
-		tg.drawGrid();
+		int tabsSize = Math.max( 1, tabs.length );
+		
+		for ( int i = 0; i < tabsSize; i++ )
+			// Draw grid on canvas
+			tg[i].drawGrid();
 		
 		// Create Task Timer and assign method to invoke periodically with specified time delay
 		new TaskTimer().schedule( this::handleMouseEvent, TIMER_DELAY );
@@ -321,19 +374,29 @@ public class TransactionsModelView extends NodeView implements Utilities
 	{
 		ArrayList<TAccount> arr;
 		
-		// Loop for each grid row
-		for ( int r = 0; r < ROWS; r++ )
+		int tabsSize = Math.max( 1, tabs.length );
+		
+		grid = new ArrayList[tabsSize];
+		
+		for ( int i = 0; i < tabsSize; i++ )
 		{
-			// Create ArrayList for row columns
-			arr = new ArrayList<>();
+			// Create ArrayList for the grid
+			grid[i] = new ArrayList<>();
 			
-			// Loop for each grid column
-			for ( int c = 0; c < COLS; c++ )
-				// Add empty cell for current column
-				arr.add( null );
+			// Loop for each grid row
+			for ( int r = 0; r < ROWS; r++ )
+			{
+				// Create ArrayList for row columns
+				arr = new ArrayList<>();
 				
-			// Add row columns
-			grid.add( arr );
+				// Loop for each grid column
+				for ( int c = 0; c < COLS; c++ )
+					// Add empty cell for current column
+					arr.add( null );
+					
+				// Add row columns
+				grid[i].add( arr );
+			}
 		}
 	}
 	
@@ -342,12 +405,12 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void handleMouseEvent()
 	{
-		// Save last mouse event
-		MouseEvent e = mouseEvent;
+        // Save last mouse event
+        MouseEvent e = mouseEvent;
 		
-		// If there was a mouse event
-		if ( e != null )
-    	{
+        // If there was a mouse event
+        if ( e != null )
+        {
 			// If this is Click event
     		if ( eventType == MouseEventType.CLICK )
     			// Invoke user dialog in which Cell Click event will be handled
@@ -360,7 +423,6 @@ public class TransactionsModelView extends NodeView implements Utilities
 	    	
 			// Remove last mouse event from the variable
     		mouseEvent = null;
-    		
     	}
 		// If About box for model did not show up yet
 		else if ( !newAbout )
@@ -406,8 +468,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 		if ( col >= COLS || row >= ROWS )
 			return null;
 		
+		int tabNum = selectedTabNumber();
+		
 		// Get T-Account from current cell and return it
-		return (TAccount) grid.get(row).get(col);
+		return (TAccount) grid[tabNum].get(row).get(col);
 	}
 	
 	/**
@@ -424,8 +488,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 		if ( col >= COLS || row >= ROWS )
 			return;
 		
+		int tabNum = selectedTabNumber();
+		
 		// Set T-Account for specified column
-		grid.get(row).set( col, acct );
+		grid[tabNum].get(row).set( col, acct );
 	}
 	
 	/**
@@ -502,8 +568,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 			int col = getColumn(e);
 			int row = getRow(e);
 			
+			int tabNum = selectedTabNumber();
+			
 			// Draw just image of simple T-account
-			tg.drawTAccount( row, col );
+			tg[tabNum].drawTAccount( row, col );
 		}
 	}
 	
@@ -610,8 +678,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 						break;
 					}
 		
+		int tabNum = selectedTabNumber();
+		
 		// Clear content of current cell
-		tg.clearCellContent( row, col );
+		tg[tabNum].clearCellContent( row, col );
 		
 		// Set current cell T-Account to null
 		setCellTAccount( e, null );
@@ -626,8 +696,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Draw T-account
 		drawTAccount( e );
   	  	
+                ChartOfAccounts chart = selectedChartOfAccounts();
+                
 		// Enter T-account name and create object for T-account
-		TAccount acct = new TAccount( enterTextInfo( "Account name" ), e );
+		TAccount acct = new TAccount( enterTextInfo( "Account name" ), e, chart );
 		
 		// Add created T-account to the list of T-accounts
 		//accounts.add( acct );
@@ -666,8 +738,10 @@ public class TransactionsModelView extends NodeView implements Utilities
 				int col = getColumn(e);
 				int row = getRow(e);
 				
+				int tabNum = selectedTabNumber();
+				
 				// Highlight selected cell
-				tg.hightlightCell( row, col );
+				tg[tabNum ].hightlightCell( row, col );
 			}
 		}
 	}
@@ -722,11 +796,44 @@ public class TransactionsModelView extends NodeView implements Utilities
      */
     protected <T> VBox createContent()
     {
-        VBox box = new VBox();
-    	
-    	// Add Transactions graphics and buttons to the content box
-        box.getChildren().addAll( tg, formButtons() );
-    	
+    	VBox box = new VBox();
+    	GridPane gridPane;
+        
+        if ( tabs.length > 0 )
+        {
+            // Create tab pane element
+            tabPane = new TabPane();
+            // Make tabs closing unavailable
+            tabPane.setTabClosingPolicy( TabPane.TabClosingPolicy.UNAVAILABLE );
+
+            Tab tab;
+            
+            // Loop for each form tab
+            for ( int i = 0; i < tabs.length; i++ )
+            {
+            	// Create GridPane for the tab
+            	gridPane = createGridPane();
+            	
+            	// Add TransactionsGraphics Canvas object to display on GridPane
+            	gridPane.getChildren().add( tg[i] );
+            	
+            	// Create Tab object for current tab
+            	tab = createTab( gridPane, i );
+            	
+            	// Add tab to TabPane object
+            	tabPane.getTabs().add( tab );
+            }
+            // Add Transactions graphics and buttons to the content box
+            box.getChildren().addAll( tabPane, formButtons() );
+        }
+        else
+        {
+        	gridPane = createGridPane();
+        	gridPane.getChildren().add( tg[0] );
+        	// Add Transactions graphics and buttons to the content box
+            box.getChildren().addAll( gridPane, formButtons() );
+        }
+        
     	return box;
     }
 	
@@ -760,8 +867,8 @@ public class TransactionsModelView extends NodeView implements Utilities
     	ArrayList<Button> btns = new ArrayList<>();
     	
     	btns.add( createBtnOK() );
-    	btns.add( createBtnCancel() );
     	btns.add( createBtnAbout() );
+    	btns.add( createBtnCancel() );
     	
     	return btns;
     }
@@ -856,6 +963,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     	int row;
     	List<Integer> corrAcc;
     	
+    	// Loop through all saved transactions
     	for ( Transaction tr : transactions )
     	{
     		dt = tr.getDt();
@@ -873,6 +981,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     			corrAcc.add( row );
     	}
     	
+    	// Loop through created new transactions to add
     	for ( Transaction tr : toAddTransactions )
     	{
     		dt = tr.getDt();
@@ -906,7 +1015,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     									"<Click on T-Account> - select T-Account to create transaction",
     									"<Dbl Click on T-Account> - delete T-Account with tranactions",
     									"<Dbl Click on Transaction> - delete transaction" };
-    	displayMessage( boxTxt );
+    	Utilities.displayMessage( boxTxt );
     }
     
     /**
@@ -919,6 +1028,86 @@ public class TransactionsModelView extends NodeView implements Utilities
     	display( createContent() );
     	
      	return (T)output;
+    }
+   
+    /**
+     * Creates Grid object for the form
+     * @return GridPane object
+     */
+    protected GridPane createGridPane()
+    {
+       // Create grid for current tab
+       GridPane grid = new GridPane();
+       
+       grid.setPadding( new Insets( 10, 10, 10, 10 ) );
+       grid.setHgap( 5 );
+       grid.setVgap( 5 );
+       
+       grid.setStyle("-fx-border-style: solid inside;"
+                    +"-fx-border-color: #FFF;"
+                    +"-fx-border-width: 1 0 0 0;");
+       return grid;
+       
+    } // End of method ** createGridPane **
+	
+    /**
+     * Creates Tab object for the grid
+     * @param grid Grid object of the form
+     * @param tabNum Tab number
+     * @return Created Tab object
+     */
+    protected Tab createTab( GridPane grid, int tabNum )
+    {
+       // Create Tab element
+       Tab tab = new Tab();
+
+       // If Tabs list is specified
+       if ( tabs != null )
+           // Set Tab name from Tabs list
+           tab.setText( tabs[tabNum] );
+       else
+           // Set numbered Tab name
+           tab.setText( "Tab " + tabNum );
+
+       // Set grid as Tab content
+       tab.setContent( grid );
+
+       return tab;
+       
+    } // End of method ** createTab **
+	
+    /**
+     * Gets selected tab number 
+     * @param tabPane TabPane object for current Pane
+     * @return Selected tab number
+     */
+    private int selectedTabNumber()
+    {
+    	// If there are tabs
+        if ( tabPane != null )
+            // Get tab number from selected tab
+            return tabPane.getSelectionModel().getSelectedIndex();
+        else
+            return 0;
+    }
+    
+    /**
+     * Gets selected Chart Of Accounts
+     * @return Selected Chart Of Accounts object
+     */
+    private ChartOfAccounts selectedChartOfAccounts()
+    {
+        int tabNum = selectedTabNumber();
+        
+        if ( tabs.length == 0 )
+            return null;
+        
+        ChartOfAccountsModel chartModel = ChartOfAccountsModel.getByName( tabs[tabNum] );
+        
+        if ( chartModel != null )
+            return chartModel.getChartOfAccounts();
+        else
+            return null;
     }
     
     /**

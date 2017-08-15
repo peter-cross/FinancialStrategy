@@ -43,7 +43,21 @@ public interface Constants
     {
         AssociativeList d = new AssociativeList();
         
+        d.set( "Bank Accounts", "BankAccount" );
+        d.set( "Business Partners", "BusinessPartner" );
+        d.set( "Contracts", "Contract" );
+        d.set( "Employees", "Employee" );
+        d.set( "Expenses", "Expense" );
+        d.set( "Inventory", "Inventory" );
+        d.set( "Legal Entities", "LegalEntity" );
+        d.set( "Locations", "Location" );
+        d.set( "Long Term Assets", "LongTermAsset" );
+        d.set( "Marketable Securities", "Securities" );
+        d.set( "Products", "Product" );
+        d.set( "Shareholders", "Shareholder" );
+        d.set( "Warranties", "Warranty" );
+        d.set( "Business Lines", "BusinessLine" );
+    
         return d;
     }
-	
 } // End of interface ** Constants **

@@ -2,11 +2,16 @@ package models;
 
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-
+import javax.persistence.EntityManager;
 import javax.transaction.SystemException;
 
+import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
 
+import application.Database;
+import views.OneColumnView;
 import forms.DialogElement;
 import forms.TableElement;
 import forms.TableOutput;
@@ -14,14 +19,12 @@ import foundation.AssociativeList;
 import foundation.Item;
 import interfaces.Constants;
 import interfaces.Utilities;
-import views.OneColumnView;
 
 import static interfaces.Utilities.createModelClass;
 
 /**
  * Class RegistryItemModel - To create Items for Registry
  * @author Peter Cross
- *
  */
 abstract public class RegistryItemModel extends Item implements Utilities, Constants
 {
@@ -38,10 +41,53 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
     // Creates array of header element parameters
     abstract protected DialogElement[][] createHeader();
     
+    // method to save Model data to database
+    abstract protected void saveToDB();
+    
     // Method stub for removing registry item from DB
     public void removeFromDB() throws Exception
     { 
     	return;
+    }
+    
+    /**
+     * Removes object specified in the field from database
+     * @param field Name of the object stored in the fields
+     * @throws Exception
+     */
+    public void removeFromDB( String field ) throws Exception
+    { 
+    	// Get field object from the fields
+    	Object fieldObj = fields.get( field );
+    	
+    	// If it is created as an object
+    	if ( fieldObj != null )
+    		// Remove field object data from database
+            Database.removeFromDB( fieldObj );
+    }
+    
+    /**
+     * Gets list of entity objects from database
+     * @param entityClass Database Entity class name to get objects from database
+     * @return List of entity objects
+     */
+    protected static <T> List<T> getFromDB( String entityClass )
+    {
+    	// Get Entity Manager
+    	EntityManager em = Database.getEntityManager();
+    	
+        if ( em != null )
+        	try
+        	{
+        		// Do query for Entity class in DB and return results of query
+        		return em.createQuery( "SELECT c FROM " + entityClass + " AS c" ).getResultList();
+            }
+        	catch ( Exception e )
+        	{
+        		return null;
+        	}
+		
+        return null;
     }
     
     // Method stub for setting value of Registry View Tab Name
@@ -80,14 +126,70 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
     {
         TableOutput result = new TableOutput();
         
+        String[][] header = result.header;
+        
         // Invoke One Column View form and get results of input
-        result.header = new OneColumnView( this, ITEM_TYPE ).result();
+        header = new OneColumnView( this, ITEM_TYPE ).result();
         
         // Initialize model data with results of input
-        init( result.header, null );
+        init( header, null );
         
+        // If there is data entered or changed
+    	if ( header != null && header.length > 0 && header[0].length > 0 )
+    		// Save data to database
+    		saveToDB();
+    	
         return result;
     }
+    
+    /**
+     * Creates new list for Model class
+     * @param list List object to pass created list
+     * @param modelClass Model class name
+     */
+    public static <T> void createNewList( LinkedHashSet list, String modelClass )
+    {
+    	// Get class for new RegistryItemModel object
+        Class<T> cls = createModelClass( modelClass );
+        
+        Method getFromDB = null;
+        Method constructor = null;
+		
+        try 
+        {
+        	getFromDB = cls.getMethod( "getFromDB", null );
+		} 
+        catch ( Exception e ) { }
+		
+        try 
+        {
+			constructor = cls.getMethod( "getInstance", Object.class );
+		} 
+        catch ( Exception e ) 
+        { 
+        	return;
+        }
+		
+    	// Get list of Objects from database
+        List<T> dbObjects = null;
+        
+        if ( getFromDB != null )
+			try 
+        	{
+				dbObjects = (List<T>) getFromDB.invoke(null);
+			} 
+        	catch ( Exception e ) {};
+
+        // If list is not empty
+        if ( dbObjects != null && dbObjects.size() > 0 )
+            // Loop for each Object
+            for ( T obj : dbObjects )
+				try 
+        		{
+					list.add( constructor.invoke( null, obj ) );
+				} 
+        		catch (Exception e) {}
+	}
     
     /**
      * Returns attributes list for current object
@@ -316,7 +418,6 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         
     } // End of method ** convertToStringArray **
     
-    
     /**
      * Parses string containing double number
      * @param doubleNumber String with double number
@@ -385,7 +486,11 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
 	
 	/*                        Constructors                                                                                  */
     /************************************************************************************************************************/
-    private RegistryItemModel()
+    
+	/**
+     * Class default constructor
+     */
+	private RegistryItemModel()
     {
     	createFields();
         
@@ -394,25 +499,48 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         attributesList.set( "table", createTable() );    
     }
     
+	/**
+	 * Class constructor
+	 * @param itemType Model item type
+	 */
     public RegistryItemModel( String itemType )
     {
         this();
         ITEM_TYPE = itemType;    
     }
     
+    /**
+     * Class constructor
+     * @param stage Stage object where to display form
+     * @param headerTabs Tabs for header part of the form
+     * @param itemType Model item type
+	 * @throws Exception
+     */
     public RegistryItemModel( Stage stage, String[] headerTabs, String itemType ) throws Exception
     {
         this( stage, itemType, null );
         attributesList.set( "headerTabs", headerTabs );
     }
     
+    /**
+     * Class constructor
+     * @param stage Stage object where to display form
+     * @param headerTabs Tabs for header part of the form
+     * @param tableTabs Tabs for table part of the form
+     * @param itemType Model item type
+	 * @throws Exception
+     */
     public RegistryItemModel( Stage stage, String[] headerTabs, String[] tableTabs, String itemType ) throws Exception
     {
         this( stage, headerTabs, itemType );
         attributesList.set( "tableTabs", tableTabs );
     }
     
-    
+    /**
+     * Class constructor
+     * @param itemType Model item type
+	 * @param tabName Registry View tab name
+     */
     public RegistryItemModel( String itemType, String tabName )
     {
     	this();
@@ -420,6 +548,12 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         setTab( tabName );
     }
     
+    /**
+     * Class constructor
+     * @param stage Stage object where to display form
+     * @param tabName Registry View tab name
+     * @throws Exception
+     */
     public RegistryItemModel( Stage stage, String tabName ) throws Exception
     {
     	this();
@@ -435,6 +569,13 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         }
     }
     
+    /**
+     * Class constructor
+     * @param stage Stage object where to display form
+     * @param itemType Model item type
+	 * @param tabName Registry View tab name
+     * @throws Exception
+     */
     public RegistryItemModel( Stage stage, String itemType, String tabName ) throws Exception
     {
     	this( itemType, tabName );
@@ -449,16 +590,32 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         }
     }
     
+    /**
+     * Class constructor
+     * @param stage Stage object where to display form
+     * @param headerTabs Tabs for header part of the form
+     * @param itemType Model item type
+	 * @param tabName Registry View tab name
+     * @throws Exception
+     */
     public RegistryItemModel( Stage stage, String[] headerTabs, String itemType, String tabName ) throws Exception
     {
         this( stage, itemType, tabName );
         attributesList.set( "headerTabs", headerTabs );
     }
     
+    /**
+     * Class constructor
+     * @param stage Stage object where to display form
+     * @param headerTabs Tabs for header part of the form
+     * @param tableTabs Tabs for table part of the form
+     * @param itemType Model item type
+	 * @param tabName Registry View tab name
+     * @throws Exception
+     */
     public RegistryItemModel( Stage stage, String[] headerTabs, String[] tableTabs, String itemType, String tabName ) throws Exception
     {
         this( stage, headerTabs, itemType, tabName );
         attributesList.set( "tableTabs", tableTabs );
     }
-    
-} // End of interface ** RegistryItemModel ** 
+} // End of abstract class ** RegistryItemModel ** 

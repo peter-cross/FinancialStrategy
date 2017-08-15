@@ -1,10 +1,11 @@
 package foundation;
 
 import interfaces.Encapsulation;
+
 import static interfaces.Utilities.createModelClass;
 
 /**
- * Class Data
+ * Class Data - Wrapper class for storing data objects
  * @author Peter Cross
  *
  */
@@ -73,19 +74,28 @@ public class Data implements Encapsulation
 	
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
+    
+    /**
+     * Class constructor
+     * @param type Type of data to store
+     */
     private Data ( String type )
     {
         try 
         {
             Class classType = createModelClass( type );
-            this.value = classType.newInstance();
+            value = classType.newInstance();
         } 
         catch ( Exception e ) 
         {
-            this.value = new Object();
+            value = new Object();
         }
     }
 
+    /**
+     * Class constructor
+     * @param value Data value to store
+     */
     private Data ( Object value )
     {
         this.value = value;

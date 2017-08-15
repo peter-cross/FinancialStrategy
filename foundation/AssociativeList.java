@@ -67,13 +67,11 @@ public class AssociativeList implements Utilities
             return null;
         else
         {
+        	// Find data value by index
             Data d = value.get( index );
 
             if ( d != null )
-            {
-            	// Find value by index and return it
-                return (T) d.get();
-            }
+            	return (T) d.get();
             else
                 return null;	
         }       
@@ -156,12 +154,19 @@ public class AssociativeList implements Utilities
 	
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
+    /**
+     * Class default constructor
+     */
     public AssociativeList()
     {
         value =  new ArrayList<>(); 
         key = new ArrayList<>(); 
     }
     
+    /**
+     * Class constructor
+     * @param list List with values
+     */
     public AssociativeList( ArrayList list )
     {
         value = list;

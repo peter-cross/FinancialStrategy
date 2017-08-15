@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import foundation.Cipher;
 
 /**
- * Class TransactionsSimulationModel - stores Transactions' Models
+ * Class TransactionsModel - entity implementation for Transactions Simulation Model
  * @author Peter Cross
  *
  */
@@ -36,12 +36,12 @@ public class TransactionsModel
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
 	private Vector<Transaction> transactions;
 	
-	// Legal Entity to which Transaction Model belongs
+	// Legal Entity to which Transactions Model belongs
 	@ManyToOne( fetch=FetchType.EAGER )
 	private LegalEntity lglEntity;
 	
 	/**
-	 * Class default constructor
+	 * Class mandatory constructor
 	 */
 	public TransactionsModel()
 	{
@@ -61,7 +61,13 @@ public class TransactionsModel
 		this.transactions = transactions;
 	}
 	
-	// Class constructor with all info for Transactions Model and Legal Entity it belongs to
+	/**
+	 * Class constructor with all info for Transactions Model and Legal Entity it belongs to
+	 * @param name Name of Transactions Model
+	 * @param taccounts List of T-accounts
+	 * @param transactions List of transactions
+	 * @param lglEntity Legal Entity to which transactions model belongs
+	 */
 	public TransactionsModel( String name, Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
 		this(name, taccounts, transactions);
@@ -69,8 +75,8 @@ public class TransactionsModel
 	}
 	/**
 	 * Class constructor with List of T-accounts and list of transactions
-	 * @param taccounts
-	 * @param transactions
+	 * @param taccounts List of T-accounts
+	 * @param transactions List of transactions
 	 */
 	public TransactionsModel( Vector<TAccount> taccounts, Vector<Transaction> transactions )
 	{
@@ -78,7 +84,12 @@ public class TransactionsModel
 		this.transactions = transactions;
 	}
 	
-	// Class constructor with List of T-accounts and list of transactions and Legal Entity Transaction Model belongs to
+	/**
+	 * Class constructor with List of T-accounts and list of transactions and Legal Entity Transaction Model belongs to
+	 * @param taccounts List of T-accounts
+	 * @param transactions List of transactions
+	 * @param lglEntity Legal Entity to which transactions model belongs
+	 */
 	public TransactionsModel( Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
 		this(taccounts, transactions);

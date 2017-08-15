@@ -32,6 +32,9 @@ public class TableElement implements Encapsulation
     
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
+    /**
+     * Class default constructor
+     */
     public TableElement( )
     {
         columnName = "";
@@ -43,6 +46,10 @@ public class TableElement implements Encapsulation
         valueType = "";
     }
 	
+    /**
+     * Class constructor
+     * @param columnName Label for column name
+     */
     public TableElement( String columnName )
     {
         this();

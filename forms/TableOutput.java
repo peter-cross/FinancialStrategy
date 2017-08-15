@@ -16,12 +16,22 @@ public class TableOutput implements Encapsulation
 
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
+    /**
+     * Class default constructor
+     */
     public TableOutput()
     {
         header = new String[][]{ {} };
         table = new String[][][]{ { {} } };
     }
     
+    /**
+     * Class constructor
+     * @param headElms Number of head elements
+     * @param rows Number of rows
+     * @param cols Number of rows
+     * @param tabs Number of table tabs
+     */
     public TableOutput( int headElms, int rows, int cols, int tabs )
     {
         header = new String[1][headElms];

@@ -2,9 +2,17 @@ package entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+import application.Database;
 import foundation.Cipher;
 
 /**
@@ -25,9 +33,13 @@ public class LegalEntity
 	private String	phone;			// Phone number
 	private String	contact;		// Contact in the company
 	private String	address;		// Address
-					
+	
+	// Charts of Accounts for Legal Entity
+	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.PERSIST )
+	private Vector<LegalEntityCharts> legalEntityCharts;
+	
 	/**
-	 * Default class constructor
+	 * Mandatory class constructor
 	 */
 	public LegalEntity() 
 	{
@@ -43,9 +55,9 @@ public class LegalEntity
 	 * @param contact Contact person
 	 * @param address Address of Legal Entity
 	 */
-	public LegalEntity( String iD, String name, String legalName, String phone, String contact, String address ) 
+	public LegalEntity( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChartOfAccounts> chartOfAccounts ) 
 	{
-		update( iD, name, legalName, phone, contact, address );
+		update( iD, name, legalName, phone, contact, address, chartNames, chartOfAccounts );
 	}
 	
 	/**
@@ -57,7 +69,7 @@ public class LegalEntity
 	 * @param contact Contact person
 	 * @param address Address of Legal Entity
 	 */
-	public void update( String iD, String name, String legalName, String phone, String contact, String address )
+	public void update( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChartOfAccounts> chartOfAccounts )
 	{
 		// Save provided info and crypt sensitive info
 		this.iD = iD;
@@ -66,9 +78,21 @@ public class LegalEntity
 		this.phone = Cipher.crypt( phone );
 		this.contact = Cipher.crypt( contact );
 		this.address = Cipher.crypt( address );
+		
+		if ( legalEntityCharts != null && legalEntityCharts.size() > 0 )
+			Database.removeFromDB( legalEntityCharts );
+		
+		legalEntityCharts = new Vector<LegalEntityCharts>();
+		LegalEntityCharts legalEntityChartsLine;
+		
+		for ( int i = 0; i < chartOfAccounts.size(); i++ )
+		{
+			legalEntityChartsLine = new LegalEntityCharts( i, chartNames.get(i), chartOfAccounts.get(i) );
+			legalEntityCharts.add( legalEntityChartsLine );
+		}
 	}
 	
-	// Return ID of Legal Entity
+	// Returns ID of Legal Entity
 	public String getId()
 	{
 		return iD;
@@ -102,5 +126,33 @@ public class LegalEntity
 	public String getAddress()
 	{
 		return Cipher.decrypt( address );
+	}
+	
+	// Returns array of Charts of accounts names specific for Legal entity 
+	public String[] getChartNames()
+	{
+		String[] list = new String[ legalEntityCharts.size() ];
+		
+		for ( int i = 0; i < list.length; i++ )
+		{
+			LegalEntityCharts chart = legalEntityCharts.get(i);
+			list[chart.getLineNum()] = chart.getChartName();
+		}
+			
+		return list;
+	}
+	
+	// Returns array of Legal entity Charts of accounts names in the system
+	public String[] getChartOfAccounts()
+	{
+		String[] list = new String[ legalEntityCharts.size() ];
+		
+		for ( int i = 0; i < list.length; i++ )
+		{
+			LegalEntityCharts chart = legalEntityCharts.get(i);
+			list[chart.getLineNum()] = chart.getChartOfAccounts();
+		}
+		
+		return list;
 	}
 }

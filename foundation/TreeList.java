@@ -53,6 +53,9 @@ public class TreeList extends List implements Utilities
         list[pointer++] = new TreeItem( item, node );
     }
 	
+    /**
+     * Class default constructor
+     */
     public TreeList()
     {
         super();

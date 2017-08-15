@@ -27,5 +27,4 @@ public interface ItemsList
     {
         return new ArrayList[] { list };
     }
-    
 } // End of interface ** ItemsList **

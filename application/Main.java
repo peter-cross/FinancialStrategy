@@ -14,9 +14,9 @@ import interfaces.Utilities;
  * 			  javax.transaction-api.jar, 
  * 			  mysql-connector-java.jar
  */
-public final class Main extends Application implements Utilities
+public final class Main extends Application
 {
-	public static final String TITLE = "Financial Strategy v.1.1";
+	public static final String TITLE = "Financial Strategy v.1.2";
 	
 	/**
      * Starts the program
@@ -38,7 +38,7 @@ public final class Main extends Application implements Utilities
     	Database.start();
         
     	// Invoke openAboutBox in a separate Event Dispatch Thread
-    	new UserDialog( this::openAboutBox ).start();
+    	new UserDialog( Utilities::openAboutBox ).start();
         
     	// Create instance of GUI Controller
     	Controller.getInstance(st);
@@ -52,6 +52,5 @@ public final class Main extends Application implements Utilities
     public void stop() 
     {
     	Database.stop();
-    }
-     
+    }     
 } // End of class ** Main **

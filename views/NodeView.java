@@ -21,9 +21,9 @@ import application.Controller;
 public class NodeView extends Stage 
 {
 	/*********************  Properties  **************************************************************************/
-	private Node 	content;	// Content to display
-	protected Stage owner;		// Parent window
+	protected Stage owner;			// Parent window
 	
+	private Node 	content;		// Content to display
 	private double width, height;	// Window width and height
 	private String title;			// Window title
 	
@@ -40,8 +40,10 @@ public class NodeView extends Stage
 		// Create scene & Set scene for the stage
         setScene( createScene() );
         
+        // Set form title
         setTitle( title );
 
+        // Initialize form owner, if specified
         if ( owner != null )
         	initOwner( owner );
         
@@ -73,8 +75,10 @@ public class NodeView extends Stage
     {
         StackPane stackPane = new StackPane();
         
+        // Add content to Pane object
         stackPane.getChildren().add( content );
         
+        // Set alignment to Center
         StackPane.setAlignment( content, Pos.CENTER );
         Scene scene;
         
@@ -96,12 +100,17 @@ public class NodeView extends Stage
             style.add( styleSheet.toExternalForm() );
         }
         
+        // Make pane focus traversable
         stackPane.setFocusTraversable( true );
 		
         return scene;
         
     } // End of method ** createScene **
 	
+    /**
+     * Creates Scene object with default content
+     * @return Scene object
+     */
     private Scene createScene()
     {
 		return createScene( content );
@@ -149,4 +158,5 @@ public class NodeView extends Stage
     {
     	this( "", width, height );
     }
-}
+    
+} // End of class ** NodeView **

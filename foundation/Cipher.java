@@ -8,7 +8,7 @@ package foundation;
 public class Cipher 
 {
 	private final static char CYPHER = 63;	// To cypher the amounts
-	private static Cipher instance;
+	private static Cipher instance;			// Last instance of the class
 	
 	private final char 	keyLetter, 	// The amount to apply to letters
 						keyNumeral;	// The amount to apply to numbers

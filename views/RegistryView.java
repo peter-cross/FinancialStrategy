@@ -7,7 +7,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.Pane;
@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 import java.net.URL;
 
 import application.Main;
+import models.RegistryItemModel;
 import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.Cipher;
@@ -42,7 +43,6 @@ import interfaces.Buttons;
 import interfaces.Constants;
 import interfaces.Encapsulation;
 import interfaces.Utilities;
-import models.RegistryItemModel;
 
 import static interfaces.Buttons.newActionButton;
 import static interfaces.Utilities.attrName;
@@ -67,7 +67,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
     private String[]                            		tabs;           // Tabs
     private String                              		tabsType;       // Value type of Tab Items
     private int                                         numCols = 0;    // Number of columns to display
-    private Button                                      modeBtn;		// Mode button ( switching modes )
+    private ButtonBase                                  modeBtn;		// Mode button ( switching modes )
     
     private LinkedHashSet<RegistryItemModel>[]          list;      // List of Registry Items to display
     private ArrayList<TableView<ArrayList<Data>>>       table;     // Table to display content
@@ -183,7 +183,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
     private void addTableButtons( TabPane tabPane )
     {
         // Create array for table button objects
-        Button[] btn = new Button[6];
+        ButtonBase[] btn = new ButtonBase[5];
         
         // Create New button element with Event Handler
         btn[0] = newActionButton( "New", eventNewRegistryItem( tabPane ) );
@@ -194,14 +194,18 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         // Create Delete button element with Event Handler
         btn[2] = newActionButton( "Delete", eventDeleteRegistryItem( tabPane ) );
         
-        // Create Print button object with Event Handler
-        btn[3] = newActionButton( "About ", e -> displayAbout() );
-        
-        // Create button for Mode switch
-        btn[4] = modeBtn; 
+        try
+        {
+        	// Create button for Mode switch
+            btn[3] = (ButtonBase) modeBtn; 
+        }
+        catch ( Exception e )
+        {
+        	btn[3] = null;
+        }
         
         // Create Close button object with Event Handler
-        btn[5] = newActionButton( "Close ", eventCloseRegistry() );
+        btn[4] = newActionButton( "Close ", eventCloseRegistry() );
         
         // Get pane from Scene object
         Pane pane = (Pane) scene.getRoot();
@@ -1255,7 +1259,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
     
     /*          Constructors                                                                                          */
     /******************************************************************************************************************/
-    /*                                                                                                                */
+    
     /**
      * Class constructor with specified Registry title and type of RegistryIem
      * @param stage Stage where to display
@@ -1285,7 +1289,14 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         modeBtn = null;
     }
     
-    public RegistryView( Stage stage, String title, String valueType, Button btn )
+    /**
+     * Class constructor
+     * @param stage Stage where to display
+     * @param title Registry title 
+     * @param valueType RegistryIem type
+     * @param btn Optional Mode button object
+     */
+    public RegistryView( Stage stage, String title, String valueType, ButtonBase btn )
     {
         this(stage, title, valueType);
         
@@ -1344,11 +1355,19 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         }
     }
     
-    public RegistryView( Stage stage, String title, String valueType, String tabsType, Button btn )
+    /**
+     * Class constructor
+     * @param stage Stage where to display
+     * @param title Registry title 
+     * @param valueType RegistryIem type
+     * @param tabsType Type of tabs items
+     * @param btn Optional Mode button object
+     */
+    public RegistryView( Stage stage, String title, String valueType, String tabsType, ButtonBase btn )
     {
         this(stage, title, valueType, tabsType);
         
         modeBtn = btn;
     }
     
-} // End of class ** Registry **
+} // End of class ** RegistryView **

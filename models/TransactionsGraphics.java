@@ -28,11 +28,11 @@ public class TransactionsGraphics extends Canvas
 	private static final int SHIFT_X = 1 + STROKE, // Shift on canvas horizontally
 					 		 SHIFT_Y = 4 + STROKE; // Shift on canvas vertically	
 	
-	private static double 	 CELL_WIDTH,  // cell width
-				 			 CELL_HEIGHT; // cell height
+	private static double 	 CELL_WIDTH,  	// cell width
+				 			 CELL_HEIGHT; 	// cell height
 
-	private GraphicsContext  gc;		// To store graphic context
-	private Stage			 owner;		// To store parent window object
+	private GraphicsContext  gc;			// To store graphic context
+	private Stage			 owner;			// To store parent window object
 	
 	/**
 	 * Class constructor
@@ -41,7 +41,7 @@ public class TransactionsGraphics extends Canvas
 	public TransactionsGraphics( Stage owner )
 	{
 		// Create canvas object
-		super( WIDTH*0.99, HEIGHT*0.90 );
+		super( WIDTH*0.99, HEIGHT*0.80 );
 		
 		// Calculate cell width and height
 		CELL_WIDTH  = (getWidth() - SHIFT_X - 2)/COLS;
@@ -50,10 +50,6 @@ public class TransactionsGraphics extends Canvas
 		// Get 2D graphic context from inherited class
 		gc = getGraphicsContext2D();
 		this.owner = owner;
-		
-		// Set Graphics object for TAccount and Transaction objects
-		TAccount.setGraphics(this);
-		Transaction.setGraphics(this);
 	}
 
 	/**
@@ -67,7 +63,7 @@ public class TransactionsGraphics extends Canvas
 	/**
 	 * Returns cell width
 	 */
-	public double  getCellWidth()
+	public static double  getCellWidth()
 	{
 		return CELL_WIDTH;
 	}
@@ -75,7 +71,7 @@ public class TransactionsGraphics extends Canvas
 	/**
 	 * Returns cell height
 	 */
-	public double getCellHeight()
+	public static double getCellHeight()
 	{
 		return CELL_HEIGHT;
 	}
@@ -550,4 +546,4 @@ public class TransactionsGraphics extends Canvas
 		
 		displayDrawnLines();
 	}
-}
+} // End of class ** TransactionsGraphics **

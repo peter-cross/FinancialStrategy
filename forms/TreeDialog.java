@@ -12,6 +12,7 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+
 import java.net.URL;
 
 import foundation.AssociativeList;
@@ -34,8 +35,8 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
     protected Node		btn;            // Button which evoked this dialog
     protected String	returnValue;    // Selected value
     
-    private int		width = 254,    // Window width
-                    height = 150;   // Window height
+    private int			width = 254,    // Window width
+                    	height = 150;   // Window height
     /**
      * Creates items of Tree dialog
      * @param <T>   Type parameter
@@ -284,7 +285,12 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
 
     } // End of method ** fillNodesList **
 	
-        
+    /**
+     * Class constructor    
+     * @param stage Stage object where to display
+     * @param title Title for the dialog
+     * @param grpList Tree Groups List to display
+     */
     public TreeDialog( Stage stage, String title, AssociativeList grpList )
     {
         this.stage = stage;
@@ -298,6 +304,13 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
         fillNodesList( grpList );
     }
 	
+    /**
+     * Class constructor
+     * @param stage Stage object where to display
+     * @param title Title for the dialog
+     * @param grpList Tree Groups List to display
+     * @param width Dialog width
+     */
     public TreeDialog( Stage stage, String title, AssociativeList grpList, int width )
     {
         this( stage, title, grpList );
@@ -305,6 +318,14 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
         this.width = width;
     }
 
+    /**
+     * Class constructor
+     * @param stage Stage object where to display
+     * @param title Title for the dialog
+     * @param grpList Tree Groups List to display
+     * @param width Dialog width
+     * @param height Dialog height
+     */
     public TreeDialog( Stage stage, String title, AssociativeList grpList, int width, int height )
     {
         this( stage, title, grpList, width );
@@ -312,4 +333,4 @@ public class TreeDialog extends Stage implements Encapsulation, Constants
         this.height = height;
     }
 	
-} // End of class ** TreeTableDialog **
+} // End of class ** TreeDialog **

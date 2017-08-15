@@ -19,24 +19,23 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import application.Main;
+import models.RegistryItemModel;
+import views.OneColumnView;
 import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.Item;
-import models.RegistryItemModel;
-import views.OneColumnView;
 import interfaces.Lambda.ElementValidation;
 
 /**
  * Interface Utilities
  * @author Peter Cross
- *
  */
 public interface Utilities extends Encapsulation
 {
 	/**
      * Displays About box when the program starts
      */
-    default void openAboutBox()
+	public static void openAboutBox()
     {
     	try 
     	{
@@ -50,7 +49,7 @@ public interface Utilities extends Encapsulation
     /** 
      * Displays About box
      */
-    default void displayAbout()
+	public static void displayAbout()
     {
     	String[] boxTxt = new String[]{ "                     " + Main.TITLE 
 				  + "\n\n",
@@ -59,8 +58,7 @@ public interface Utilities extends Encapsulation
     	displayMessage( boxTxt );
     }
     
-    
-	/**
+    /**
 	 * Invokes dialog for entering text info
 	 * @return Entered text info
 	 */
@@ -206,6 +204,13 @@ public interface Utilities extends Encapsulation
         return null;
     }
     
+    /**
+     * Gets List element by value of field name
+     * @param list  List from which to get a field
+     * @param field Field name
+     * @param value Value to find
+     * @return Found RegistryItemModel object
+     */
     public static RegistryItemModel getListElementBy( HashSet list, String field, Object value )
     {
         RegistryItemModel elm;
@@ -353,7 +358,7 @@ public interface Utilities extends Encapsulation
     /**
      * Sets attribute list for the object
      */
-    default void setAttributesList( )
+    default void setAttributesList()
     {
         // Get class object
         Class c = this.getClass();
@@ -536,7 +541,7 @@ public interface Utilities extends Encapsulation
      * Displays message in a dialog box
      * @param msg Message to display
      */
-    default void displayMessage( String[] msg ) 
+    public static void displayMessage( String[] msg ) 
     {
     	// If it's a valid array
         if ( msg == null )
@@ -574,7 +579,7 @@ public interface Utilities extends Encapsulation
      * Displays message in a dialog box
      * @param msg Message to display
      */
-    default void displayMessage( String msg ) 
+    public static void displayMessage( String msg ) 
     {
     	displayMessage( "", msg );
     }
@@ -584,7 +589,7 @@ public interface Utilities extends Encapsulation
      * @param header Header of the message
      * @param msg Message to display
      */
-    default void displayMessage( String header, String msg ) 
+    public static void displayMessage( String header, String msg ) 
     {
         // If message string is specified and not empty
         if ( msg != null && !msg.isEmpty() )
@@ -882,7 +887,7 @@ public interface Utilities extends Encapsulation
      * @param key String to find
      * @return The array position in which the requested string was found
      */
-    default int indexOf( String[] arr, String key )
+    public static int indexOf( String[] arr, String key )
     {
         // If array is not created
         if ( arr.length == 0 )
