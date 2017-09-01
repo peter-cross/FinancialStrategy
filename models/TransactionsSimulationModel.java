@@ -84,15 +84,22 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	{
 		tabName = entityName;
 		
+		// Get Legal Entity Model by entity name
 		LegalEntityModel lglEntityModel = LegalEntityModel.getByName( entityName );
-		tabNum = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
+		
+		// Find index of legal Entity Model and assign it as Tab number
+		tabNum = Math.max( 0, getListIndex( LegalEntityModel.getItemsList(), lglEntityModel ) );
 		
 		LegalEntity legalEntity = null;
 		
+		// If Legal Entity Model was found
 		if ( lglEntityModel != null )
+			// Get Legal Entity from Legal Entity Model
 			legalEntity = lglEntityModel.getLegalEntity();
 		
+		// If Legal Entity is specified
 		if ( legalEntity != null )
+			// Set Legal Entity in fields attribute
 			fields.set( "legalEntity", legalEntity );
 	}
 	
@@ -133,12 +140,17 @@ public class TransactionsSimulationModel extends RegistryItemModel
 			// Assign output to fields in order to save results
 			fields = output;
 			
+			// Save entered data to database
 			saveToDB();
 			
+			// If list for current tab does not contain current Transactions Simulation Model
 			if ( !list[tabNum].contains( this ) )
+				// Add it to list for current tab
 				list[tabNum].add( this );
 		}
+		// If there are no input or changes, but list for current tab contains current Transactions Model
 		else if ( !list[tabNum].contains( this ) )
+			// Assign null to fields attribute
 			fields = null;
 		
 		return null;
@@ -192,6 +204,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
         for ( int i = 0; i < list.length; i++ )
             list[i] = new LinkedHashSet<>();
 
+        // Initialize model by data from database
         initFromDB();
 	}
 	
@@ -200,32 +213,46 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 */
 	private static void createNewList()
 	{
+		// Get instance of Legal Entity Model Class
 		Class c = createModelClass( "LegalEntityModel" );
 
+		// Min number of entities is one
 		int numEntities = 1;
+		
+		// Array List to store new list of Legal Entities
     	ArrayList<LegalEntityModel>  newEntities = null;
     	
     	try
         {
-            // Get new list of Legal Entities
+            // Get new list of Legal Entities from class static method createList
     		newEntities = new ArrayList( ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0] );
 
-            numEntities = Math.max( newEntities.size(), 1 );
+            // If list is empty - make number of entities one
+    		numEntities = Math.max( newEntities.size(), 1 );
         }
         catch ( Exception e ) { }
     	
+    	// Linked HashSet for new list of Legal Entities
     	LinkedHashSet[] newList = new LinkedHashSet[numEntities];
 		
-		for ( int i = 0; i < numEntities; i++ )
+		// Loop for each current legal entity
+    	for ( int i = 0; i < numEntities; i++ )
     	{
 			int idx = -1;
 			
+			// If there is non-empty list of new Legal Entities
 			if ( newEntities.size() > 0 )
+				// Try to get in list of existing Legal Entities index of new Legal Entity with index i
 				idx = entities.indexOf( newEntities.get(i) );
         		
-    		if ( idx >= 0 )
+    		// If entity was found
+			if ( idx >= 0 )
+				// Assign reference to found Legal Entity for new list
     			newList[i] = list[idx];
+			
+			//Otherwise
     		else
+    			// Create empty Linked HashSet list for current entity
     			newList[i] = new LinkedHashSet<>();
     	}
 		
@@ -251,14 +278,19 @@ public class TransactionsSimulationModel extends RegistryItemModel
 
                 int entityNum = 0;
 
+                // If Legal Entity is assigned
                 if ( lglEntity != null )
                 {
-                    LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
+                    // Get Legal Entity Model by Legal Entity instance
+                	LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
 
-                    if ( lglEntityModel != null )
+                    // If Legal Entity Model is found
+                	if ( lglEntityModel != null )
+                		// Get entity index by Legal Entity Model
                     	entityNum = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
                 }
 
+                // Create new instance of class based on provided TransactionsModel and legal Entity name
                 list[entityNum].add( new TransactionsSimulationModel( tm, lglEntity.getName() ) );
             }
 	}
@@ -280,11 +312,15 @@ public class TransactionsSimulationModel extends RegistryItemModel
 		// Get Transactions Model object
 		TransactionsModel transactionsModel = fields.get( "transactionsModel" );
 		
+		// If Legal Entity of TransactionsModel is not specified
 		if ( transactionsModel.getLegalEntity() == null )
 		{
+			// Try to get Legal Entity instance from fields 
 			LegalEntity legalEntity = fields.get( "legalEntity" );
 			
+			// If Legal Entity is specified 
 			if ( legalEntity != null )
+				// Set Legal Entity for TransactionsModel object
 				transactionsModel.setLegalEntity( legalEntity );
 		}
 		
@@ -355,14 +391,21 @@ public class TransactionsSimulationModel extends RegistryItemModel
     	// If EntityManager object is created and TransactionsSimulationModel argument is specified
         if ( tm != null  )
         {
+        	// Get LegalEntity from TransactionsModel
         	LegalEntity lglEntity = tm.getLegalEntity();
         	
+        	// If LegalEntity is specified
         	if ( lglEntity != null )
         	{
+        		// Get Legal Entity Model by Legal Entity
         		LegalEntityModel lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
         		
+        		// Try to find Legal Entity Model in current list of entities
         		int idx = entities.indexOf( lglEntityModel );
+        		
+        		// If Legal Entity Model is found
             	if ( idx >= 0 )
+            		// Remove it from current tab list
             		list[idx].remove( this );
         	}
         	

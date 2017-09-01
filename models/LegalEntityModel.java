@@ -237,6 +237,15 @@ public class LegalEntityModel extends RegistryItemModel
     }
     
     /**
+     * Gets names for legal entity Charts of Accounts
+     * @return
+     */
+    public String[] getChartNames()
+    {
+    	return (String[]) fields.get( "chartName" );
+    }
+    
+    /**
      * Saves Legal Entity data to Database
      */
     protected void saveToDB()

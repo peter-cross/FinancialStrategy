@@ -23,6 +23,7 @@ import java.util.List;
 import application.Database;
 import application.Main;
 import entities.ChartOfAccounts;
+import entities.GLAccount;
 import entities.LegalEntity;
 import entities.TAccount;
 import entities.Transaction;
@@ -34,6 +35,10 @@ import foundation.TaskTimer;
 import foundation.UserDialog;
 import interfaces.Utilities;
 import models.ChartOfAccountsModel;
+import models.GLAccountModel;
+import models.LegalEntityModel;
+
+import static interfaces.Utilities.enterTAccountInfo;
 
 /**
  * Class TransactionsSimulationModel - Modeling accounting transactions
@@ -73,6 +78,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private String[]		tabs;					// Tab names
     
 	private TabPane 		tabPane;				// TabPane object for document with multiple tabs
+	private AssociativeList fields;
 	
 	private ArrayList<ArrayList<TAccount>>[] grid; 	// To store cell accounts as a grid
 	private TransactionsGraphics[]			 tg;	// Graphics object for displaying transactions
@@ -99,15 +105,24 @@ public class TransactionsModelView extends NodeView implements Utilities
 	{
 		this();
 		
+		this.fields = fields;
+		
 		legalEntity = fields.get( "legalEntity" );
 		
 		// Get Transactions Model
 		transactionsModel = fields.get( "transactionsModel" );
 		
 		if ( legalEntity != null )
-                    tabs = legalEntity.getChartOfAccounts();
-                else
-                    tabs = new String[] {};
+		{
+			LegalEntityModel entityModel = LegalEntityModel.getByEntity( legalEntity );
+			
+			if ( entityModel != null )
+				tabs = entityModel.getChartNames();
+			else
+				tabs = legalEntity.getChartOfAccounts();
+	    }
+		else
+        	tabs = new String[] {};
         
 		// Set dialog graphics
 		setGraphics();
@@ -154,13 +169,13 @@ public class TransactionsModelView extends NodeView implements Utilities
 		tg = new TransactionsGraphics[tgSize];
 		
 		for ( int i = 0; i < tgSize; i++ )
-                {
-                    // Create Transactions Graphics object
-                    tg[i] = new TransactionsGraphics(this);
-                        
-                    // Add event handler for Mouse Click event
-                    tg[i].addEventHandler( MouseEvent.MOUSE_CLICKED, this::clickedEventHandler );
-                }
+        {
+            // Create Transactions Graphics object
+            tg[i] = new TransactionsGraphics(this);
+                
+            // Add event handler for Mouse Click event
+            tg[i].addEventHandler( MouseEvent.MOUSE_CLICKED, this::clickedEventHandler );
+        }
 		
 		// Get cell width and height
 		CELL_WIDTH  = TransactionsGraphics.getCellWidth();
@@ -170,8 +185,13 @@ public class TransactionsModelView extends NodeView implements Utilities
 		TAccount.setGraphics(tg);
 		Transaction.setGraphics(tg);
 		
-		TAccount.setChartsOfAccounts( tabs );
-		Transaction.setChartsOfAccounts( tabs );
+		String[] charts = {};
+		
+		if ( legalEntity != null )
+			charts = legalEntity.getChartOfAccounts();
+		
+		TAccount.setChartsOfAccounts( charts );
+		Transaction.setChartsOfAccounts( charts );
 	}
 	
 	/**
@@ -268,9 +288,9 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	public static Vector<Transaction> getTransactions()
 	{
-		Vector<Transaction> trList = new Vector(transactions);
-		trList.addAll(toAddTransactions);
-		trList.removeAll(toDelTransactions);
+		Vector<Transaction> trList = new Vector( transactions );
+		trList.addAll( toAddTransactions );
+		trList.removeAll( toDelTransactions );
 		
 		return trList;
 	}
@@ -306,9 +326,9 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	public static Vector<TAccount> getTAccounts()
 	{
-		Vector<TAccount> tAccList = new Vector(accounts);
-		tAccList.addAll(toAddTAccounts);
-		tAccList.removeAll(toDelTAccounts);
+		Vector<TAccount> tAccList = new Vector( accounts );
+		tAccList.addAll( toAddTAccounts );
+		tAccList.removeAll( toDelTAccounts );
 		
 		return tAccList;
 	}
@@ -696,13 +716,35 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Draw T-account
 		drawTAccount( e );
   	  	
-                ChartOfAccounts chart = selectedChartOfAccounts();
-                
-		// Enter T-account name and create object for T-account
-		TAccount acct = new TAccount( enterTextInfo( "Account name" ), e, chart );
+		ChartOfAccounts chart = selectedChartOfAccounts();
+		int chartIndex = 0;
+		
+		if ( chart != null )
+			chartIndex = ChartOfAccountsModel.getIndexByName( chart.getName() );
+		
+        String[] tAccInfo = enterTAccountInfo( this, chartIndex, fields );
+        
+        String glCode = tAccInfo[0];
+        String accName = tAccInfo[1];
+        
+        TAccount acct;
+        
+        if ( glCode == null || glCode.isEmpty() )
+	        // Enter T-account name and create object for T-account
+			acct = new TAccount( accName, e, chart );
+        else
+        {
+        	GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
+        	
+        	GLAccount glAcc = null;
+        	
+        	if ( glModel != null )
+        		glAcc = glModel.getGLAccount();
+        	
+        	acct = new TAccount( accName, e, chart, glAcc );
+        }
 		
 		// Add created T-account to the list of T-accounts
-		//accounts.add( acct );
 		toAddTAccounts.add( acct );
 	  	
 		// Draw T-account name
@@ -1102,7 +1144,9 @@ public class TransactionsModelView extends NodeView implements Utilities
         if ( tabs.length == 0 )
             return null;
         
-        ChartOfAccountsModel chartModel = ChartOfAccountsModel.getByName( tabs[tabNum] );
+        String[] charts = legalEntity.getChartOfAccounts();
+		
+        ChartOfAccountsModel chartModel = ChartOfAccountsModel.getByName( charts[tabNum] );
         
         if ( chartModel != null )
             return chartModel.getChartOfAccounts();

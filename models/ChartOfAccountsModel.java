@@ -99,7 +99,9 @@ public class ChartOfAccountsModel extends RegistryItemModel
             {
                 fields = ((ChartOfAccountsModel) it.next()).getFields();
                 
-                if ( fields !=  null && (String) fields.get( "name" ) == name )
+                String fieldsName = (String) fields.get( "name" );
+                
+                if ( fields !=  null && fieldsName.equals( name ) )
                     return i;
                 else
                     i++;

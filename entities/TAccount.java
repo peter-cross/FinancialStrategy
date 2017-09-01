@@ -47,6 +47,9 @@ public class TAccount
 	@ManyToOne( fetch=FetchType.EAGER )
 	private ChartOfAccounts chartOfAccounts;	  // Chart of Accounts to which T-account belongs
 	
+	@ManyToOne( fetch=FetchType.EAGER )
+	private GLAccount glAccount;				  // G/L Account of T-account
+	
 	private static TransactionsGraphics[] tg;	  // Transactions graphics canvas
 	private static String[]				  charts; // Chart of Accounts for Legal Entity
 	
@@ -62,6 +65,7 @@ public class TAccount
 	 * Class constructor
 	 * @param acctName T-account name
 	 * @param e Mouse event
+	 * @param chart Chart Of Accounts to which T-Account belongs
 	 */
 	public TAccount( String acctName, MouseEvent e, ChartOfAccounts chart )
 	{
@@ -73,6 +77,20 @@ public class TAccount
 		corrCr = new ArrayList<>();
                 
         chartOfAccounts = chart;
+	}
+	
+	/**
+	 * Class constructor
+	 * @param acctName T-account name
+	 * @param e Mouse event
+	 * @param chart Chart Of Accounts to which T-Account belongs
+	 * @param glAcc G/L account for created T-Account
+	 */
+	public TAccount( String acctName, MouseEvent e, ChartOfAccounts chart, GLAccount glAcc )
+	{
+		this( acctName, e, chart );
+	
+		glAccount = glAcc;
 	}
 	
 	/**
@@ -148,6 +166,15 @@ public class TAccount
 	public ChartOfAccounts getChartOfAccounts()
 	{
 		return chartOfAccounts;
+	}
+	
+	/**
+	 * Gets G/L account for T-account
+	 * @return
+	 */
+	public GLAccount getGLAccount()
+	{
+		return glAccount;
 	}
 	
 	/**
@@ -359,11 +386,16 @@ public class TAccount
 	 */
 	public void drawAccountName()
 	{
-		String txt = Cipher.decrypt(name);
-		
+		// Get index for Chart Of Accounts for current Tab
 		int idx = chartIndex();
 		
-		tg[idx].drawText( txt, row, col, 0.15 );
+		// If G/L Account for T-account is specified
+		if ( glAccount != null )
+			// Display number of G/L account above T-account name
+			tg[idx].drawText( glAccount.getGlNumber(), row-1, col, 0.80 );
+		
+		// Display name of T-account
+		tg[idx].drawText( Cipher.decrypt(name), row, col, 0.15 );
 	}
 	
 	/**

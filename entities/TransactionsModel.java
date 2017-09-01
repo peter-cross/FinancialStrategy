@@ -56,7 +56,7 @@ public class TransactionsModel
 	 */
 	public TransactionsModel( String name, Vector<TAccount> taccounts, Vector<Transaction> transactions )
 	{
-		this.name = Cipher.crypt(name);
+		this.name = Cipher.crypt( name );
 		this.taccounts = taccounts;
 		this.transactions = transactions;
 	}
@@ -70,7 +70,7 @@ public class TransactionsModel
 	 */
 	public TransactionsModel( String name, Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
-		this(name, taccounts, transactions);
+		this( name, taccounts, transactions );
 		this.lglEntity = lglEntity;
 	}
 	/**
@@ -92,7 +92,7 @@ public class TransactionsModel
 	 */
 	public TransactionsModel( Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
-		this(taccounts, transactions);
+		this( taccounts, transactions );
 		this.lglEntity = lglEntity;
 	}
 	
@@ -102,7 +102,7 @@ public class TransactionsModel
 	 */
 	public void setName( String name )
 	{
-		this.name = Cipher.crypt(name);
+		this.name = Cipher.crypt( name );
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class TransactionsModel
 	 */
 	public String getName()
 	{
-		return Cipher.decrypt(name);
+		return Cipher.decrypt( name );
 	}
 	
 	/**

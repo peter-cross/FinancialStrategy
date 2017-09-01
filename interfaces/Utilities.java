@@ -4,6 +4,8 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 import java.util.Date;
 import java.util.Optional;
@@ -19,7 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import application.Main;
+import models.GLAccountModel;
 import models.RegistryItemModel;
+import views.NodeView;
 import views.OneColumnView;
 import forms.DialogElement;
 import foundation.AssociativeList;
@@ -72,6 +76,56 @@ public interface Utilities extends Encapsulation
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0][0] : "";
+	}
+	
+	/**
+	 * Invokes dialog for entering T-account info
+	 * @return Entered text info
+	 */
+	public static String[] enterTAccountInfo( NodeView owner, int chartIndex, AssociativeList fields )
+	{
+		// Create dialog element for dialog field
+		DialogElement glAcct = new DialogElement( "G/L Account" );
+		glAcct.width = 70;
+		glAcct.editable = false;
+		// Get G/L Account Model Items List for selected Chart Of Accounts
+		glAcct.list = GLAccountModel.getItemsList()[chartIndex];
+		// Set lambda expression that will be executed on change of field value
+		glAcct.onChange = ( elList ) -> 
+		{
+			// Get value of current ComboBox field
+			ComboBox field = (ComboBox) elList.get( "G/L Account" );
+			// If nothing is specified - finish
+			if ( field == null ) return;
+			
+			// Get string value of selected G/L account
+			String glCode = (String) field.getValue();
+			
+			// If G/L code is specified
+			if ( glCode != null )
+			{
+				// Find G/L account model by G/L code and Charts Of Accounts Index
+				GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
+				
+				// Get value of form field with name 'Account Name'
+				TextField nameField  = (TextField) elList.get( "Account Name" );
+				
+				// Make field non-editable
+				nameField.setEditable( false );
+	        
+	            // Set G/L account model name as text value of 'Account Name' field
+				nameField.setText( glModel.getName() );
+			}
+		};
+		
+		// Create dialog element for dialog field
+		DialogElement acctName = new DialogElement( "Account Name" );
+		
+		// Invoke OneColumnDialog window and return entered information
+		String[][] result = new OneColumnView( owner, "Enter Account Name", new DialogElement[]{glAcct, acctName} ).result();
+		
+		// If there is entered information - return it, otherwise - just return empty string
+		return result != null ? result[0] : new String[] {null, null};
 	}
 	
 	/**

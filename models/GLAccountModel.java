@@ -120,12 +120,20 @@ public class GLAccountModel extends RegistryItemModel
     {
         int chartIndex = ChartOfAccountsModel.getIndexByName( chart );
         
+        return getByCode( code, chartIndex );
+        
+    } // End of method ** getByCode **
+    
+    
+    public static GLAccountModel getByCode( String code, int chartIndex )
+    {
         if ( chartIndex != -1 )
             return (GLAccountModel) getListElementBy( list[chartIndex], "glNumber", code );
         else
             return null;
         
     } // End of method ** getByCode **
+    
     
     /**
      * Gets string representation of class object
@@ -134,6 +142,16 @@ public class GLAccountModel extends RegistryItemModel
     public String toString()
     {
         return (String) fields.get( "glNumber" );    
+    }
+    
+    public String getName()
+    {
+    	return (String) fields.get( "name" ); 
+    }
+    
+    public GLAccount getGLAccount()
+    {
+    	return (GLAccount) fields.get( "glAccount" );
     }
     
     /**
