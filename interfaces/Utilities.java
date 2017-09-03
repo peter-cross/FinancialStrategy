@@ -29,6 +29,7 @@ import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.Item;
 import interfaces.Lambda.ElementValidation;
+import interfaces.Lambda.OnElementChange;
 
 /**
  * Interface Utilities
@@ -43,9 +44,9 @@ public interface Utilities extends Encapsulation
     {
     	try 
     	{
-			Thread.sleep(100);
+			Thread.sleep( 100 );
 		} 
-    	catch (InterruptedException e) {}
+    	catch ( InterruptedException e ) {}
     	
     	displayAbout();
     }
@@ -91,10 +92,30 @@ public interface Utilities extends Encapsulation
 		// Get G/L Account Model Items List for selected Chart Of Accounts
 		glAcct.list = GLAccountModel.getItemsList()[chartIndex];
 		// Set lambda expression that will be executed on change of field value
-		glAcct.onChange = ( elList ) -> 
+		glAcct.onChange = onGLAccountChange( chartIndex );
+		
+		// Create dialog element for dialog field
+		DialogElement acctName = new DialogElement( "Account Name" );
+		
+		// Invoke OneColumnDialog window and return entered information
+		String[][] result = new OneColumnView( owner, "Enter Account Name", new DialogElement[]{glAcct, acctName} ).result();
+		
+		// If there is entered information - return it, otherwise - just return empty string
+		return result != null ? result[0] : new String[] {null, null};
+	}
+	
+	/**
+	 * Lambda expression executed on change of G/L account
+	 * @param chartIndex Index of Chart Of Accounts to which belongs G/L account
+	 * @return Lambda expression
+	 */
+	static OnElementChange onGLAccountChange( int chartIndex )
+	{
+		return ( elList ) -> 
 		{
 			// Get value of current ComboBox field
 			ComboBox field = (ComboBox) elList.get( "G/L Account" );
+			
 			// If nothing is specified - finish
 			if ( field == null ) return;
 			
@@ -117,15 +138,6 @@ public interface Utilities extends Encapsulation
 				nameField.setText( glModel.getName() );
 			}
 		};
-		
-		// Create dialog element for dialog field
-		DialogElement acctName = new DialogElement( "Account Name" );
-		
-		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnView( owner, "Enter Account Name", new DialogElement[]{glAcct, acctName} ).result();
-		
-		// If there is entered information - return it, otherwise - just return empty string
-		return result != null ? result[0] : new String[] {null, null};
 	}
 	
 	/**
@@ -185,18 +197,19 @@ public interface Utilities extends Encapsulation
      */
     public static RegistryItemModel getByIndex( LinkedHashSet<RegistryItemModel> list, int index )
     {
-        RegistryItemModel itm = null;
-        
         Iterator it = list.iterator();
         int i = 0;
         
+        // Loop while list has nect item
         while ( it.hasNext() )
+        	// If current list element is what we are looking for
             if ( i++ == index )
-                itm = (RegistryItemModel) it.next();
+            	// Retrieve current list item and return it
+            	return (RegistryItemModel) it.next();
             else
                 it.next();
-                
-        return itm;
+        
+        return null;
     }
     
     /**
@@ -284,7 +297,7 @@ public interface Utilities extends Encapsulation
             Object fieldValue = fields.get(field);
             
             // If field value matches
-            if ( fieldValue.equals(value) )
+            if ( fieldValue.equals( value ) )
                 return elm;
         }
         
@@ -301,15 +314,12 @@ public interface Utilities extends Encapsulation
         // Get attribute field
         AssociativeList fields = ((RegistryItemModel) this).getFields();
         
-        if ( fields == null )
-            return "";
+        if ( fields == null )  return "";
         
         // Get field value
         Object obj = fields.get( fieldname );
         
-        if ( obj == null )
-            return "";
-        else 
+        if ( obj != null )
             try
             {
                 // If object is convertible to double value
@@ -319,7 +329,7 @@ public interface Utilities extends Encapsulation
                         // Return number with decimals
                         return "" + (double) obj;
                     else
-                        // Reurn number as integer
+                        // Return number as integer
                         return "" + (int)((Double) obj).intValue();
             }
             catch ( Exception e )
@@ -328,8 +338,6 @@ public interface Utilities extends Encapsulation
                 if ( (int) obj > 0 )
                     // Return number as integer
                     return "" + (int) obj;
-                else
-                    return "";
             }
             
         return "";
@@ -441,7 +449,7 @@ public interface Utilities extends Encapsulation
      */
     default ElementValidation validationCode( String field )
     {
-    	return ( String value ) ->  // Value - the field value to verify
+    	return ( value ) ->  // Value - the field value to verify
         {
             if ( value == null )
                 value = "";
@@ -483,21 +491,43 @@ public interface Utilities extends Encapsulation
      */
     default boolean saveToFile( Stage form, String output, String prompt )
     {
-        String      filename; 	// To store entered file name
-        File        file;	// To store object for working with file
-        boolean     condition;	// To store condition 
-        PrintWriter pw;		// To store output stream object
-        String[][]  result;	// To store result from input dialog
- 		
-        // Create array for dialog elements
-        DialogElement[] el = new DialogElement[1];
-
-        // Create dialog element with label File name
-        el[0] = new DialogElement( "File name" );
-        el[0].valueType = "FileSave";
-
-        // Assign lambda expression to validate the dialog element
-        el[0].validation = ( String val ) -> 
+        // If there is something to save
+        if ( !output.isEmpty() )
+        {
+        	File  file = fileSaveDialog( form, prompt );	// Enter file to save info
+            
+        	if ( file != null )
+	        	try 
+	            {
+	                // Create PrintWriter object to work with output stream
+	        		PrintWriter pw = new PrintWriter( file );
+	
+	                // Write output string to file
+	                pw.print( output.trim() );
+	
+	                // Close output stream
+	                pw.close();
+	                
+	                return true;
+	            } 
+	            catch ( FileNotFoundException e ) 
+	            {                
+	                return false;
+	            }
+        } // End if ** output **
+        
+        return false;
+    
+    } // End of method ** saveToFile **
+	
+    
+    /**
+     * Lambda expression that gets invoked to validate Filename on saving file
+     * @return
+     */
+    static ElementValidation fileSaveValidation()
+    {
+    	return ( val ) -> 
         {
             val = val.trim();	// Remove spaces from both sides
 
@@ -512,70 +542,69 @@ public interface Utilities extends Encapsulation
             return true;
 
         }; // End of lambda expression
- 		
-        // If there is something to save
-        if ( !output.isEmpty() )
+    }
+    
+    /**
+     * Invokes dialog form for saving into file
+     * @param form Stage object
+     * @param prompt Prompt message to display
+     * @param el Dialog elements to display in form
+     * @return File object for selected files
+     */
+    static File fileSaveDialog( Stage form, String prompt )
+    {
+    	String      filename; 	// To store entered file name
+        String[][]  result;		// To store result from input dialog
+        boolean     condition;	// To store condition 
+        File        file;		// To store object for working with file
+        
+        // Create array for dialog elements
+        DialogElement[] el = new DialogElement[1];
+        // Create dialog element with label File name
+        el[0] = new DialogElement( "File name" );
+        el[0].valueType = "FileSave";
+        // Assign lambda expression to validate the dialog element
+        el[0].validation = fileSaveValidation();
+        
+        // Loop
+        do
         {
-            // Loop
-            do
+        	// Display Dialog window with dialog elements defined above and get input results as a string array
+            result  = new OneColumnView( form, prompt, el ).result();
+
+            // If there is valid input from dialog
+            if ( result != null )
+                // Get file name from 1st array element
+                filename = result[0][0];
+            else
+                // If Cancel button was pressed
+                return null;
+     		
+            // If filename does not contain extension
+            if ( !filename.contains(".") )
+                // Add to file name extension of text file
+                filename += ".txt";
+
+            // Create File object to work with file
+            file = new File(filename);
+
+            // If file exists
+            if ( file.exists() )
             {
-            	// Display Dialog window with dialog elements defined above and get input results as a string array
-                result  = new OneColumnView( form, prompt, el ).result();
-
-                // If there is valid input from dialog
-                if ( result != null )
-                    // Get file name from 1st array element
-                    filename = result[0][0];
-                else
-                    // If Cancel button was pressed
-                    return false;
-         		
-                // If filename does not contain extension
-                if ( !filename.contains(".") )
-                    // Add to file name extension of text file
-                    filename += ".txt";
-
-                // Create File object to work with file
-                file = new File(filename);
-
-                // If file exists
-                if ( file.exists() )
-                {
-                    // Display a message 
-                    displayMessage( "", String.format( "The file %s already exists. \n Type another one ...", filename ) );
-                    
-                    // Assign condition for loop
-                    condition = file.exists();	
-                }
-                else
-                    condition = false;
-
-            } while ( condition );
-
-            try 
-            {
-                // Create PrintWriter object to work with output stream
-                pw = new PrintWriter(file);
-
-                // Write output string to file
-                pw.print( output.trim() );
-
-                // Close output stream
-                pw.close();
+                // Display a message 
+                displayMessage( "", String.format( "The file %s already exists. \n Type another one ...", filename ) );
                 
-                return true;
-            } 
-            catch ( FileNotFoundException e ) 
-            {                
-                return false;
+                // Assign condition for loop
+                condition = file.exists();	
             }
-            
-        } // End if ** output **
+            else
+                condition = false;
+
+        } while ( condition );
         
-        return false;
-        
-    } // End of method ** saveToFile **
-	
+		return file;
+    }
+    
     /**
      * Counts the number of non-empty array elements
      * @param arr Array object
@@ -598,8 +627,8 @@ public interface Utilities extends Encapsulation
     public static void displayMessage( String[] msg ) 
     {
     	// If it's a valid array
-        if ( msg == null )
-            return;
+        if ( msg == null ) 
+        	return;
         
         // If only one message line in array
         else if ( arrayCount( msg ) == 1 )
@@ -652,15 +681,17 @@ public interface Utilities extends Encapsulation
             Alert alert = new Alert( AlertType.INFORMATION );
 
             alert.setTitle( "" );
+            
             // Set header
             alert.setHeaderText( header );
+            
             // Set message as alert box content
             alert.setContentText( msg );
 
             // Display and wait
             alert.showAndWait();	
         }
-		
+	
     } // End of method ** displayMessage **
     
     /**
@@ -689,6 +720,7 @@ public interface Utilities extends Encapsulation
             {
                 // Create button with choice option
                 button[i] = new ButtonType( (String)options[i] );
+                
                 // Add choice button
                 alert.getButtonTypes().set( i, button[i] );
             }
@@ -731,7 +763,7 @@ public interface Utilities extends Encapsulation
             return false;
 
         // If can not recognize that date is specified in YYYY-MM-DD format
-        if ( !date.contains("-") )
+        if ( !date.contains( "-" ) )
             return false;
 
         // Create scanner object to parse string
@@ -749,18 +781,28 @@ public interface Utilities extends Encapsulation
         // Close Scanner
         in.close();
 		
-        // If valid month and day numbers
+        return isValidDate( year, month, day );
+        
+    } // End of method ** isValidDate **
+	
+    /**
+     * Checks if specified arguments represent valid date
+     * @param year
+     * @param month
+     * @param day
+     * @return True if arguments represent a valid date, or false otherwise
+     */
+    static boolean isValidDate( int year, int month, int day )
+    {
+    	// If valid month and day numbers
         if ( month >= 1 && month <= 12 && day >= 1 && day <= 31 )
-        {
             // If month is Apr, Jun, Sep or Nov
             if ( month == 4 ^ month == 6 ^ month == 9 ^ month == 11 )
-            {
                 // 30 days in Apr, Jun, Sep, Nov
                 return day <= 30;
-            }
+            
             // If Feb
             else if ( month == 2 )
-            {
                 // 28/29 days in Feb
                 if ( day <= 29 )
                 {
@@ -776,17 +818,16 @@ public interface Utilities extends Encapsulation
                 }
                 else
                     return false;
-            }
+            
             // Any other month
             else
                 return true;
-        }
+        
         // If month or day is not a valid number
         else
             return false;
-
-    } // End of method ** isValidDate **
-	
+    }
+    
     /**
      * Gets current date
      * @return String containing current date
@@ -794,7 +835,7 @@ public interface Utilities extends Encapsulation
     default String currentDate()
     {
         // Create SimpleDateFormat object with template YYYY-MM-DD
-        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat ft = new SimpleDateFormat( "yyyy-MM-dd" );
 
         // Format current date according to template and return it
         return ft.format( new Date() );
@@ -807,7 +848,7 @@ public interface Utilities extends Encapsulation
     default String currentTime()
     {
         // Create SimpleDateFormat object with template HH:MM:SS AM/PM ZONE
-        SimpleDateFormat ft = new SimpleDateFormat("hh:mm:ss a zzz");
+        SimpleDateFormat ft = new SimpleDateFormat( "hh:mm:ss a zzz" );
 
         // Return current time according to template
         return ft.format( new Date() );
@@ -877,20 +918,20 @@ public interface Utilities extends Encapsulation
      */
     default int search( Item[] arr, String key )
     {
-        // Size of one string chunk
-        int chunkLength = (int) Math.ceil( Math.sqrt(arr.length) ); 
-
-        // Result of string comparison
-        int comparisonResult;
-
         // Minimum value of comparison
         int minComparisonResult = -1000;
 
         // Pointer on minimum value of comparison
         int pointer = 0;
 
-        String name;
+        // Result of string comparison
+        int comparisonResult;
+        
+        // Size of one string chunk
+        int chunkLength = (int) Math.ceil( Math.sqrt(arr.length) ); 
 
+        String name;
+        
         // 1st iteration for comparing 1st element of each chunk
         for ( int i = 0; i < arr.length; i += chunkLength )
         {
@@ -898,7 +939,7 @@ public interface Utilities extends Encapsulation
             name = arr[i].get( "name" );
 
             // Result of comparison of array string to key 
-            comparisonResult = name.compareToIgnoreCase(key);
+            comparisonResult = name.compareToIgnoreCase( key );
 
             // If strings are equal
             if ( comparisonResult == 0 )
@@ -925,7 +966,7 @@ public interface Utilities extends Encapsulation
             name = arr[i].get( "name" );
 
             // If the key is found
-            if ( name.compareToIgnoreCase(key) == 0 )
+            if ( name.compareToIgnoreCase( key ) == 0 )
                 // Return the index of current position
                 return i;
         }

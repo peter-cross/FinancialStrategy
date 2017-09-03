@@ -28,15 +28,15 @@ import entities.LegalEntity;
 import entities.TAccount;
 import entities.Transaction;
 import entities.TransactionsModel;
+import models.ChartOfAccountsModel;
+import models.GLAccountModel;
+import models.LegalEntityModel;
 import models.TransactionsGraphics;
 import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.TaskTimer;
 import foundation.UserDialog;
 import interfaces.Utilities;
-import models.ChartOfAccountsModel;
-import models.GLAccountModel;
-import models.LegalEntityModel;
 
 import static interfaces.Utilities.enterTAccountInfo;
 
@@ -56,7 +56,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private static double 	 CELL_WIDTH,  			// Cell width
 							 CELL_HEIGHT; 			// Cell height
 	
-	private static TransactionsModel		transactionsModel;
+	private static TransactionsModel		transactionsModel;	// To store transactions Model entity object
 	private static Vector<Transaction>		transactions;		// To store all transactions
 	private static Vector<TAccount>			accounts;			// To store T-accounts
 	private LegalEntity						legalEntity;		// Legal entity of Transactions Model
@@ -107,29 +107,78 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		this.fields = fields;
 		
-		legalEntity = fields.get( "legalEntity" );
+		setLegalEntity();
 		
-		// Get Transactions Model
-		transactionsModel = fields.get( "transactionsModel" );
-		
-		if ( legalEntity != null )
-		{
-			LegalEntityModel entityModel = LegalEntityModel.getByEntity( legalEntity );
-			
-			if ( entityModel != null )
-				tabs = entityModel.getChartNames();
-			else
-				tabs = legalEntity.getChartOfAccounts();
-	    }
-		else
-        	tabs = new String[] {};
-        
 		// Set dialog graphics
 		setGraphics();
 		
 		// Invoke initialization
 		init();
 	
+		setTransactionsModel();
+		
+		if ( transactionsModel == null )
+			return;
+		
+		setAccountsAndTransactions();
+		
+		// Restore grid and Model's Transactions
+		restoreGridAndTransactions();
+	}
+	
+	/**
+	 * Sets Transactions Model for the view
+	 */
+	private void setTransactionsModel()
+	{
+		// Get Transactions Model
+		transactionsModel = fields.get( "transactionsModel" );
+		
+		if ( transactionsModel == null )
+			return;
+		
+		// Get name of Transactions Model
+		String titleTxt = transactionsModel.getName();
+		
+		// Set title of the model on dialog form
+		if ( titleTxt != null && !titleTxt.isEmpty() )
+			title.setText( titleTxt );
+		
+		// Set Transactions Model as field for output
+		output.set( "transactionsModel", transactionsModel );
+	}
+	
+	/**
+	 * Sets Legal Entity for model and Tabs for Legal Entity Charts Of Accounts
+	 */
+	private void setLegalEntity()
+	{
+		// Try to get Legal Entity database entity object from specified associative list
+		legalEntity = fields.get( "legalEntity" );
+		
+		// If Legal Entity database entity object is specified
+		if ( legalEntity != null )
+		{
+			// Get Legal Entity Model by Legal Entity database entity object
+			LegalEntityModel entityModel = LegalEntityModel.getByEntity( legalEntity );
+			
+			// If Legal Entity Model is specified
+			if ( entityModel != null )
+				// Get Chart Of Accounts names  from Legal Entity Model
+				tabs = entityModel.getChartNames();
+			else
+				// Get Chart Of Accounts names  from Legal Entity database entity object
+				tabs = legalEntity.getChartOfAccounts();
+	    }
+		else
+        	tabs = new String[] {};
+	}
+	
+	/**
+	 * Gets T-Accounts and Transactions for Transactions Model 
+	 */
+	private void setAccountsAndTransactions()
+	{
 		if ( transactionsModel == null )
 			return;
 				
@@ -144,19 +193,6 @@ public class TransactionsModelView extends NodeView implements Utilities
 				
 		if ( accts != null )
 			accounts = accts;
-		
-		// Get name of Transactions Model
-		String titleTxt = transactionsModel.getName();
-		
-		// Set title of the model on dialog form
-		if ( titleTxt != null && !titleTxt.isEmpty() )
-			title.setText( titleTxt );
-		
-		// Set Transactions Model as field for output
-		output.set( "transactionsModel", transactionsModel );
-    	
-		// Restore grid and Model's Transactions
-		restoreGridAndTransactions();
 	}
 	
 	/**
@@ -187,7 +223,9 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		String[] charts = {};
 		
+		// If Legal Entity database entity is specified
 		if ( legalEntity != null )
+			// Get names of Charts Of Accounts from Legal Entity database entity object
 			charts = legalEntity.getChartOfAccounts();
 		
 		TAccount.setChartsOfAccounts( charts );
@@ -555,22 +593,6 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Invokes dialog for entering text info
-	 * @return Entered text info
-	 */
-	private String enterTextInfo( String infoType  )
-	{
-		// Create dialog element for dialog field
-		DialogElement dlg = new DialogElement( infoType );
-		
-		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnView( this, "Enter " + infoType, new DialogElement[]{dlg} ).result();
-		
-		// If there is entered information - return it, otherwise - just return empty string
-		return result != null ? result[0][0] : "";
-	}
-	
-	/**
 	 * Draws T-Account on canvas
 	 * @param e Mouse event
 	 */
@@ -722,25 +744,24 @@ public class TransactionsModelView extends NodeView implements Utilities
 		if ( chart != null )
 			chartIndex = ChartOfAccountsModel.getIndexByName( chart.getName() );
 		
+		// Enter T-account info through the dialog window
         String[] tAccInfo = enterTAccountInfo( this, chartIndex, fields );
         
+        // Get G/L account number and name
         String glCode = tAccInfo[0];
         String accName = tAccInfo[1];
         
         TAccount acct;
         
+        // If G/L account number is specified
         if ( glCode == null || glCode.isEmpty() )
 	        // Enter T-account name and create object for T-account
 			acct = new TAccount( accName, e, chart );
         else
         {
-        	GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
+        	GLAccount glAcc = getGLAccount( glCode, chartIndex );
         	
-        	GLAccount glAcc = null;
-        	
-        	if ( glModel != null )
-        		glAcc = glModel.getGLAccount();
-        	
+        	// Create T-account database entity object
         	acct = new TAccount( accName, e, chart, glAcc );
         }
 		
@@ -752,6 +773,27 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 	  	// Set T-account for current cell
 	  	setCellTAccount( e, acct );
+	}
+	
+	/**
+	 * Gets G/L Account database entity by G/L code and index of Chart Of Accounts
+	 * @param glCode G/L code
+	 * @param chartIndex Index of Chart Of Accounts
+	 * @return G/L Account database entity
+	 */
+	private GLAccount getGLAccount( String glCode, int chartIndex )
+	{
+		// Get G/L account model by G/L account number and index of Chart Of Accounts
+    	GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
+    	
+    	GLAccount glAcc = null;
+    	
+    	// If G/L account model is specified
+    	if ( glModel != null )
+    		// Get G/L account database entity from G/L account model
+    		glAcc = glModel.getGLAccount();
+    	
+    	return glAcc;
 	}
 	
 	/**
@@ -839,39 +881,28 @@ public class TransactionsModelView extends NodeView implements Utilities
     protected <T> VBox createContent()
     {
     	VBox box = new VBox();
-    	GridPane gridPane;
-        
+    	
         if ( tabs.length > 0 )
         {
             // Create tab pane element
             tabPane = new TabPane();
+            
             // Make tabs closing unavailable
             tabPane.setTabClosingPolicy( TabPane.TabClosingPolicy.UNAVAILABLE );
 
-            Tab tab;
-            
             // Loop for each form tab
             for ( int i = 0; i < tabs.length; i++ )
-            {
-            	// Create GridPane for the tab
-            	gridPane = createGridPane();
-            	
-            	// Add TransactionsGraphics Canvas object to display on GridPane
-            	gridPane.getChildren().add( tg[i] );
-            	
-            	// Create Tab object for current tab
-            	tab = createTab( gridPane, i );
-            	
-            	// Add tab to TabPane object
-            	tabPane.getTabs().add( tab );
-            }
+            	// Create Tab with Gridpane and add tab to TabPane object
+            	tabPane.getTabs().add( createTabPane(i) );
+            
             // Add Transactions graphics and buttons to the content box
             box.getChildren().addAll( tabPane, formButtons() );
         }
         else
         {
-        	gridPane = createGridPane();
+        	GridPane gridPane = createGridPane();
         	gridPane.getChildren().add( tg[0] );
+        	
         	// Add Transactions graphics and buttons to the content box
             box.getChildren().addAll( gridPane, formButtons() );
         }
@@ -879,7 +910,24 @@ public class TransactionsModelView extends NodeView implements Utilities
     	return box;
     }
 	
-	/**
+    /**
+     * Creates GridPane for Tab
+     * @param tabNum Tab number
+     * @return Tab object
+     */
+    private Tab createTabPane( int tabNum )
+    {
+    	// Create GridPane for the tab
+    	GridPane gridPane = createGridPane();
+    	
+    	// Add TransactionsGraphics Canvas object to display on GridPane
+    	gridPane.getChildren().add( tg[tabNum] );
+    	
+    	// Create Tab object for the tab and return it
+    	return createTab( gridPane, tabNum );
+    }
+    
+    /**
      * Creates buttons for the form
      * @return Box object containing buttons
      */
@@ -1001,6 +1049,20 @@ public class TransactionsModelView extends NodeView implements Utilities
      */
     private void btnCancelEventHandler( Event e )
     {
+    	checkSavedTransactions();
+    	
+    	checkNewTransactions();
+    	
+    	output = null;
+        
+    	close();
+    }
+    
+    /**
+     * Checks saved transactions if button Cancel is pressed
+     */
+    private void checkSavedTransactions()
+    {
     	TAccount dt, cr;
     	int row;
     	List<Integer> corrAcc;
@@ -1022,6 +1084,16 @@ public class TransactionsModelView extends NodeView implements Utilities
     		if ( !corrAcc.contains(row) )
     			corrAcc.add( row );
     	}
+    }
+    
+    /**
+     * Checks new transactions if button Cancel is pressed
+     */
+    private void checkNewTransactions()
+    {
+    	TAccount dt, cr;
+    	int row;
+    	List<Integer> corrAcc;
     	
     	// Loop through created new transactions to add
     	for ( Transaction tr : toAddTransactions )
@@ -1040,9 +1112,6 @@ public class TransactionsModelView extends NodeView implements Utilities
     		if ( accounts.contains(cr) && corrAcc.contains(row) )
     			corrAcc.remove( (Integer)row );
     	}
-    	
-    	output = null;
-        close();
     }
     
     /**
@@ -1144,11 +1213,15 @@ public class TransactionsModelView extends NodeView implements Utilities
         if ( tabs.length == 0 )
             return null;
         
+        // Get names of Charts of Accounts from Legal Entity database entity object
         String[] charts = legalEntity.getChartOfAccounts();
 		
+        // Get Chart Of Accounts Model by name of Chart Of Accounts
         ChartOfAccountsModel chartModel = ChartOfAccountsModel.getByName( charts[tabNum] );
         
+        // If Chart Of Accounts Model is specified
         if ( chartModel != null )
+        	// Get Chart Of Accounts database entities for Chart Of Accounts Model and return it
             return chartModel.getChartOfAccounts();
         else
             return null;
@@ -1163,4 +1236,5 @@ public class TransactionsModelView extends NodeView implements Utilities
     {
     	CLICK, DOUBLE_CLICK;
     }
-}
+	
+} // End of class ** TransactionsModelView **

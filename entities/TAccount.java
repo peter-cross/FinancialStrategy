@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Vector;
 import java.util.ArrayList;
 
-import foundation.Cipher;
-import interfaces.Utilities;
 import models.TransactionsGraphics;
 import views.TransactionsModelView;
+import foundation.Cipher;
+import interfaces.Utilities;
 
 /**
  * Class TAccount - Entity implementation for TAccount Model
@@ -488,6 +488,24 @@ public class TAccount
 			// Delete current transaction of T-account
 			t.deleteTransaction();
 		
+		// Clear T-Account cells and cells around it's 1st cell
+		clearTAccountCellsAndArountdIt( idx );
+		
+		// Loop for each row starting with T-account's row till the bottom of the grid
+		for ( int r = row; r < TransactionsModelView.ROWS; r++ )
+			// Redraw transit transaction line if there is one
+			tg[idx].drawTransitTransaction( r, col, transactions );
+		
+		// Add this T-account to the list of T-accounts that have to be deleted from DB
+		TransactionsModelView.addToDelTAccounts( this );
+	}
+	
+	/**
+	 * Clears T-Account cells and cells to the top and to the right of 1st cell
+	 * @param idx Chart Of Accounts index
+	 */
+	private void clearTAccountCellsAndArountdIt( int idx )
+	{
 		// Clear content around T-account's cell to the top and to the right
 		tg[idx].clearCellContent( row-1, col );
 		tg[idx].clearCellContent( row-1, col+1 );
@@ -497,13 +515,5 @@ public class TAccount
 		for ( int r = row; r <= getMaxRow(); r++ )
 			// Clear cell content for each cell of T-account
 			tg[idx].clearCellContent( r, col );
-		
-		// Loop for each row starting with T-account's row till the bottom of the grid
-		for ( int r = row; r < TransactionsModelView.ROWS; r++ )
-			// Redraw transit transaction line if there is one
-			tg[idx].drawTransitTransaction( r, col, transactions );
-		
-		// Add this T-account to the list of T-accounts that have to be deleted from DB
-		TransactionsModelView.addToDelTAccounts( this );
 	}
 }

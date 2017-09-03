@@ -294,7 +294,7 @@ public class LegalEntityModel extends RegistryItemModel
     	catch ( Exception e ) 
     	{
     		System.out.println( "Error with persisting data" );
-    	};
+    	}
     }
     
     /**
@@ -331,13 +331,11 @@ public class LegalEntityModel extends RegistryItemModel
     				    .setParameter( "lglEntity", legalEntity )
     				    .getResultList();
             }
-        	catch ( Exception e ) {}
-    		
-    		int choice = -1;
+        	catch ( Exception e ) { }
     		
     		if ( tms != null && tms.size() > 0 )
     		{
-    			choice = Utilities.getYesNo( "There are Transaction Models for selected Legal Entity.\nDo you want to delete this entity with all Transaction Models?" );
+    			int choice = Utilities.getYesNo( "There are Transaction Models for selected Legal Entity.\nDo you want to delete this entity with all Transaction Models?" );
     			
     			if ( choice == 0  )
     			{
@@ -399,6 +397,7 @@ public class LegalEntityModel extends RegistryItemModel
     public LegalEntityModel()
     {
         super( "Legal Entity" );
+        
         list.add( this );
     }
     

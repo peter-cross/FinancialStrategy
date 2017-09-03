@@ -416,4 +416,5 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	@Override
 	protected void init(String[][] header, String[][][] table) 
 	{ }
+	
 } // End of class ** TransactionsSimulationModel **

@@ -124,7 +124,12 @@ public class GLAccountModel extends RegistryItemModel
         
     } // End of method ** getByCode **
     
-    
+    /**
+     * Gets G/L Account Model by G/L account number and Chart Of Accounts index
+     * @param code G/L account number
+     * @param chartIndex Index of Chart Of Accounts
+     * @return G/L Account Model
+     */
     public static GLAccountModel getByCode( String code, int chartIndex )
     {
         if ( chartIndex != -1 )
@@ -133,7 +138,6 @@ public class GLAccountModel extends RegistryItemModel
             return null;
         
     } // End of method ** getByCode **
-    
     
     /**
      * Gets string representation of class object
@@ -144,11 +148,19 @@ public class GLAccountModel extends RegistryItemModel
         return (String) fields.get( "glNumber" );    
     }
     
+    /**
+     * Gets name of G/L account
+     * @return G/L account name
+     */
     public String getName()
     {
     	return (String) fields.get( "name" ); 
     }
     
+    /**
+     * Gets G/L account database entity object
+     * @return G/L account entity
+     */
     public GLAccount getGLAccount()
     {
     	return (GLAccount) fields.get( "glAccount" );
@@ -517,7 +529,7 @@ public class GLAccountModel extends RegistryItemModel
 	}
 	
 	/**
-	 * Initializes Transaction Models by data from database
+	 * Initializes G/L Account Models by data from database
 	 */
 	private static void initFromDB()
 	{
@@ -610,7 +622,7 @@ public class GLAccountModel extends RegistryItemModel
     }
     
     /**
-     * Removes TransactionsSimulationModel data from database 
+     * Removes G/L Account Models data from database 
      */
     @Override
     public void removeFromDB()
@@ -682,4 +694,4 @@ public class GLAccountModel extends RegistryItemModel
         	list[chartOfAccountsNumber].add( this );
     }
     
-} // End of class GLAccountModel
+} // End of class ** GLAccountModel **

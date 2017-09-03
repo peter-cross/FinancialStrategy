@@ -44,6 +44,11 @@ public class ChartOfAccountsModel extends RegistryItemModel
     
     } // End of method ** getByCode **
     
+    /**
+     * Gets Chart Of Accounts Model by Chart Of Accounts object
+     * @param chartOfAccounts Chart Of Accounts object
+     * @return Chart Of Accounts Model
+     */
     public static ChartOfAccountsModel getByChartOfAccounts( ChartOfAccounts chartOfAccounts )
     {
     	return (ChartOfAccountsModel) getListElementBy( list, "chartOfAccounts", chartOfAccounts );
@@ -249,7 +254,6 @@ public class ChartOfAccountsModel extends RegistryItemModel
     	}
     }
     
-    
     /**
      * Removes Chart Of Accounts data from database
      * @throws Exception 
@@ -287,6 +291,7 @@ public class ChartOfAccountsModel extends RegistryItemModel
     public ChartOfAccountsModel()
     {
         super( "Chart of Accounts" );
+        
         list.add( this );
     }
     
@@ -316,4 +321,5 @@ public class ChartOfAccountsModel extends RegistryItemModel
         fields.set( "name", chart.getName() );
         fields.set( "currency", chart.getCurrency() );
     }
+    
 } // End of class ** ChartOfAccountsModel **
