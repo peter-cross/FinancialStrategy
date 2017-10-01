@@ -22,17 +22,16 @@ import java.util.List;
 
 import application.Database;
 import application.Main;
-import entities.ChartOfAccounts;
-import entities.GLAccount;
+import entities.COA;
+import entities.GL;
 import entities.LegalEntity;
 import entities.TAccount;
 import entities.Transaction;
 import entities.TransactionsModel;
-import models.ChartOfAccountsModel;
+import models.COAModel;
 import models.GLAccountModel;
 import models.LegalEntityModel;
 import models.TransactionsGraphics;
-import forms.DialogElement;
 import foundation.AssociativeList;
 import foundation.TaskTimer;
 import foundation.UserDialog;
@@ -167,8 +166,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 				// Get Chart Of Accounts names  from Legal Entity Model
 				tabs = entityModel.getChartNames();
 			else
-				// Get Chart Of Accounts names  from Legal Entity database entity object
-				tabs = legalEntity.getChartOfAccounts();
+				// Get ChOfAccs names  from Legal Entity database entity object
+				tabs = legalEntity.getChOfAccs();
 	    }
 		else
         	tabs = new String[] {};
@@ -225,8 +224,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		// If Legal Entity database entity is specified
 		if ( legalEntity != null )
-			// Get names of Charts Of Accounts from Legal Entity database entity object
-			charts = legalEntity.getChartOfAccounts();
+			// Get names of ChOfAccs from Legal Entity database entity object
+			charts = legalEntity.getChOfAccs();
 		
 		TAccount.setChartsOfAccounts( charts );
 		Transaction.setChartsOfAccounts( charts );
@@ -265,17 +264,17 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Loop for each model transaction
 		for ( Transaction tr : transactions )
 		{
-			TAccount trDt = tr.getDt();
-			TAccount trCr = tr.getCr();
+			TAccount trDx = tr.getDx();
+			TAccount trCx = tr.getCx();
 			
-			// If Dt and Cr accounts are specified
-			if ( trCr != null && trDt != null )
+			// If Dx and Cx accounts are specified
+			if ( trCx != null && trDx != null )
 			{
 				tr.drawTransaction();
 				
 				// Add accounts to list of model T-accounts
-				acctList.add( trCr );
-				acctList.add( trDt );
+				acctList.add( trCx );
+				acctList.add( trDx );
 			}
 		}
 			
@@ -334,9 +333,9 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Returns transactions list for specified Chart Of Accounts
-	 * @param chartNum Chart Of Accounts index
-	 * @return List of transactions for specified Chart Of Accounts
+	 * Returns transactions list for specified ChOfAccs
+	 * @param chartNum ChOfAccs' index
+	 * @return List of transactions for specified ChOfAccs
 	 */
 	public static Vector<Transaction> getTransactions( int chartNum )
 	{
@@ -713,7 +712,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 				// If in current row there is transaction
 				if ( t.getRow() == row )
 					// If current column belongs to transaction
-					if ( col > t.getCr().getColumn() && col < t.getDt().getColumn() )
+					if ( col > t.getCx().getColumn() && col < t.getDx().getColumn() )
 					{
 						// Delete transaction in current row
 						t.deleteTransaction();
@@ -738,28 +737,28 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Draw T-account
 		drawTAccount( e );
   	  	
-		ChartOfAccounts chart = selectedChartOfAccounts();
+		COA chart = selectedChOfAccs();
 		int chartIndex = 0;
 		
 		if ( chart != null )
-			chartIndex = ChartOfAccountsModel.getIndexByName( chart.getName() );
+			chartIndex = COAModel.getIndexByName( chart.getName() );
 		
 		// Enter T-account info through the dialog window
         String[] tAccInfo = enterTAccountInfo( this, chartIndex, fields );
         
-        // Get G/L account number and name
+        // Get G/L number and name
         String glCode = tAccInfo[0];
         String accName = tAccInfo[1];
         
         TAccount acct;
         
-        // If G/L account number is specified
+        // If G/L number is specified
         if ( glCode == null || glCode.isEmpty() )
 	        // Enter T-account name and create object for T-account
 			acct = new TAccount( accName, e, chart );
         else
         {
-        	GLAccount glAcc = getGLAccount( glCode, chartIndex );
+        	GL glAcc = getGLAccount( glCode, chartIndex );
         	
         	// Create T-account database entity object
         	acct = new TAccount( accName, e, chart, glAcc );
@@ -776,17 +775,17 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Gets G/L Account database entity by G/L code and index of Chart Of Accounts
+	 * Gets G/L Account database entity by G/L code and index of ChOfAccs
 	 * @param glCode G/L code
-	 * @param chartIndex Index of Chart Of Accounts
+	 * @param chartIndex Index of ChOfAccs
 	 * @return G/L Account database entity
 	 */
-	private GLAccount getGLAccount( String glCode, int chartIndex )
+	private GL getGLAccount( String glCode, int chartIndex )
 	{
-		// Get G/L account model by G/L account number and index of Chart Of Accounts
+		// Get G/L account model by G/L account number and index of ChOfAccs
     	GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
     	
-    	GLAccount glAcc = null;
+    	GL glAcc = null;
     	
     	// If G/L account model is specified
     	if ( glModel != null )
@@ -1063,23 +1062,23 @@ public class TransactionsModelView extends NodeView implements Utilities
      */
     private void checkSavedTransactions()
     {
-    	TAccount dt, cr;
+    	TAccount dx, cx;
     	int row;
     	List<Integer> corrAcc;
     	
     	// Loop through all saved transactions
     	for ( Transaction tr : transactions )
     	{
-    		dt = tr.getDt();
-    		cr = tr.getCr();
+    		dx = tr.getDx();
+    		cx = tr.getCx();
     		row = tr.getRow();
     		
-    		corrAcc = dt.getCorrCr();
+    		corrAcc = dx.getCorrCx();
     		
     		if ( !corrAcc.contains(row) )
     			corrAcc.add( row );
     		
-    		corrAcc = cr.getCorrDt();
+    		corrAcc = cx.getCorrDx();
     		
     		if ( !corrAcc.contains(row) )
     			corrAcc.add( row );
@@ -1091,25 +1090,25 @@ public class TransactionsModelView extends NodeView implements Utilities
      */
     private void checkNewTransactions()
     {
-    	TAccount dt, cr;
+    	TAccount dx, cx;
     	int row;
     	List<Integer> corrAcc;
     	
     	// Loop through created new transactions to add
     	for ( Transaction tr : toAddTransactions )
     	{
-    		dt = tr.getDt();
-    		cr = tr.getCr();
+    		dx = tr.getDx();
+    		cx = tr.getCx();
     		row = tr.getRow();
     		
-    		corrAcc = dt.getCorrCr();
+    		corrAcc = dx.getCorrCx();
     		
-    		if ( accounts.contains(dt) && corrAcc.contains(row) )
+    		if ( accounts.contains(dx) && corrAcc.contains(row) )
     			corrAcc.remove( (Integer)row );
     		
-    		corrAcc = cr.getCorrDt();
+    		corrAcc = cx.getCorrDx();
     		
-    		if ( accounts.contains(cr) && corrAcc.contains(row) )
+    		if ( accounts.contains(cx) && corrAcc.contains(row) )
     			corrAcc.remove( (Integer)row );
     	}
     }
@@ -1203,26 +1202,26 @@ public class TransactionsModelView extends NodeView implements Utilities
     }
     
     /**
-     * Gets selected Chart Of Accounts
-     * @return Selected Chart Of Accounts object
+     * Gets selected ChOfAccs
+     * @return Selected ChOfAccs object
      */
-    private ChartOfAccounts selectedChartOfAccounts()
+    private COA selectedChOfAccs()
     {
         int tabNum = selectedTabNumber();
         
         if ( tabs.length == 0 )
             return null;
         
-        // Get names of Charts of Accounts from Legal Entity database entity object
-        String[] charts = legalEntity.getChartOfAccounts();
+        // Get names of ChOfAccs from Legal Entity database entity object
+        String[] charts = legalEntity.getChOfAccs();
 		
-        // Get Chart Of Accounts Model by name of Chart Of Accounts
-        ChartOfAccountsModel chartModel = ChartOfAccountsModel.getByName( charts[tabNum] );
+        // Get ChOfAccs Model by name of ChOfAccs
+        COAModel chartModel = COAModel.getByName( charts[tabNum] );
         
-        // If Chart Of Accounts Model is specified
+        // If ChOfAccs Model is specified
         if ( chartModel != null )
-        	// Get Chart Of Accounts database entities for Chart Of Accounts Model and return it
-            return chartModel.getChartOfAccounts();
+        	// Get ChOfAccs database entities for ChOfAccs Model and return it
+            return chartModel.getChOfAccs();
         else
             return null;
     }

@@ -38,20 +38,20 @@ public class TAccount
 	
 	@ElementCollection( fetch=FetchType.EAGER )
 	@Column( name="VALUE" )
-	private List<Integer> corrDt; 	// List of rows for transactions with corresponding Dt accounts
+	private List<Integer> corrDx; 	// List of rows for transactions with corresponding Dx accounts
 	
 	@ElementCollection( fetch=FetchType.EAGER )
 	@Column( name="VALUE" )
-	private List<Integer> corrCr; 	// List of rows for transactions with corresponding Cr accounts
+	private List<Integer> corrCx; 	// List of rows for transactions with corresponding Cx accounts
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChartOfAccounts chartOfAccounts;	  // Chart of Accounts to which T-account belongs
+	private COA coa;	  // ChOfAccs to which T-account belongs
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private GLAccount glAccount;				  // G/L Account of T-account
+	private GL gl;				  // G/L Account of T-account
 	
 	private static TransactionsGraphics[] tg;	  // Transactions graphics canvas
-	private static String[]				  charts; // Chart of Accounts for Legal Entity
+	private static String[]				  charts; // ChOfAccs for Legal Entity
 	
 	/**
 	 * Class mandatory constructor
@@ -65,32 +65,32 @@ public class TAccount
 	 * Class constructor
 	 * @param acctName T-account name
 	 * @param e Mouse event
-	 * @param chart Chart Of Accounts to which T-Account belongs
+	 * @param chart ChOfAccs to which T-Account belongs
 	 */
-	public TAccount( String acctName, MouseEvent e, ChartOfAccounts chart )
+	public TAccount( String acctName, MouseEvent e, COA chart )
 	{
-		name = Cipher.crypt(acctName);
-		col = TransactionsModelView.getColumn(e);
-		row = TransactionsModelView.getRow(e);
+		name = Cipher.crypt( acctName );
+		col = TransactionsModelView.getColumn( e );
+		row = TransactionsModelView.getRow( e );
 		
-		corrDt = new ArrayList<>(); 
-		corrCr = new ArrayList<>();
+		corrDx = new ArrayList<>(); 
+		corrCx = new ArrayList<>();
                 
-        chartOfAccounts = chart;
+        coa = chart;
 	}
 	
 	/**
 	 * Class constructor
 	 * @param acctName T-account name
 	 * @param e Mouse event
-	 * @param chart Chart Of Accounts to which T-Account belongs
+	 * @param chart ChOfAccs to which T-Account belongs
 	 * @param glAcc G/L account for created T-Account
 	 */
-	public TAccount( String acctName, MouseEvent e, ChartOfAccounts chart, GLAccount glAcc )
+	public TAccount( String acctName, MouseEvent e, COA chart, GL glAcc )
 	{
 		this( acctName, e, chart );
 	
-		glAccount = glAcc;
+		gl = glAcc;
 	}
 	
 	/**
@@ -103,22 +103,22 @@ public class TAccount
 	}
 	
 	/**
-	 * Sets Charts Of Accounts' names 
-	 * @param chartOfAccounts Array of Charts Of Accounts' names 
+	 * Sets ChOfAccs' names 
+	 * @param chOfAccs Array of ChOfAccs' names 
 	 */
-	public static void setChartsOfAccounts( String[] chartOfAccounts )
+	public static void setChartsOfAccounts( String[] chOfAccs )
 	{
-		charts = chartOfAccounts;
+		charts = chOfAccs;
 	}
 	
 	/**
-	 * Gets index of Chart of Accounts to which T-account belongs
-	 * @return Returns index of Chart of Accounts
+	 * Gets index of ChOfAccs to which T-account belongs
+	 * @return Returns index of ChOfAccs
 	 */
 	public int chartIndex()
 	{
-		if ( charts != null && charts.length > 0 && chartOfAccounts != null )
-			return Math.max( 0, Utilities.indexOf( charts, chartOfAccounts.getName() ) );
+		if ( charts != null && charts.length > 0 && coa != null )
+			return Math.max( 0, Utilities.indexOf( charts, coa.getName() ) );
 		else
 			return 0;
 	}
@@ -142,39 +142,39 @@ public class TAccount
 	}
 	
 	/**
-	 * Get corr. Dt account row number
+	 * Get corr. Dx account row number
 	 * @return
 	 */
-	public List<Integer> getCorrDt()
+	public List<Integer> getCorrDx()
 	{
-		return corrDt;
+		return corrDx;
 	}
 	
 	/**
-	 * Gets corr. Cr account row number
+	 * Gets corr. Cx account row number
 	 * @return
 	 */
-	public List<Integer> getCorrCr()
+	public List<Integer> getCorrCx()
 	{
-		return corrCr;
+		return corrCx;
 	}
 	
 	/**
-	 * Gets Chart Of Account to which T-account belongs
+	 * Gets ChOfAccs to which T-account belongs
 	 * @return
 	 */
-	public ChartOfAccounts getChartOfAccounts()
+	public COA getChOfAccs()
 	{
-		return chartOfAccounts;
+		return coa;
 	}
 	
 	/**
-	 * Gets G/L account for T-account
+	 * Gets G/L for T-account
 	 * @return
 	 */
-	public GLAccount getGLAccount()
+	public GL getGL()
 	{
-		return glAccount;
+		return gl;
 	}
 	
 	/**
@@ -184,8 +184,8 @@ public class TAccount
 	public int getMaxRow()
 	{
 		// Get list of all rows where there are corr. accounts
-		ArrayList<Integer> arr = new ArrayList<>( corrDt );
-		arr.addAll( corrCr );
+		ArrayList<Integer> arr = new ArrayList<>( corrDx );
+		arr.addAll( corrCx );
 		
 		int max = row;
 		
@@ -197,51 +197,51 @@ public class TAccount
 	}
 	
 	/**
-	 * Adds row number for corresponding debit account
+	 * Adds row number for corresponding debix account
 	 * @param acctRow Account row number to add
 	 */
-	public void addCorrDtAccount( int acctRow )
+	public void addCorrDxAccount( int acctRow )
 	{
 		if ( acctRow >= 0 )
-			corrDt.add( acctRow );
+			corrDx.add( acctRow );
 	}
 	
 	/**
-	 * Adds row number for corresponding credit account
+	 * Adds row number for corresponding credix account
 	 * @param acctRow Account row number to add
 	 */
-	public void addCorrCrAccount( int acctRow )
+	public void addCorrCxAccount( int acctRow )
 	{
 		if ( acctRow >= 0 )
-			corrCr.add( acctRow );
+			corrCx.add( acctRow );
 	}
 	
 	/**
-	 * Deletes row number for corresponding debit account
+	 * Deletes row number for corresponding debix account
 	 * @param acctRow Row number to delete
 	 */
-	private void delCorrDtAccount( int acctRow )
+	private void delCorrDxAccount( int acctRow )
 	{
-		// Try to find specified row in the list of corr.Dt accounts
-		int ind = corrDt.indexOf( acctRow );
+		// Try to find specified row in the list of corr.Dx accounts
+		int ind = corrDx.indexOf( acctRow );
 		
 		// If row is found
 		if ( ind != -1 )
-			corrDt.remove( ind );
+			corrDx.remove( ind );
 	}
 	
 	/**
-	 * Deletes row number for corresponding credit account
+	 * Deletes row number for corresponding credix account
 	 * @param acctRow Row number to delete
 	 */
-	private void delCorrCrAccount( int acctRow )
+	private void delCorrCxAccount( int acctRow )
 	{
 		// Try to find specified row in the list of corr.Cr accounts
-		int ind = corrCr.indexOf( acctRow );
+		int ind = corrCx.indexOf( acctRow );
 		
 		// If row is found
 		if ( ind != -1 )
-			corrCr.remove( ind );
+			corrCx.remove( ind );
 	}
 	
 	/**
@@ -252,19 +252,19 @@ public class TAccount
 		// Loop for each row of T-account
 		for ( int r = row; r <= getMaxRow(); r++ )
 		{
-			// Check if in current row there is corresponding DT or CR account
-			int idx1 = corrDt.indexOf(r),
-				idx2 = corrCr.indexOf(r);
+			// Check if in current row there is corresponding Dx or Cx account
+			int idx1 = corrDx.indexOf(r),
+				idx2 = corrCx.indexOf(r);
 			
-			// If there is corresponding debit account
+			// If there is corresponding debix account
 			if ( idx1 >=0 && idx2 < 0 )
 				drawLeftPartOfTransaction(r);
 			
-			// If there is corresponding credit account
+			// If there is corresponding credix account
 			else if ( idx2 >=0 && idx1 < 0 )
 				drawRightPartOfTransaction(r);
 			
-			// If there is corresponding debit and credit accounts
+			// If there is corresponding debix and credix accounts
 			else if ( idx1 >=0 && idx2 >= 0 )
 				drawBothPartsOfTransaction(r);
 			
@@ -386,13 +386,13 @@ public class TAccount
 	 */
 	public void drawAccountName()
 	{
-		// Get index for Chart Of Accounts for current Tab
+		// Get index for ChOfAccs for current Tab
 		int idx = chartIndex();
 		
 		// If G/L Account for T-account is specified
-		if ( glAccount != null )
+		if ( gl != null )
 			// Display number of G/L account above T-account name
-			tg[idx].drawText( glAccount.getGlNumber(), row-1, col, 0.80 );
+			tg[idx].drawText( gl.getGlNumber(), row-1, col, 0.80 );
 		
 		// Display name of T-account
 		tg[idx].drawText( Cipher.decrypt(name), row, col, 0.15 );
@@ -412,23 +412,23 @@ public class TAccount
 	}
 	
 	/**
-	 * Redraws credit account of transaction in specified row
+	 * Redraws credix account of transaction in specified row
 	 * @param acctRow Row of transaction
 	 */
-	public void redrawCrAccount( int accRow )
+	public void redrawCxAccount( int accRow )
 	{
 		clearAccountRowContent();
 		
-		// For credit account delete row of corresponding debit account
-		delCorrDtAccount( accRow );
+		// For credix account delete row of corresponding debix account
+		delCorrDxAccount( accRow );
 		
-		// Redraw Transaction credit account
+		// Redraw Transaction credix account
 		drawTAccount();
 		
-		// Get index of T-account's Chart of Accounts
+		// Get index of T-account's ChOfAccs
 		int idx = chartIndex();
 		
-		// Get all transactions in TransactionsModelView form for specified Chart of Accounts
+		// Get all transactions in TransactionsModelView form for specified ChOfAccs
 		Vector<Transaction> transactions = TransactionsModelView.getTransactions( idx );
 		
 		// Loop for each row starting with T-account's row till specified row
@@ -438,23 +438,23 @@ public class TAccount
 	}
 	
 	/**
-	 * Redraws debit account of transaction in specified row
+	 * Redraws debix account of transaction in specified row
 	 * @param acctRow Row of transaction
 	 */
-	public void redrawDtAccount( int accRow )
+	public void redrawDxAccount( int accRow )
 	{
 		clearAccountRowContent();
 		
-		// For DT account delete row of corresponding credit account
-		delCorrCrAccount( accRow );
+		// For Dx account delete row of corresponding credix account
+		delCorrCxAccount( accRow );
 		
-		// Redraw Transaction DT account
+		// Redraw Transaction Dx account
 		drawTAccount();
 		
-		// Get index of T-account's Chart of Accounts
+		// Get index of T-account's ChOfAccs
 		int idx = chartIndex();
 		
-		// Get all transactions in TransactionsModelView form for specified Chart of Accounts
+		// Get all transactions in TransactionsModelView form for specified ChOfAccs
 		Vector<Transaction> transactions = TransactionsModelView.getTransactions( idx );
 				
 		// Loop for each row starting with T-account's row till specified row
@@ -470,16 +470,16 @@ public class TAccount
 	{
 		ArrayList<Transaction> transList = new ArrayList<>();
 		
-		// Get index of T-account's Chart of Accounts
+		// Get index of T-account's ChOfAccs
 		int idx = chartIndex();
 		
-		// Get all transactions in TransactionsModelView form for specified Chart of Accounts
+		// Get all transactions in TransactionsModelView form for specified ChOfAccs
 		Vector<Transaction> transactions = TransactionsModelView.getTransactions( idx );
 		
 		// Loop through list of all transactions
 		for ( Transaction t : transactions )
 			// If T-account belongs to current transaction
-			if ( this == t.getDt() || this == t.getCr() )
+			if ( this == t.getDx() || this == t.getCx() )
 				// Add transaction to list of T-account transactions
 				transList.add( t );
 		

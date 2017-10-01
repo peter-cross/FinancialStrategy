@@ -23,7 +23,7 @@ public class NodeView extends Stage
 	/*********************  Properties  **************************************************************************/
 	protected Stage owner;			// Parent window
 	
-	private Node 	content;		// Content to display
+	private Node   content;			// Content to display
 	private double width, height;	// Window width and height
 	private String title;			// Window title
 	
@@ -147,7 +147,7 @@ public class NodeView extends Stage
 		this.width = width;
     	this.height = height;
     	this.title = title;
-   }
+    }
     
     /**
      * Class constructor with window width and height

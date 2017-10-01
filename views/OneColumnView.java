@@ -176,7 +176,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         if ( el.width > 0 )
             comboBox.setPrefWidth( el.width );
         // If it's a Unit dialog element
-        else if ( el.labelName.contains("Unit") )
+        else if ( el.labelName.contains( "Unit" ) )
             // Set column with less that normally
             comboBox.setPrefWidth(105);
         // Otherwise
@@ -442,7 +442,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // Specify column width for date picker
         datePicker.setMaxWidth( MAX_WIDTH );
 
-        // If dialog element's text value is speified
+        // If dialog element's text value is specified
         if ( el.textValue != null && !el.textValue.isEmpty() )
             // Parse text value to local date and set date pickers value
             datePicker.setValue( LocalDate.parse( el.textValue ) );
@@ -476,8 +476,8 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         TextField textField = textFieldForTreeList();
         
         // Create button element
-        Button btn = new Button("...");
-        btn.setPrefWidth(10);
+        Button btn = new Button( "..." );
+        btn.setPrefWidth( 10 );
         // Set event handler on press button event
         btn.setOnAction( treeBtnEventHandler( el, btn, textField ) );
         
@@ -565,8 +565,8 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         TextField textField = textFieldForFileChooser();
         
         // Create button element
-        Button btn = new Button("...");
-        btn.setPrefWidth(10);
+        Button btn = new Button( "..." );
+        btn.setPrefWidth( 10 );
 
         // Create horizontal box element for file field
         HBox fileField = new HBox(); 
@@ -587,12 +587,12 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         final Stage st = (Stage) this;
         
         // If it's a dialog to save a file
-        if ( el.valueType.contains("Save") )
+        if ( el.valueType.contains( "Save" ) )
             // Set event handler on press button event
         	btn.setOnAction( saveToFileEventHandler( st, textField ) );
         
         // If it's a dialog to open a file
-        else if ( el.valueType.contains("Open") )
+        else if ( el.valueType.contains( "Open" ) )
             // Set event handler on press button event
         	btn.setOnAction( openFileEventHandler( st, textField ) );
         
@@ -694,7 +694,7 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         
         // Create button element
         Button btn = new Button( "#" );
-        btn.setPrefWidth(30);
+        btn.setPrefWidth( 30 );
 
         // Create horizontal box element for numerator field
         HBox numeratorField = new HBox(); 
@@ -784,7 +784,8 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
                         }
                     }
                     
-                    String newNumber = numerator.substring(0, i) + String.format("%0" + (numerator.length() - i) + "d",  num+1);
+                    String newNumber = numerator.substring(0, i) 
+                    				 + String.format( "%0" + (numerator.length() - i) + "d",  num+1 );
                     
                     field.setText( newNumber );
                 }

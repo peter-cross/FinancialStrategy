@@ -73,6 +73,7 @@ public class TransactionsModel
 		this( name, taccounts, transactions );
 		this.lglEntity = lglEntity;
 	}
+	
 	/**
 	 * Class constructor with List of T-accounts and list of transactions
 	 * @param taccounts List of T-accounts
@@ -114,7 +115,7 @@ public class TransactionsModel
 	}
 	
 	/**
-	 * Returns list of Transactions Model sransactions
+	 * Returns list of Transactions Model transactions
 	 */
 	public Vector<Transaction> getTransactions()
 	{

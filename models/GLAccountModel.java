@@ -9,8 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.ChartOfAccounts;
-import entities.GLAccount;
+import entities.COA;
+import entities.GL;
 import views.OneColumnTableView;
 import forms.DialogElement;
 import forms.TableElement;
@@ -29,13 +29,13 @@ public class GLAccountModel extends RegistryItemModel
 {
     /*          Properties   	                                                                                      */
     /******************************************************************************************************************/  
-    private static  LinkedHashSet[] list;  // List of G/L accounts for each Chart of Accounts
+    private static  LinkedHashSet[] list;  // List of G/L accounts for each ChOfAccs
     
-    private static	ArrayList<ChartOfAccountsModel> charts;	// List of Charts Of Accounts
+    private static	ArrayList<COAModel> charts;	// List of ChOfAccs
 	
     /**
      * Class constructor
-     * @param chartName Chart Of Accounts' name
+     * @param chartName ChOfAccs' name
      */
     public GLAccountModel( String chartName )
 	{
@@ -45,7 +45,7 @@ public class GLAccountModel extends RegistryItemModel
     /**
      * Class constructor
      * @param st Stage object where to display
-     * @param chartName Chart Of Accounts' name
+     * @param chartName ChOfAccs' name
      * @throws Exception
      */
     public GLAccountModel( Stage st, String chartName ) throws Exception
@@ -56,9 +56,9 @@ public class GLAccountModel extends RegistryItemModel
     /**
      * Class constructor
      * @param gl G/L Account entity object
-     * @param chartName Chart Of Accounts' name
+     * @param chartName ChOfAccs' name
      */
-    public GLAccountModel( GLAccount gl, String chartName )
+    public GLAccountModel( GL gl, String chartName )
     {
     	super( "G/L Account", chartName );
     	setTab( chartName );
@@ -74,7 +74,7 @@ public class GLAccountModel extends RegistryItemModel
 		fields.set( "contraAccount", gl.getContraAccount() );
 		fields.set( "analyticsControl", gl.getAnalyticsControl() );
 		fields.set( "analyticsType", gl.getAnalyticsType() );
-		fields.set( "chartOfAccounts", gl.getChartOfAccounts() );
+		fields.set( "chOfAccs", gl.getChOfAccs() );
 	}
     
     /**
@@ -86,16 +86,16 @@ public class GLAccountModel extends RegistryItemModel
 	{
 		this.tabName = tabName;
 		
-		ChartOfAccountsModel chartsModel = ChartOfAccountsModel.getByName( tabName );
-		tabNum = getListIndex( ChartOfAccountsModel.getItemsList() , chartsModel );
+		COAModel chartsModel = COAModel.getByName( tabName );
+		tabNum = getListIndex( COAModel.getItemsList() , chartsModel );
 		
-		ChartOfAccounts chartOfAccounts = null;
+		COA chOfAccs = null;
 		
 		if ( chartsModel != null )
-			chartOfAccounts = chartsModel.getChartOfAccounts();
+			chOfAccs = chartsModel.getChOfAccs();
 		
-		if ( chartOfAccounts != null )
-			fields.set( "chartOfAccounts", chartOfAccounts );
+		if ( chOfAccs != null )
+			fields.set( "chOfAccs", chOfAccs );
 	}
 	
     /**
@@ -113,21 +113,21 @@ public class GLAccountModel extends RegistryItemModel
      * Gets G/L Account Model by G/L account code
      * @param code G/L account code
      * @return G/L Account Model object
-     * @param chart Chart Of Accounts' name
+     * @param chart ChOfAccs' name
      * @return G/L Account Model object
      */
     public static GLAccountModel getByCode( String code, String chart )
     {
-        int chartIndex = ChartOfAccountsModel.getIndexByName( chart );
+        int chartIndex = COAModel.getIndexByName( chart );
         
         return getByCode( code, chartIndex );
         
     } // End of method ** getByCode **
     
     /**
-     * Gets G/L Account Model by G/L account number and Chart Of Accounts index
+     * Gets G/L Account Model by G/L account number and ChOfAccs' index
      * @param code G/L account number
-     * @param chartIndex Index of Chart Of Accounts
+     * @param chartIndex Index of ChOfAccs
      * @return G/L Account Model
      */
     public static GLAccountModel getByCode( String code, int chartIndex )
@@ -161,9 +161,9 @@ public class GLAccountModel extends RegistryItemModel
      * Gets G/L account database entity object
      * @return G/L account entity
      */
-    public GLAccount getGLAccount()
+    public GL getGLAccount()
     {
-    	return (GLAccount) fields.get( "glAccount" );
+    	return (GL) fields.get( "glAccount" );
     }
     
     /**
@@ -465,7 +465,7 @@ public class GLAccountModel extends RegistryItemModel
 	 */
 	private static void initEmptyList()
 	{
-		Class c = createModelClass( "ChartOfAccountsModel" );
+		Class c = createModelClass( "COAModel" );
 
 		try
         {
@@ -479,11 +479,11 @@ public class GLAccountModel extends RegistryItemModel
         }
         catch ( Exception e )
         {
-            // Create arrays for one Chart Of Accounts
+            // Create arrays for one ChOfAccs
             list = new LinkedHashSet[1];
         }
         
-        // Create ArrayList for list of Charts Of Accounts for each Chart Of Accounts
+        // Create ArrayList for list of ChOfAccs for each ChOfAccs
         for ( int i = 0; i < list.length; i++ )
             list[i] = new LinkedHashSet<>();
 
@@ -495,14 +495,14 @@ public class GLAccountModel extends RegistryItemModel
 	 */
 	private static void createNewList()
 	{
-		Class c = createModelClass( "ChartOfAccountsModel" );
+		Class c = createModelClass( "COAModel" );
 
 		int numCharts = 1;
-    	ArrayList<ChartOfAccountsModel>  newCharts = null;
+    	ArrayList<COAModel>  newCharts = null;
     	
     	try
         {
-            // Get new list of Charts Of Accounts
+            // Get new list of ChOfAccs
     		newCharts = new ArrayList( ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0] );
 
     		numCharts = Math.max( newCharts.size(), 1 );
@@ -534,24 +534,24 @@ public class GLAccountModel extends RegistryItemModel
 	private static void initFromDB()
 	{
 		// Get list of G/L Accounts from database
-		List<GLAccount> dbGLAccounts = getFromDB();
+		List<GL> dbGLAccounts = getFromDB();
 
 		// If list is not empty
         if ( dbGLAccounts != null && dbGLAccounts.size() > 0 )
             // Loop for each G/L Account
-            for ( GLAccount gl : dbGLAccounts )
+            for ( GL gl : dbGLAccounts )
             {
-                // Create Chart Of Accounts object from G/L Account
-                ChartOfAccounts chart = gl.getChartOfAccounts();
+                // Create ChOfAccs object from G/L Account
+                COA chart = gl.getChOfAccs();
 
                 int chartNum = 0;
 
                 if ( chart != null )
                 {
-                	ChartOfAccountsModel  chartModel = ChartOfAccountsModel.getByChartOfAccounts( chart );
+                	COAModel  chartModel = COAModel.getByChOfAccs( chart );
 
                     if ( chartModel != null )
-                    	chartNum = getListIndex( ChartOfAccountsModel.getItemsList(), chartModel );
+                    	chartNum = getListIndex( COAModel.getItemsList(), chartModel );
                 }
 
                 list[chartNum].add( new GLAccountModel( gl, chart.getName() ) );
@@ -560,11 +560,11 @@ public class GLAccountModel extends RegistryItemModel
 	
 	/**
 	 * Gets G/L Accounts from database
-	 * @return List of GLAccount objects
+	 * @return List of GL objects
 	 */
-	protected static List<GLAccount> getFromDB()
+	protected static List<GL> getFromDB()
     {
-    	return getFromDB( "GLAccount" );
+    	return getFromDB( "GL" );
     }
     
 	/**
@@ -582,7 +582,7 @@ public class GLAccountModel extends RegistryItemModel
     			foreignCurrency = Integer.parseInt( fieldTextValue( "foreignCurrency" ) ),	// Foreign Currency flag
     			contraAccount = Integer.parseInt( fieldTextValue( "contraAccount" ) );		// Contra account flag
     	
-    	ChartOfAccounts chartOfAccounts = fields.get( "chartOfAccounts" );
+    	COA chOfAccs = fields.get( "chOfAccs" );
     	
     	List<String> analyticsControl = new ArrayList<String>();
     	
@@ -595,20 +595,20 @@ public class GLAccountModel extends RegistryItemModel
     		analyticsType.add( s );
     	
     	// Get G/L Account object from the fields of current model
-    	GLAccount glAccount = fields.get( "glAccount" );
+    	GL glAccount = fields.get( "glAccount" );
     	
     	// If G/L Account object is not created yet
     	if ( glAccount == null  )
         {
             // Create instance of G/L Account
-    		glAccount = new GLAccount( glNumber, name, type, accountGroup, quantity, foreignCurrency, contraAccount, analyticsControl, analyticsType, chartOfAccounts );
+    		glAccount = new GL( glNumber, name, type, accountGroup, quantity, foreignCurrency, contraAccount, analyticsControl, analyticsType, chOfAccs );
             fields.set( "glAccount", glAccount );
         }
             
     	// Otherwise
     	else
             // Update G/L Account information
-    		glAccount.update( glNumber, name, type, accountGroup, quantity, foreignCurrency, contraAccount, analyticsControl, analyticsType, chartOfAccounts );
+    		glAccount.update( glNumber, name, type, accountGroup, quantity, foreignCurrency, contraAccount, analyticsControl, analyticsType, chOfAccs );
     	
     	try
     	{
@@ -627,16 +627,16 @@ public class GLAccountModel extends RegistryItemModel
     @Override
     public void removeFromDB()
     {
-    	GLAccount glAccount  = fields.get( "glAccount" );
+    	GL glAccount  = fields.get( "glAccount" );
     	
     	// If EntityManager object is created and TransactionsSimulationModel argument is specified
         if ( glAccount != null  )
         {
-        	ChartOfAccounts chart = glAccount.getChartOfAccounts();
+        	COA chart = glAccount.getChOfAccs();
         	
         	if ( chart != null )
         	{
-        		ChartOfAccountsModel chartModel = ChartOfAccountsModel.getByChartOfAccounts( chart );
+        		COAModel chartModel = COAModel.getByChOfAccs( chart );
         		
         		int idx = charts.indexOf( chartModel );
             	if ( idx >= 0 )
@@ -659,12 +659,12 @@ public class GLAccountModel extends RegistryItemModel
     
 	/**
 	 * Class constructor 
-	 * @param chartOfAccountsNumber Index of Chart Of Accounts
+	 * @param chOfAccsNumber Index of ChOfAccs
 	 */
-    public GLAccountModel( int chartOfAccountsNumber )
+    public GLAccountModel( int chOfAccsNumber )
     {
         super( "G/L Account" );
-        list[chartOfAccountsNumber].add( this );
+        list[chOfAccsNumber].add( this );
     }
     
     /**
@@ -683,15 +683,15 @@ public class GLAccountModel extends RegistryItemModel
     /**
      * Class constructor
      * @param stage Stage object where to display form
-     * @param chartOfAccountsNumber Index of Chart Of Accounts
+     * @param chOfAccsNumber Index of ChOfAccs
 	 * @throws Exception
      */
-    public GLAccountModel( Stage stage, int chartOfAccountsNumber ) throws Exception
+    public GLAccountModel( Stage stage, int chOfAccsNumber ) throws Exception
     {
         super( stage, "G/L Account" );
         
         if ( stage != null )
-        	list[chartOfAccountsNumber].add( this );
+        	list[chOfAccsNumber].add( this );
     }
     
 } // End of class ** GLAccountModel **

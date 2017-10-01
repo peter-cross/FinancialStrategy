@@ -29,12 +29,12 @@ public class Transaction
 	private int 	 row;					// Row number of transaction
 	private String	 description;			// Transaction description
 	@ManyToOne( fetch=FetchType.EAGER )
-	private TAccount dt;					// DT account for transaction
+	private TAccount dx;					// Dx account for transaction
 	@ManyToOne( fetch=FetchType.EAGER )
-	private TAccount cr;					// CR account for transaction
+	private TAccount cx;					// Cx account for transaction
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChartOfAccounts chartOfAccounts;	  // Chart of Accounts to which transaction belongs
+	private COA coa;	  // Chart of Accounts to which transaction belongs
 	
 	private static TransactionsGraphics[] tg; 	  // Transactions Graphics canvas
 	private static String[]				  charts; // Chart of Accounts for Legal Entity
@@ -49,33 +49,33 @@ public class Transaction
 	
 	/**
 	 * Class constructor with provided all transaction info
-	 * @param dt DT T-account
-	 * @param cr CR T-account
+	 * @param dx Dx T-account
+	 * @param cx Cx T-account
 	 * @param description Transaction description
 	 * @param chart Chart Of Accounts to which transaction belongs
 	 */
-	public Transaction( TAccount dt, TAccount cr, String description, ChartOfAccounts chart )
+	public Transaction( TAccount dx, TAccount cx, String description, COA chart )
 	{
-		this.dt = dt;
-		this.cr = cr;
+		this.dx = dx;
+		this.cx = cx;
 		this.description = Cipher.crypt(description);
 		
-		row = getTransactionRow( cr, dt );
+		row = getTransactionRow( cx, dx );
 		
-		cr.addCorrDtAccount( row );
-		dt.addCorrCrAccount( row );
+		cx.addCorrDxAccount( row );
+		dx.addCorrCxAccount( row );
                 
-		chartOfAccounts = chart;
+		coa = chart;
 	}
 	
 	/**
 	 * Class constructor with specified transaction accounts only
-	 * @param dt DT T-account
-	 * @param cr CR T-account
+	 * @param dxt Dx T-account
+	 * @param cx Cx T-account
 	 */
-	public Transaction( TAccount dt, TAccount cr )
+	public Transaction( TAccount dx, TAccount cx )
 	{
-		this( dt, cr, "", dt.getChartOfAccounts() );
+		this( dx, cx, "", dx.getChOfAccs() );
 		
 		createTransaction();
 	}
@@ -104,8 +104,8 @@ public class Transaction
 	 */
 	public int chartIndex()
 	{
-		if ( charts != null && charts.length > 0 && chartOfAccounts != null )
-			return Math.max( 0, Utilities.indexOf( charts, chartOfAccounts.getName() ) );
+		if ( charts != null && charts.length > 0 && coa != null )
+			return Math.max( 0, Utilities.indexOf( charts, coa.getName() ) );
 		else
 			return 0;
 	}
@@ -119,27 +119,27 @@ public class Transaction
 	}
 	
 	/**
-	 * Returns transaction DT account
+	 * Returns transaction Dx account
 	 */
-	public TAccount getDt()
+	public TAccount getDx()
 	{
-		return dt;
+		return dx;
 	}
 	
 	/**
-	 * Returns transaction CR account
+	 * Returns transaction Cx account
 	 */
-	public TAccount getCr()
+	public TAccount getCx()
 	{
-		return cr;
+		return cx;
 	}
 	
 	/**
 	 * Returns Chart Of Accounts to which transaction belongs
 	 */
-	public ChartOfAccounts getChartOfAccounts()
+	public COA getChartOfAccounts()
 	{
-		return chartOfAccounts;
+		return coa;
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class Transaction
 	 */
 	public String getDescription()
 	{
-		return Cipher.decrypt(description);
+		return Cipher.decrypt( description );
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class Transaction
 	 */
 	private void setDescription( String description )
 	{
-		this.description = Cipher.crypt(description);
+		this.description = Cipher.crypt( description );
 	}
 	
 	/**
@@ -171,13 +171,13 @@ public class Transaction
 		int row = Math.max( acct1.getRow(), acct2.getRow() );
 		
 		// If in this row there is no transactions placed yet
-		if ( acct1.getCorrDt().indexOf(row) * acct2.getCorrCr().indexOf(row) == 1 )
+		if ( acct1.getCorrDx().indexOf(row) * acct2.getCorrCx().indexOf(row) == 1 )
 			return row;
 		
 		// Loop for each row starting from next calculated as max row of T-accounts
 		for ( int acctRow = row+1; acctRow < TransactionsModelView.ROWS ; acctRow++ )
 			// If in this row there is no transactions placed yet
-			if ( acct1.getCorrDt().indexOf(acctRow) * acct2.getCorrCr().indexOf(acctRow)  == 1 )
+			if ( acct1.getCorrDx().indexOf(acctRow) * acct2.getCorrCx().indexOf(acctRow)  == 1 )
 				return acctRow;
 		
 		return row;
@@ -188,9 +188,9 @@ public class Transaction
 	 */
 	public void drawTransaction()
 	{
-		// Draw CR and DT T-accounts
-		cr.drawTAccount();
-		dt.drawTAccount();
+		// Draw Cx and Dx T-accounts
+		cx.drawTAccount();
+		dx.drawTAccount();
 		
 		// Draw middle part of transaction
 		drawTransactionMiddlePart();
@@ -206,7 +206,7 @@ public class Transaction
 	{
 		int idx = chartIndex();
 		
-		tg[idx].drawTransactionMiddlePart( row, cr.getColumn()+1, dt.getColumn()-1 );
+		tg[idx].drawTransactionMiddlePart( row, cx.getColumn()+1, dx.getColumn()-1 );
 	}
 	
 	/**
@@ -216,7 +216,7 @@ public class Transaction
 	{
 		int idx = chartIndex();
 		
-		tg[idx].drawText( Cipher.decrypt(description), row, cr.getColumn()+1, 0.6 );
+		tg[idx].drawText( Cipher.decrypt(description), row, cx.getColumn()+1, 0.6 );
 	}
 	
 	/**
@@ -224,8 +224,8 @@ public class Transaction
 	 */
 	private void createTransaction()
 	{
-		cr.drawTAccount();
-		dt.drawTAccount();
+		cx.drawTAccount();
+		dx.drawTAccount();
 		
 		// Draw middle part of transaction
 		drawTransactionMiddlePart();
@@ -247,16 +247,16 @@ public class Transaction
 		int idx = chartIndex();
 		
 		// Loop for each transaction column
-		for ( int col =  cr.getColumn(); col <= dt.getColumn(); col++ )
+		for ( int col =  cx.getColumn(); col <= dx.getColumn(); col++ )
 			// Clear content of transaction cells
 			tg[idx].clearCellContent( row, col );
 		
 		// Get list of transit T-accounts
 		ArrayList<TAccount> accList = transitTAccounts();
 		
-		// Redraw CR and DT T-accounts
-		cr.redrawCrAccount(row);
-		dt.redrawDtAccount(row);
+		// Redraw Cx and Dx T-accounts
+		cx.redrawCxAccount(row);
+		dx.redrawDxAccount(row);
 		
 		// Add current transaction to the list of transactions that have to be deleted from DB
 		TransactionsModelView.addToDelTransactions( this );
@@ -277,20 +277,20 @@ public class Transaction
 		// Loop for each transaction of Transactions Model
 		for ( Transaction tr : TransactionsModelView.getTransactions() )
 		{
-			TAccount trDt = tr.getDt();
-			TAccount trCr = tr.getCr();
+			TAccount trDx = tr.getDx();
+			TAccount trCx = tr.getCx();
 			
-			// If column of Dt account of current transaction is between columns of Cr and Dt account of the transaction 
-			// and transaction row number is not greater than Max row of Dt account of current transaction
-			if ( trDt.getColumn() > cr.getColumn() && trDt.getColumn() < dt.getColumn() 
-				 && row <= trDt.getMaxRow() )
-				accList.add( trDt );
+			// If column of Dx account of current transaction is between columns of Cx and Dx account of the transaction 
+			// and transaction row number is not greater than Max row of Dx account of current transaction
+			if ( trDx.getColumn() > cx.getColumn() && trDx.getColumn() < dx.getColumn() 
+				 && row <= trDx.getMaxRow() )
+				accList.add( trDx );
 			
-			// If column of Cr account of current transaction is between columns of Cr and Dt account of the transaction 
-			// and transaction row number is not greater than Max row of Cr account of current transaction
-			else if ( trCr.getColumn() > cr.getColumn() && trCr.getColumn() < dt.getColumn() 
-					  && row <= trCr.getMaxRow() )
-				accList.add( trCr );
+			// If column of Cx account of current transaction is between columns of Cx and Dx account of the transaction 
+			// and transaction row number is not greater than Max row of Cx account of current transaction
+			else if ( trCx.getColumn() > cx.getColumn() && trCx.getColumn() < dx.getColumn() 
+					  && row <= trCx.getMaxRow() )
+				accList.add( trCx );
 		}
 		
 		return accList;

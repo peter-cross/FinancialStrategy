@@ -144,7 +144,7 @@ public class AssociativeList implements Utilities
         // If not found
         else
         {
-            // Add ket to the keys list
+            // Add key to the keys list
             this.key.add( key );
             
             // Return the position of added key

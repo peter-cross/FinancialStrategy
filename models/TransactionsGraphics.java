@@ -532,11 +532,11 @@ public class TransactionsGraphics extends Canvas
 		for ( Transaction t : transactions  )
 		{
 			int trRow = t.getRow();
-			TAccount trCr = t.getCr();
-			TAccount trDt = t.getDt();
+			TAccount trCx = t.getCx();
+			TAccount trDx = t.getDx();
 					
-			// if transaction is in specified row and specified column is between transactions Cr and Dt column
-			if ( trRow == row && (col > trCr.getColumn() && col < trDt.getColumn()) )
+			// if transaction is in specified row and specified column is between transactions Cx and Dx columns
+			if ( trRow == row && (col > trCx.getColumn() && col < trDx.getColumn()) )
 			{
 				// In specified row and column draw transaction horizontal line
 				drawHorizontalTransactionLine( row, col );

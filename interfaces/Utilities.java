@@ -38,7 +38,7 @@ import interfaces.Lambda.OnElementChange;
 public interface Utilities extends Encapsulation
 {
 	/**
-     * Displays About box when the program starts
+     * Displays About box
      */
 	public static void openAboutBox()
     {
@@ -73,7 +73,7 @@ public interface Utilities extends Encapsulation
 		DialogElement dlg = new DialogElement( infoType );
 		
 		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnView( owner, "Enter " + infoType, new DialogElement[]{dlg} ).result();
+		String[][] result = new OneColumnView( owner, "Enter " + infoType, new DialogElement[]{ dlg } ).result();
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0][0] : "";
@@ -90,7 +90,7 @@ public interface Utilities extends Encapsulation
 		glAcct.width = 70;
 		glAcct.editable = false;
 		// Get G/L Account Model Items List for selected Chart Of Accounts
-		glAcct.list = GLAccountModel.getItemsList()[chartIndex];
+		glAcct.list = GLAccountModel.getItemsList()[ chartIndex ];
 		// Set lambda expression that will be executed on change of field value
 		glAcct.onChange = onGLAccountChange( chartIndex );
 		
@@ -98,7 +98,7 @@ public interface Utilities extends Encapsulation
 		DialogElement acctName = new DialogElement( "Account Name" );
 		
 		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnView( owner, "Enter Account Name", new DialogElement[]{glAcct, acctName} ).result();
+		String[][] result = new OneColumnView( owner, "Enter Account Name", new DialogElement[]{ glAcct, acctName } ).result();
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0] : new String[] {null, null};
@@ -106,7 +106,7 @@ public interface Utilities extends Encapsulation
 	
 	/**
 	 * Lambda expression executed on change of G/L account
-	 * @param chartIndex Index of Chart Of Accounts to which belongs G/L account
+	 * @param chartIndex Index of ChOfAccs to which belongs G/L account
 	 * @return Lambda expression
 	 */
 	static OnElementChange onGLAccountChange( int chartIndex )
@@ -125,7 +125,7 @@ public interface Utilities extends Encapsulation
 			// If G/L code is specified
 			if ( glCode != null )
 			{
-				// Find G/L account model by G/L code and Charts Of Accounts Index
+				// Find G/L account model by G/L code and ChOfAccs Index
 				GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
 				
 				// Get value of form field with name 'Account Name'
@@ -148,7 +148,7 @@ public interface Utilities extends Encapsulation
 	 */
 	public static double round( double number, int decimals )
     {
-    	double powerOfTen = Math.pow(10, decimals);
+    	double powerOfTen = Math.pow( 10, decimals );
     	
     	return (double) Math.round( number * powerOfTen ) / powerOfTen;
     }
@@ -200,7 +200,7 @@ public interface Utilities extends Encapsulation
         Iterator it = list.iterator();
         int i = 0;
         
-        // Loop while list has nect item
+        // Loop while list has next item
         while ( it.hasNext() )
         	// If current list element is what we are looking for
             if ( i++ == index )
@@ -261,10 +261,10 @@ public interface Utilities extends Encapsulation
             // Get fields attribute of the RegistryItemModel
             fields = ((RegistryItemModel) elm).getFields();
             
-            String fieldValue = ((String) fields.get(field)).trim();
+            String fieldValue = ((String) fields.get( field )).trim();
             
             // If field value matches
-            if ( fieldValue.equals(value) )
+            if ( fieldValue.equals( value ) )
                 return elm;
         }
         
@@ -294,7 +294,7 @@ public interface Utilities extends Encapsulation
             // Get fields attribute of the RegistryItemModel
             fields = ((RegistryItemModel) elm).getFields();
             
-            Object fieldValue = fields.get(field);
+            Object fieldValue = fields.get( field );
             
             // If field value matches
             if ( fieldValue.equals( value ) )
@@ -375,7 +375,7 @@ public interface Utilities extends Encapsulation
                 // Try invoke method again for package data
                 return tryCreateModelClass( "models", valueType );
             }
-        else if ( !pckg.contains(".") )
+        else if ( !pckg.contains( "." ) )
             try 
             {   
                 // Create class object by its name of data object
@@ -584,25 +584,35 @@ public interface Utilities extends Encapsulation
             if ( !filename.contains(".") )
                 // Add to file name extension of text file
                 filename += ".txt";
+            
+            file = checkIfFileExists( filename );
 
-            // Create File object to work with file
-            file = new File(filename);
-
-            // If file exists
-            if ( file.exists() )
-            {
-                // Display a message 
-                displayMessage( "", String.format( "The file %s already exists. \n Type another one ...", filename ) );
-                
-                // Assign condition for loop
-                condition = file.exists();	
-            }
-            else
-                condition = false;
-
+            condition = file != null;
+        
         } while ( condition );
         
 		return file;
+    }
+    
+    /**
+     * Checks if file with specified name exists 
+     * @param filename File name
+     * @return File object if exists, or null otherwise
+     */
+    static File checkIfFileExists( String filename )
+    {
+    	File file = new File( filename );
+    	
+    	// If file exists
+        if ( file.exists() )
+        {
+            // Display a message 
+            displayMessage( "", String.format( "The file %s already exists. \n Type another one ...", filename ) );
+            
+            return file;	
+        }
+        else
+            return null;
     }
     
     /**
@@ -614,6 +624,7 @@ public interface Utilities extends Encapsulation
     {
         int i = arr.length;
 
+        // Loop while there are array elements
         while ( i > 0 && arr[i-1] == null )
             i--;
 
@@ -918,47 +929,14 @@ public interface Utilities extends Encapsulation
      */
     default int search( Item[] arr, String key )
     {
-        // Minimum value of comparison
-        int minComparisonResult = -1000;
-
-        // Pointer on minimum value of comparison
-        int pointer = 0;
-
-        // Result of string comparison
-        int comparisonResult;
-        
         // Size of one string chunk
         int chunkLength = (int) Math.ceil( Math.sqrt(arr.length) ); 
 
+        // Pointer on minimum value of comparison
+        int pointer = firstSearchIteration( arr, key, chunkLength );
+        
         String name;
         
-        // 1st iteration for comparing 1st element of each chunk
-        for ( int i = 0; i < arr.length; i += chunkLength )
-        {
-            // Get array element name
-            name = arr[i].get( "name" );
-
-            // Result of comparison of array string to key 
-            comparisonResult = name.compareToIgnoreCase( key );
-
-            // If strings are equal
-            if ( comparisonResult == 0 )
-                // Return the array current index
-                return i;
-            
-            // If the key is inside the current array chunk
-            else if ( comparisonResult < 0 && comparisonResult > minComparisonResult )
-            {
-                // Save the result of comparison
-                minComparisonResult = comparisonResult;
-
-                // Save the array index
-                pointer = i;
-
-            } // End if
-
-        } // End for loop for 1st iteration
-		
         // 2nd iteration
         for ( int i = pointer+1; i < Math.min( pointer+chunkLength-1, arr.length ); i++ )
         {
@@ -976,6 +954,46 @@ public interface Utilities extends Encapsulation
 	
     } // End of method ** search **
 	
+    /**
+     * First iteration for search comparison
+     * @param arr Array
+     * @param key Key
+     * @return Index of Min comparison value
+     */
+    static int firstSearchIteration( Item[] arr, String key, int chunkLength )
+    {
+    	String name;
+        
+    	// Result of string comparison
+        int comparisonResult;
+        
+        // Minimum value of comparison
+        int minComparisonResult = -1000;
+
+        // 1st iteration for comparing 1st element of each chunk
+        for ( int i = 0; i < arr.length; i += chunkLength )
+        {
+            // Get array element name
+            name = arr[i].get( "name" );
+
+            // Result of comparison of array string to key 
+            comparisonResult = name.compareToIgnoreCase( key );
+
+            // If strings are equal
+            if ( comparisonResult == 0 )
+                // Return the array current index
+                return i;
+            
+            // If the key is inside the current array chunk
+            else if ( comparisonResult < 0 && comparisonResult > minComparisonResult )
+                // Save the result of comparison
+                minComparisonResult = comparisonResult;
+
+        } // End for loop for 1st iteration
+        
+        return -1;
+	}
+    
     /**
      * Searches for string in an array
      * @param arr Array of strings to look at

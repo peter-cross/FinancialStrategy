@@ -1036,7 +1036,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         // Get table view bindable to the number of items
         ObservableValue bindSize = Bindings.size( tbl.getItems() ).multiply( tbl.getFixedCellSize() ).add( tbl.getFixedCellSize() );
         
-        // Make Table Hight bindale to number of rows
+        // Make Table Hight bindable to number of rows
         tbl.prefHeightProperty().bind( bindSize );
         
         // Set minimum Height
@@ -1188,7 +1188,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
      */
     private EventHandler<ActionEvent> eventPrintRegistryItem( TabPane tabPane )
     {
-    	return e -> {};
+    	return e -> { };
     }
     
     /**
@@ -1203,7 +1203,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
     
     /**
      * Gets selected tab number 
-     * @param tabPane Tabpane object for current Pane
+     * @param tabPane TabPane object for current Pane
      * @return
      */
     private int selectedTabNumber( TabPane tabPane )
@@ -1298,7 +1298,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
      */
     public RegistryView( Stage stage, String title, String valueType, ButtonBase btn )
     {
-        this(stage, title, valueType);
+        this( stage, title, valueType );
         
         modeBtn = btn;
     }

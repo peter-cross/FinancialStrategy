@@ -37,7 +37,7 @@ public class SubMenu extends Menu
      */
     public void addMenuItem( String itemName, double width  )
     {
-        addMenuItem( itemName, e -> Controller.displayRegistry( itemName, (int)width ) );
+        addMenuItem( itemName, e -> Controller.displayRegistry( itemName, (int) width ) );
 
     } // End of method ** addMenuItem **
 
@@ -78,7 +78,7 @@ public class SubMenu extends Menu
      */
     public MenuItem createMenuItem( String itemName, double width )
     {
-    	return createMenuItem( itemName, e -> Controller.displayRegistry( itemName, (int)width ) );
+    	return createMenuItem( itemName, e -> Controller.displayRegistry( itemName, (int) width ) );
         
     } // End of method ** createMenuItem **
 

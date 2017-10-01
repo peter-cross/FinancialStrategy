@@ -813,7 +813,7 @@ public class TableDialogView implements Buttons, Encapsulation
             }
         }
 		
-        // Create Cell Factory for Conbo Box
+        // Create Cell Factory for Combo Box
         Callback cellFactory = comboBoxCellFactory( column, tblEl, elList, textChoices );
         
         // Set cell factory for current column
@@ -1197,10 +1197,10 @@ public class TableDialogView implements Buttons, Encapsulation
     private Button createFileChooserBtn( TextField textField )
     {
         // Create button object to select file
-        Button btn = new Button("...");
-        btn.setPrefWidth(15);
-        btn.setPrefHeight(20);
-        btn.setStyle("-fx-padding: 2;");
+        Button btn = new Button( "..." );
+        btn.setPrefWidth( 15 );
+        btn.setPrefHeight( 20 );
+        btn.setStyle( "-fx-padding: 2;" );
 
         // Set event handler for press button event
         btn.setOnAction( fileChooserBtnEvent(textField) );
@@ -1363,10 +1363,10 @@ public class TableDialogView implements Buttons, Encapsulation
     private Button createTreeListBtn( TextField textField, TableElement tblEl, AssociativeList elList )
     {
         // Create button object to select from tree list
-        Button btn = new Button("...");
-        btn.setPrefWidth(15);
-        btn.setPrefHeight(20);
-        btn.setStyle("-fx-padding: 2;");
+        Button btn = new Button( "..." );
+        btn.setPrefWidth( 15 );
+        btn.setPrefHeight( 20 );
+        btn.setStyle( "-fx-padding: 2;" );
 
         // Set event handler for press button event
         btn.setOnAction( treeListBtnEventHandler( btn, textField, tblEl ) );

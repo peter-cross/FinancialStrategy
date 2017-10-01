@@ -87,7 +87,7 @@ public class Database
 				// If object is a list of something
 				if ( obj instanceof List )
 					// Loop through the list of objects
-		    		for ( Object o : (List<Object>)obj )
+		    		for ( Object o : (List<Object>) obj )
 						// Perform action on each object's data to DB
 		    			action.perform(o);
 				

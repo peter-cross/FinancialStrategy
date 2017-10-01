@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.ChartOfAccounts;
+import entities.COA;
 import entities.LegalEntity;
 import entities.TransactionsModel;
 import views.OneColumnTableView;
@@ -133,9 +133,9 @@ public class LegalEntityModel extends RegistryItemModel
         tblEl = new TableElement( "Chart Of Accounts" );
         tblEl.width = 250;
         tblEl.editable = false;
-        tblEl.textValue = (String[]) fields.get( "chartOfAccounts" );
+        tblEl.textValue = (String[]) fields.get( "chOfAccs" );
         tblEl.valueType = "List";
-        tblEl.list = ChartOfAccountsModel.getItemsList();
+        tblEl.list = COAModel.getItemsList();
         table[0][1] = tblEl;
         
         return table;
@@ -164,21 +164,21 @@ public class LegalEntityModel extends RegistryItemModel
             int numCharts = table[0].length;
             
             String[] chartNames = new String[numCharts],
-                     chartOfAccounts = new String[numCharts];
+            		chOfAccs = new String[numCharts];
             
             for ( int i = 0; i < numCharts; i++ )
             {
             	chartNames[i] = table[0][i][0];
-            	chartOfAccounts[i] = table[0][i][1];
+            	chOfAccs[i] = table[0][i][1];
             }
             
             fields.set( "chartName", chartNames );
-            fields.set( "chartOfAccounts", chartOfAccounts );
+            fields.set( "chOfAccs", chOfAccs );
         }
         else
         {
         	fields.set( "chartName", new String[] {} );
-            fields.set( "chartOfAccounts", new String[] {} );
+            fields.set( "chOfAccs", new String[] {} );
         }
     }
     
@@ -228,16 +228,16 @@ public class LegalEntityModel extends RegistryItemModel
     }
     
     /**
-     * Gets string array of Legal Entity Charts of Accounts
+     * Gets string array of Legal Entity ChOfAccs
      * @return String array
      */
     public String[] getChartOfAccounts()
     {
-    	return (String[]) fields.get( "chartOfAccounts" );
+    	return (String[]) fields.get( "chOfAccs" );
     }
     
     /**
-     * Gets names for legal entity Charts of Accounts
+     * Gets names for legal entity ChOfAccs
      * @return
      */
     public String[] getChartNames()
@@ -261,13 +261,13 @@ public class LegalEntityModel extends RegistryItemModel
     	for ( String chName : (String[]) fields.get( "chartName" ) )
     		chartNames.add( chName );
     	
-    	ArrayList<ChartOfAccounts> chartOfAccounts = new ArrayList<>();
-    	for ( String chart : (String[]) fields.get( "chartOfAccounts" ) )
+    	ArrayList<COA> chOfAccs = new ArrayList<>();
+    	for ( String chart : (String[]) fields.get( "chOfAccs" ) )
     	{
-    		ChartOfAccountsModel chModel = ChartOfAccountsModel.getByName( chart );
+    		COAModel chModel = COAModel.getByName( chart );
     		
     		if ( chModel != null )
-    			chartOfAccounts.add( chModel.getChartOfAccounts() );
+    			chOfAccs.add( chModel.getChOfAccs() );
     	}	
     	
     	// Get Legal Entity object from the fields of current model
@@ -277,14 +277,14 @@ public class LegalEntityModel extends RegistryItemModel
     	if ( legalEntity == null  )
         {
             // Create instance of Legal Entity
-            legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address, chartNames, chartOfAccounts );
+            legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
             fields.set( "legalEntity", legalEntity );
         }
             
     	// Otherwise
     	else
             // Update Legal Entity information
-            legalEntity.update( iD, name, legalName, phone, contact, address, chartNames, chartOfAccounts );
+            legalEntity.update( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
     	
     	try
     	{
@@ -441,7 +441,7 @@ public class LegalEntityModel extends RegistryItemModel
         fields.set( "address", le.getAddress() );
         
         fields.set( "chartName", le.getChartNames() ); 
-		fields.set( "chartOfAccounts", le.getChartOfAccounts() );
+		fields.set( "chOfAccs", le.getChOfAccs() );
     }
 
 } // End of class ** LegalEntityModel **

@@ -55,9 +55,9 @@ public class LegalEntity
 	 * @param contact Contact person
 	 * @param address Address of Legal Entity
 	 */
-	public LegalEntity( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChartOfAccounts> chartOfAccounts ) 
+	public LegalEntity( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs ) 
 	{
-		update( iD, name, legalName, phone, contact, address, chartNames, chartOfAccounts );
+		update( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class LegalEntity
 	 * @param contact Contact person
 	 * @param address Address of Legal Entity
 	 */
-	public void update( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChartOfAccounts> chartOfAccounts )
+	public void update( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs )
 	{
 		// Save provided info and crypt sensitive info
 		this.iD = iD;
@@ -85,9 +85,9 @@ public class LegalEntity
 		legalEntityCharts = new Vector<LegalEntityCharts>();
 		LegalEntityCharts legalEntityChartsLine;
 		
-		for ( int i = 0; i < chartOfAccounts.size(); i++ )
+		for ( int i = 0; i < chOfAccs.size(); i++ )
 		{
-			legalEntityChartsLine = new LegalEntityCharts( i, chartNames.get(i), chartOfAccounts.get(i) );
+			legalEntityChartsLine = new LegalEntityCharts( i, chartNames.get(i), chOfAccs.get(i) );
 			legalEntityCharts.add( legalEntityChartsLine );
 		}
 	}
@@ -128,7 +128,7 @@ public class LegalEntity
 		return Cipher.decrypt( address );
 	}
 	
-	// Returns array of Charts of accounts names specific for Legal entity 
+	// Returns array of ChOfAccs names specific for Legal entity 
 	public String[] getChartNames()
 	{
 		String[] list = new String[ legalEntityCharts.size() ];
@@ -142,15 +142,15 @@ public class LegalEntity
 		return list;
 	}
 	
-	// Returns array of Legal entity Charts of accounts names in the system
-	public String[] getChartOfAccounts()
+	// Returns array of Legal entity ChOfAccs names in the system
+	public String[] getChOfAccs()
 	{
 		String[] list = new String[ legalEntityCharts.size() ];
 		
 		for ( int i = 0; i < list.length; i++ )
 		{
 			LegalEntityCharts chart = legalEntityCharts.get(i);
-			list[chart.getLineNum()] = chart.getChartOfAccounts();
+			list[chart.getLineNum()] = chart.getChOfAccs();
 		}
 		
 		return list;

@@ -72,6 +72,11 @@ public class Controller implements Constants, Utilities
     	displayRegistry( registryName, secondaryView );
     }
     
+    /**
+     * Displays a registry in a window
+     * @param registryName Name of a registry to display
+     * @view View to display
+     */
     public static void displayRegistry( String registryName, RegistryView  view )
     {
         try
@@ -80,7 +85,7 @@ public class Controller implements Constants, Utilities
         	view = registries.get( registryName );
         	view.display( WIDTH, HEIGHT );
         }
-        catch ( Exception e ) {}
+        catch ( Exception e ) { }
     }
     
     /**
@@ -93,6 +98,12 @@ public class Controller implements Constants, Utilities
     	displayRegistry( registryName, width, secondaryView );
     }
     
+    /**
+     * Displays a registry in a window
+     * @param registryName Name of a registry to display
+     * @param width Window width
+     * @view View to display
+     */
     public static void displayRegistry( String registryName, int width, RegistryView  view )
     {
         try
@@ -101,7 +112,7 @@ public class Controller implements Constants, Utilities
         	view = registries.get( registryName );
         	view.display( width );
         }
-        catch ( Exception e ) {}
+        catch ( Exception e ) { }
     }
     
     /**
@@ -113,13 +124,14 @@ public class Controller implements Constants, Utilities
     	SubMenu menu = new SubMenu( "" );
     	
     	MenuItem[] menuItems = new MenuItem[6];
-    	menuItems[0] = menu.createMenuItem( "Legal Entities", WIDTH*0.95 );
-    	menuItems[1] = menu.createMenuItem( "List of Charts Of Accounts", WIDTH*0.5 );
-    	menuItems[2] = menu.createMenuItem( "Charts Of Accounts", WIDTH*0.5 );
-    	menuItems[3] = menu.createMenuItem( "Currencies", WIDTH*0.4 );
+    	menuItems[0] = menu.createMenuItem( "Legal Entities", WIDTH * 0.95 );
+    	menuItems[1] = menu.createMenuItem( "List of Charts Of Accounts", WIDTH * 0.5 );
+    	menuItems[2] = menu.createMenuItem( "Charts Of Accounts", WIDTH * 0.5 );
+    	menuItems[3] = menu.createMenuItem( "Currencies", WIDTH * 0.4 );
     	menuItems[4] = menu.createMenuItem( "Clock", this::clock );
     	menuItems[5] = menu.createMenuItem( "About", this::about );
     	
+    	// Create Menu Button and return it
     	return newMenuButton( "Menu", menuItems );
     }
     
@@ -132,11 +144,15 @@ public class Controller implements Constants, Utilities
 		
     	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnReferences() ) );
     	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LegalEntityModel" ) );
-    	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "ChartOfAccountsModel" ) );
-    	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAccountModel", "ChartOfAccountsModel" ) );
+    	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "COAModel" ) );
+    	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAccountModel", "COAModel" ) );
     	registries.set( "Currencies", 						new RegistryView( stage, "List of Currencies", "CurrencyModel" ) );
     }
     
+    /**
+     * Displays About window
+     * @param e Event
+     */
     private void about( Event e )
     {
     	Utilities.displayAbout();

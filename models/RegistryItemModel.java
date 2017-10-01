@@ -79,8 +79,9 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         if ( em != null )
         	try
         	{
+        		List lst = em.createQuery( "SELECT c FROM " + entityClass + " AS c" ).getResultList();
         		// Do query for Entity class in DB and return results of query
-        		return em.createQuery( "SELECT c FROM " + entityClass + " AS c" ).getResultList();
+        		return (List<T>)lst;
             }
         	catch ( Exception e )
         	{

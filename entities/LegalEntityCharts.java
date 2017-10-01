@@ -20,7 +20,7 @@ public class LegalEntityCharts
 	private String chartName;	// Chart Of Account's name specific to Legal entity
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChartOfAccounts chartOfAccounts; // Chart Of Accounts 
+	private COA coa; // ChOfAccs 
 	
 	/**
 	 * Class mandatory constructor
@@ -33,14 +33,14 @@ public class LegalEntityCharts
 	/**
 	 * Class constructor
 	 * @param lineNum Line number in screen form
-	 * @param chartName Chart Of Account's name specific to Legal entity
-	 * @param chartOfAccounts Chart Of Accounts
+	 * @param chartName ChOfAccs' name specific to Legal entity
+	 * @param chOfAccs ChOfAccs
 	 */
-	public LegalEntityCharts( int lineNum, String chartName, ChartOfAccounts chartOfAccounts )
+	public LegalEntityCharts( int lineNum, String chartName, COA chOfAccs )
 	{
 		this.lineNum = lineNum;
 		this.chartName = Cipher.crypt( chartName );
-		this.chartOfAccounts = chartOfAccounts;
+		this.coa = chOfAccs;
 	}
 	
 	// Returns Line number in screen form
@@ -49,15 +49,15 @@ public class LegalEntityCharts
 		return lineNum;
 	}
 	
-	// Returns Chart Of Account's name specific to Legal entity
+	// Returns ChOfAcc's name specific to Legal entity
 	public String getChartName()
 	{
 		return Cipher.decrypt( chartName );
 	}
 	
-	// Returns Chart Of Accounts' name
-	public String getChartOfAccounts()
+	// Returns ChOfAccs' name
+	public String getChOfAccs()
 	{
-		return chartOfAccounts.getName();
+		return coa.getName();
 	}
 }
