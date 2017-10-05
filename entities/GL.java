@@ -22,11 +22,11 @@ public class GL
 	private String	glNumber;			// G/L Account Number
 	private String	name;				// G/L Account Name
 	private String	type;				// Type ofG/L Account
-	private String	accountGroup;		// Balance Sheet or Income Statement account group to which G/L acct.belongs
+	private String	acctGrp;		// Balance Sheet or Income Statement account group to which G/L acct.belongs
 	
 	private int		quantity;			// Quantity flag - indicates if quantitative accounting is necessary
 	private int		foreignCurrency;	// Foreign Currency Flag - indicates if posting amounts in foreign currency is necessary
-	private int		contraAccount;		// Contra Account flag
+	private int		contraAcct;		// Contra Account flag
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private COA coa;
@@ -80,11 +80,11 @@ public class GL
 		this.glNumber = Cipher.crypt( glNumber );
 		this.name = Cipher.crypt( name );
 		this.type = Cipher.crypt( type );
-		this.accountGroup = Cipher.crypt( accountGroup );
+		this.acctGrp = Cipher.crypt( accountGroup );
 		
 		this.quantity = quantity;
 		this.foreignCurrency = foreignCurrency;
-		this.contraAccount = contraAccount;
+		this.contraAcct = contraAccount;
 		
 		if ( analytics != null && analytics.size() > 0 )
 			Database.removeFromDB( analytics );
@@ -120,7 +120,7 @@ public class GL
 	// Returns Group name to which G/L account belongs
 	public String getAccountGroup()
 	{
-		return Cipher.decrypt( accountGroup );
+		return Cipher.decrypt( acctGrp );
 	}
 	
 	// Returns G/L account quantity flag
@@ -138,7 +138,7 @@ public class GL
 	// Returns G/L account contra-account flag
 	public int getContraAccount()
 	{
-		return contraAccount;
+		return contraAcct;
 	}
 	
 	// Returns Array of Analytics Controls for G/L account

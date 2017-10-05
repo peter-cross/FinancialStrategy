@@ -25,7 +25,7 @@ import application.Main;
 import entities.COA;
 import entities.GL;
 import entities.LegalEntity;
-import entities.TAccount;
+import entities.TAcct;
 import entities.Transaction;
 import entities.TransactionsModel;
 import models.COAModel;
@@ -57,15 +57,15 @@ public class TransactionsModelView extends NodeView implements Utilities
 	
 	private static TransactionsModel		transactionsModel;	// To store transactions Model entity object
 	private static Vector<Transaction>		transactions;		// To store all transactions
-	private static Vector<TAccount>			accounts;			// To store T-accounts
+	private static Vector<TAcct>			accounts;			// To store T-accounts
 	private LegalEntity						legalEntity;		// Legal entity of Transactions Model
 	
-	private static ArrayList<TAccount>		toAddTAccounts;		// T-Accounts to add
+	private static ArrayList<TAcct>		toAddTAccounts;		// T-Accounts to add
 	private static ArrayList<Transaction>	toAddTransactions;	// Transactions to add
-	private static ArrayList<TAccount>		toDelTAccounts;		// T-Accounts to delete
+	private static ArrayList<TAcct>		toDelTAccounts;		// T-Accounts to delete
 	private static ArrayList<Transaction>	toDelTransactions;	// Transactions to delete
 	
-	private ArrayList<TAccount>				selectedTAccounts;	// To store selected T-accounts
+	private ArrayList<TAcct>				selectedTAccounts;	// To store selected T-accounts
 	private AssociativeList					output;				// Results of input to pass
 	private TextField 						title;				// Model Title
 	
@@ -79,7 +79,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private TabPane 		tabPane;				// TabPane object for document with multiple tabs
 	private AssociativeList fields;
 	
-	private ArrayList<ArrayList<TAccount>>[] grid; 	// To store cell accounts as a grid
+	private ArrayList<ArrayList<TAcct>>[] grid; 	// To store cell accounts as a grid
 	private TransactionsGraphics[]			 tg;	// Graphics object for displaying transactions
 	
 	/**
@@ -188,7 +188,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 			transactions = trs;
 		
 		// Get T-accounts of Transactions Model
-		Vector<TAccount> accts = transactionsModel.getTAccounts();
+		Vector<TAcct> accts = transactionsModel.getTAccounts();
 				
 		if ( accts != null )
 			accounts = accts;
@@ -216,8 +216,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 		CELL_WIDTH  = TransactionsGraphics.getCellWidth();
 		CELL_HEIGHT = TransactionsGraphics.getCellHeight();
 		
-		// Set Graphics object for TAccount and Transaction objects
-		TAccount.setGraphics(tg);
+		// Set Graphics object for TAcct and Transaction objects
+		TAcct.setGraphics(tg);
 		Transaction.setGraphics(tg);
 		
 		String[] charts = {};
@@ -227,7 +227,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 			// Get names of ChOfAccs from Legal Entity database entity object
 			charts = legalEntity.getChOfAccs();
 		
-		TAccount.setChartsOfAccounts( charts );
+		TAcct.setChartsOfAccounts( charts );
 		Transaction.setChartsOfAccounts( charts );
 	}
 	
@@ -259,13 +259,13 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private void restoreGridAndTransactions()
 	{
 		// Create ArrayList for model T-accounts
-		ArrayList<TAccount> acctList = new ArrayList<>();
+		ArrayList<TAcct> acctList = new ArrayList<>();
 		
 		// Loop for each model transaction
 		for ( Transaction tr : transactions )
 		{
-			TAccount trDx = tr.getDx();
-			TAccount trCx = tr.getCx();
+			TAcct trDx = tr.getDx();
+			TAcct trCx = tr.getCx();
 			
 			// If Dx and Cx accounts are specified
 			if ( trCx != null && trDx != null )
@@ -279,7 +279,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		}
 			
 		// Loop for each model T-account
-		for ( TAccount acct : accounts )
+		for ( TAcct acct : accounts )
 		{
 			int idx = acct.chartIndex();
 			
@@ -361,9 +361,9 @@ public class TransactionsModelView extends NodeView implements Utilities
 	/**
 	 * Returns Transaction Model's T-accounts 
 	 */
-	public static Vector<TAccount> getTAccounts()
+	public static Vector<TAcct> getTAccounts()
 	{
-		Vector<TAccount> tAccList = new Vector( accounts );
+		Vector<TAcct> tAccList = new Vector( accounts );
 		tAccList.addAll( toAddTAccounts );
 		tAccList.removeAll( toDelTAccounts );
 		
@@ -429,7 +429,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void createEmptyGrid()
 	{
-		ArrayList<TAccount> arr;
+		ArrayList<TAcct> arr;
 		
 		int tabsSize = Math.max( 1, tabs.length );
 		
@@ -516,7 +516,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * @param e Mouse event
 	 * @return T-Account
 	 */
-	private TAccount getCurrentCell( MouseEvent e )
+	private TAcct getCurrentCell( MouseEvent e )
 	{
 		// Get column and row of current cell
 		int col = getColumn(e), 
@@ -528,7 +528,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		int tabNum = selectedTabNumber();
 		
 		// Get T-Account from current cell and return it
-		return (TAccount) grid[tabNum].get(row).get(col);
+		return (TAcct) grid[tabNum].get(row).get(col);
 	}
 	
 	/**
@@ -536,7 +536,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * @param e Mouse event
 	 * @param acct T-Account to set
 	 */
-	private void setCellTAccount( MouseEvent e, TAccount acct )
+	private void setCellTAccount( MouseEvent e, TAcct acct )
 	{
 		// Get column and row of current cell
 		int col = getColumn(e), 
@@ -598,7 +598,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private void drawTAccount( MouseEvent e )
 	{
 		// Get T-account of current cell
-		TAccount acct = getCurrentCell(e);
+		TAcct acct = getCurrentCell(e);
 		
 		if ( acct != null )
 			// Draw T-account
@@ -620,7 +620,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * Adds T-Account to the list of accounts to add
 	 * @param tAcc T-Account to add
 	 */
-	public static void addToAddTAccounts( TAccount tAcc )
+	public static void addToAddTAccounts( TAcct tAcc )
 	{
 		toAddTAccounts.add( tAcc );
 	}
@@ -629,7 +629,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * Adds T-Account to the list of accounts to delete
 	 * @param tAcc T-Account to add
 	 */
-	public static void addToDelTAccounts( TAccount tAcc )
+	public static void addToDelTAccounts( TAcct tAcc )
 	{
 		toDelTAccounts.add( tAcc );
 	}
@@ -638,7 +638,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * Gets list of T-Accounts to add
 	 * @return List of T-Accounts
 	 */
-	public static ArrayList<TAccount> getToAddTAccounts()
+	public static ArrayList<TAcct> getToAddTAccounts()
 	{
 		return toAddTAccounts;
 	}
@@ -647,7 +647,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * Gets list of T-Accounts to delete
 	 * @return List of T-Accounts
 	 */
-	public static ArrayList<TAccount> getToDelTAccounts()
+	public static ArrayList<TAcct> getToDelTAccounts()
 	{
 		return toDelTAccounts;
 	}
@@ -699,7 +699,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		int col = getColumn(e);
 		
 		// Get T-account of current cell
-		TAccount tAcc = getCurrentCell(e);
+		TAcct tAcc = getCurrentCell(e);
 		
 		// If T-account is specified
 		if ( tAcc != null )
@@ -750,18 +750,18 @@ public class TransactionsModelView extends NodeView implements Utilities
         String glCode = tAccInfo[0];
         String accName = tAccInfo[1];
         
-        TAccount acct;
+        TAcct acct;
         
         // If G/L number is specified
         if ( glCode == null || glCode.isEmpty() )
 	        // Enter T-account name and create object for T-account
-			acct = new TAccount( accName, e, chart );
+			acct = new TAcct( accName, e, chart );
         else
         {
         	GL glAcc = getGLAccount( glCode, chartIndex );
         	
         	// Create T-account database entity object
-        	acct = new TAccount( accName, e, chart, glAcc );
+        	acct = new TAcct( accName, e, chart, glAcc );
         }
 		
 		// Add created T-account to the list of T-accounts
@@ -802,7 +802,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private void selectCell( MouseEvent e )
 	{
 		// Get T-account of current cell
-		TAccount acct = getCurrentCell(e);
+		TAcct acct = getCurrentCell(e);
 		
 		// If there is T-account in selected cell
 		if ( acct != null )
@@ -834,7 +834,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void drawTransaction()
 	{
-		TAccount acct1, acct2;
+		TAcct acct1, acct2;
 		
 		if ( selectedTAccounts.size() == 2 )
 		{
@@ -852,7 +852,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * @param acct1 First T-account
 	 * @param acct2 Second T-account
 	 */
-	private void drawTransaction( TAccount acct1, TAccount acct2 )
+	private void drawTransaction( TAcct acct1, TAcct acct2 )
 	{
 		int acct1Col = acct1.getColumn();
 		int acct2Col = acct2.getColumn();
@@ -861,7 +861,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		if ( acct1Col > acct2Col )
 		{
 			// Swap T-accounts
-			TAccount tmp = acct1;
+			TAcct tmp = acct1;
 			acct1 = acct2;
 			acct2 = tmp;
 		}
@@ -1016,7 +1016,7 @@ public class TransactionsModelView extends NodeView implements Utilities
     	for ( Transaction tr : toDelTransactions )
     		transactions.remove( tr );
     	
-    	for ( TAccount tAcc : toDelTAccounts )
+    	for ( TAcct tAcc : toDelTAccounts )
     		accounts.remove( tAcc );
     	
     	Database.removeFromDB( toDelTransactions );
@@ -1062,7 +1062,7 @@ public class TransactionsModelView extends NodeView implements Utilities
      */
     private void checkSavedTransactions()
     {
-    	TAccount dx, cx;
+    	TAcct dx, cx;
     	int row;
     	List<Integer> corrAcc;
     	
@@ -1090,7 +1090,7 @@ public class TransactionsModelView extends NodeView implements Utilities
      */
     private void checkNewTransactions()
     {
-    	TAccount dx, cx;
+    	TAcct dx, cx;
     	int row;
     	List<Integer> corrAcc;
     	

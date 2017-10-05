@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 
 import java.util.List;
 
-import entities.TAccount;
+import entities.TAcct;
 import entities.Transaction;
 import entities.TransactionsModel;
 
@@ -127,7 +127,7 @@ public class Database
 				et.begin();
 				
 				// Remove Model's T-Accounts from DB
-				for ( TAccount acct : tm.getTAccounts() )
+				for ( TAcct acct : tm.getTAccounts() )
 					em.remove( acct );
 				
 				// Remove Model's Transactions from DB

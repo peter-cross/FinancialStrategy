@@ -1,20 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2017 at 07:05 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Oct 05, 2017 at 12:24 PM
+-- Server version: 10.1.26-MariaDB
+-- PHP Version: 7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `strategy`
@@ -26,7 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `coa`
 --
 
-CREATE TABLE IF NOT EXISTS `coa` (
+CREATE TABLE `coa` (
   `COAID` bigint(20) NOT NULL,
   `CODE` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -48,7 +50,7 @@ INSERT INTO `coa` (`COAID`, `CODE`, `NAME`, `CURRENCY_CURRENCYID`) VALUES
 -- Table structure for table `currency`
 --
 
-CREATE TABLE IF NOT EXISTS `currency` (
+CREATE TABLE `currency` (
   `CURRENCYID` bigint(20) NOT NULL,
   `CODE` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL
@@ -70,10 +72,10 @@ INSERT INTO `currency` (`CURRENCYID`, `CODE`, `NAME`) VALUES
 -- Table structure for table `gl`
 --
 
-CREATE TABLE IF NOT EXISTS `gl` (
+CREATE TABLE `gl` (
   `GLID` bigint(20) NOT NULL,
-  `ACCOUNTGROUP` varchar(255) DEFAULT NULL,
-  `CONTRAACCOUNT` int(11) DEFAULT NULL,
+  `ACCTGRP` varchar(255) DEFAULT NULL,
+  `CONTRAACCT` int(11) DEFAULT NULL,
   `FOREIGNCURRENCY` int(11) DEFAULT NULL,
   `GLNUMBER` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -86,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `gl` (
 -- Dumping data for table `gl`
 --
 
-INSERT INTO `gl` (`GLID`, `ACCOUNTGROUP`, `CONTRAACCOUNT`, `FOREIGNCURRENCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_COAID`) VALUES
+INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FOREIGNCURRENCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_COAID`) VALUES
 (6451, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '6555', 'Hfxm Ts Mfsi', 0, 'Gfqfshj Xmjjy', 6151),
 (6501, 'Xmtwy-Yjwr Nsajxyrjsyx', 0, 1, '6505', 'Rfwpjyfgqj Xjhzwnynjx', 1, 'Gfqfshj Xmjjy', 6151),
 (6551, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '655', 'Hfxm ts Mfsi', 0, 'Gfqfshj Xmjjy', 6201),
@@ -112,7 +114,7 @@ INSERT INTO `gl` (`GLID`, `ACCOUNTGROUP`, `CONTRAACCOUNT`, `FOREIGNCURRENCY`, `G
 -- Table structure for table `glanalytics`
 --
 
-CREATE TABLE IF NOT EXISTS `glanalytics` (
+CREATE TABLE `glanalytics` (
   `GLANALYTICSID` bigint(20) NOT NULL,
   `ANALYTICSCONTROL` varchar(255) DEFAULT NULL,
   `ANALYTICSTYPE` varchar(255) DEFAULT NULL,
@@ -155,7 +157,7 @@ INSERT INTO `glanalytics` (`GLANALYTICSID`, `ANALYTICSCONTROL`, `ANALYTICSTYPE`,
 -- Table structure for table `gl_glanalytics`
 --
 
-CREATE TABLE IF NOT EXISTS `gl_glanalytics` (
+CREATE TABLE `gl_glanalytics` (
   `GL_GLID` bigint(20) NOT NULL,
   `analytics_GLANALYTICSID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -167,10 +169,10 @@ CREATE TABLE IF NOT EXISTS `gl_glanalytics` (
 INSERT INTO `gl_glanalytics` (`GL_GLID`, `analytics_GLANALYTICSID`) VALUES
 (6451, 8501),
 (6451, 8502),
-(6551, 8503),
-(6551, 8504),
 (6501, 8551),
 (6501, 8552),
+(6551, 8503),
+(6551, 8504),
 (6552, 8553),
 (6552, 8554),
 (6701, 8601),
@@ -196,7 +198,7 @@ INSERT INTO `gl_glanalytics` (`GL_GLID`, `analytics_GLANALYTICSID`) VALUES
 -- Table structure for table `legalentity`
 --
 
-CREATE TABLE IF NOT EXISTS `legalentity` (
+CREATE TABLE `legalentity` (
   `LEGALENTITYID` bigint(20) NOT NULL,
   `ADDRESS` varchar(255) DEFAULT NULL,
   `CONTACT` varchar(255) DEFAULT NULL,
@@ -221,7 +223,7 @@ INSERT INTO `legalentity` (`LEGALENTITYID`, `ADDRESS`, `CONTACT`, `ID`, `LEGALNA
 -- Table structure for table `legalentitycharts`
 --
 
-CREATE TABLE IF NOT EXISTS `legalentitycharts` (
+CREATE TABLE `legalentitycharts` (
   `LEGALENTITYCHARTSID` bigint(20) NOT NULL,
   `CHARTNAME` varchar(255) DEFAULT NULL,
   `LINENUM` int(11) DEFAULT NULL,
@@ -247,7 +249,7 @@ INSERT INTO `legalentitycharts` (`LEGALENTITYCHARTSID`, `CHARTNAME`, `LINENUM`, 
 -- Table structure for table `legalentity_legalentitycharts`
 --
 
-CREATE TABLE IF NOT EXISTS `legalentity_legalentitycharts` (
+CREATE TABLE `legalentity_legalentitycharts` (
   `LegalEntity_LEGALENTITYID` bigint(20) NOT NULL,
   `legalEntityCharts_LEGALENTITYCHARTSID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -271,7 +273,7 @@ INSERT INTO `legalentity_legalentitycharts` (`LegalEntity_LEGALENTITYID`, `legal
 -- Table structure for table `sequence`
 --
 
-CREATE TABLE IF NOT EXISTS `sequence` (
+CREATE TABLE `sequence` (
   `SEQ_NAME` varchar(50) NOT NULL,
   `SEQ_COUNT` decimal(38,0) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -281,16 +283,16 @@ CREATE TABLE IF NOT EXISTS `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '10500');
+('SEQ_GEN', '10600');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `taccount`
+-- Table structure for table `tacct`
 --
 
-CREATE TABLE IF NOT EXISTS `taccount` (
-  `TACCOUNTID` bigint(20) NOT NULL,
+CREATE TABLE `tacct` (
+  `TACCTID` bigint(20) NOT NULL,
   `COL` int(11) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   `ROW` int(11) DEFAULT NULL,
@@ -299,10 +301,10 @@ CREATE TABLE IF NOT EXISTS `taccount` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `taccount`
+-- Dumping data for table `tacct`
 --
 
-INSERT INTO `taccount` (`TACCOUNTID`, `COL`, `NAME`, `ROW`, `COA_COAID`, `GL_GLID`) VALUES
+INSERT INTO `tacct` (`TACCTID`, `COL`, `NAME`, `ROW`, `COA_COAID`, `GL_GLID`) VALUES
 (3955, 0, 'F/U', 1, 0, NULL),
 (3956, 5, 'Rfyjwnfqx', 3, 0, NULL),
 (8851, 0, 'F/U', 1, 6151, NULL),
@@ -340,19 +342,19 @@ INSERT INTO `taccount` (`TACCOUNTID`, `COL`, `NAME`, `ROW`, `COA_COAID`, `GL_GLI
 -- --------------------------------------------------------
 
 --
--- Table structure for table `taccount_corrcx`
+-- Table structure for table `tacct_corrcx`
 --
 
-CREATE TABLE IF NOT EXISTS `taccount_corrcx` (
-  `TAccount_TACCOUNTID` bigint(20) DEFAULT NULL,
+CREATE TABLE `tacct_corrcx` (
+  `TAcct_TACCTID` bigint(20) DEFAULT NULL,
   `VALUE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `taccount_corrcx`
+-- Dumping data for table `tacct_corrcx`
 --
 
-INSERT INTO `taccount_corrcx` (`TAccount_TACCOUNTID`, `VALUE`) VALUES
+INSERT INTO `tacct_corrcx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (3956, 3),
 (8852, 1),
 (8858, 1),
@@ -392,19 +394,19 @@ INSERT INTO `taccount_corrcx` (`TAccount_TACCOUNTID`, `VALUE`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `taccount_corrdx`
+-- Table structure for table `tacct_corrdx`
 --
 
-CREATE TABLE IF NOT EXISTS `taccount_corrdx` (
-  `TAccount_TACCOUNTID` bigint(20) DEFAULT NULL,
+CREATE TABLE `tacct_corrdx` (
+  `TAcct_TACCTID` bigint(20) DEFAULT NULL,
   `VALUE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `taccount_corrdx`
+-- Dumping data for table `tacct_corrdx`
 --
 
-INSERT INTO `taccount_corrdx` (`TAccount_TACCOUNTID`, `VALUE`) VALUES
+INSERT INTO `tacct_corrdx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (3955, 3),
 (8855, 4),
 (8854, 1),
@@ -447,12 +449,12 @@ INSERT INTO `taccount_corrdx` (`TAccount_TACCOUNTID`, `VALUE`) VALUES
 -- Table structure for table `transaction`
 --
 
-CREATE TABLE IF NOT EXISTS `transaction` (
+CREATE TABLE `transaction` (
   `TRANSACTIONID` bigint(20) NOT NULL,
   `DESCRIPTION` varchar(255) DEFAULT NULL,
   `ROW` int(11) DEFAULT NULL,
-  `CX_TACCOUNTID` bigint(20) DEFAULT NULL,
-  `DX_TACCOUNTID` bigint(20) DEFAULT NULL,
+  `CX_TACCTID` bigint(20) DEFAULT NULL,
+  `DX_TACCTID` bigint(20) DEFAULT NULL,
   `COA_COAID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -460,7 +462,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
 -- Dumping data for table `transaction`
 --
 
-INSERT INTO `transaction` (`TRANSACTIONID`, `DESCRIPTION`, `ROW`, `CX_TACCOUNTID`, `DX_TACCOUNTID`, `COA_COAID`) VALUES
+INSERT INTO `transaction` (`TRANSACTIONID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTID`, `COA_COAID`) VALUES
 (3957, 'Rfyjwnfqx uzwhmfxj', 3, 3955, 3956, NULL),
 (8859, 'Nsajsytwd uzwhmfxj', 1, 8851, 8852, 6151),
 (8860, 'Rffyjwnfqx uzwhmfxj', 4, 8851, 8853, 6151),
@@ -503,7 +505,7 @@ INSERT INTO `transaction` (`TRANSACTIONID`, `DESCRIPTION`, `ROW`, `CX_TACCOUNTID
 -- Table structure for table `transactionsmodel`
 --
 
-CREATE TABLE IF NOT EXISTS `transactionsmodel` (
+CREATE TABLE `transactionsmodel` (
   `TRANSACTIONSMODELID` bigint(20) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   `LGLENTITY_LEGALENTITYID` bigint(20) DEFAULT NULL
@@ -522,27 +524,19 @@ INSERT INTO `transactionsmodel` (`TRANSACTIONSMODELID`, `NAME`, `LGLENTITY_LEGAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactionsmodel_taccount`
+-- Table structure for table `transactionsmodel_tacct`
 --
 
-CREATE TABLE IF NOT EXISTS `transactionsmodel_taccount` (
+CREATE TABLE `transactionsmodel_tacct` (
   `TransactionsModel_TRANSACTIONSMODELID` bigint(20) NOT NULL,
-  `taccounts_TACCOUNTID` bigint(20) NOT NULL
+  `taccts_TACCTID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transactionsmodel_taccount`
+-- Dumping data for table `transactionsmodel_tacct`
 --
 
-INSERT INTO `transactionsmodel_taccount` (`TransactionsModel_TRANSACTIONSMODELID`, `taccounts_TACCOUNTID`) VALUES
-(8865, 8851),
-(8865, 8852),
-(8865, 8853),
-(8865, 8854),
-(8865, 8855),
-(8865, 8856),
-(8865, 8857),
-(8865, 8858),
+INSERT INTO `transactionsmodel_tacct` (`TransactionsModel_TRANSACTIONSMODELID`, `taccts_TACCTID`) VALUES
 (1108, 9102),
 (1108, 9202),
 (1108, 9203),
@@ -565,7 +559,15 @@ INSERT INTO `transactionsmodel_taccount` (`TransactionsModel_TRANSACTIONSMODELID
 (1108, 10151),
 (1108, 10251),
 (2204, 10401),
-(2204, 10402);
+(2204, 10402),
+(8865, 8851),
+(8865, 8852),
+(8865, 8853),
+(8865, 8854),
+(8865, 8855),
+(8865, 8856),
+(8865, 8857),
+(8865, 8858);
 
 -- --------------------------------------------------------
 
@@ -573,7 +575,7 @@ INSERT INTO `transactionsmodel_taccount` (`TransactionsModel_TRANSACTIONSMODELID
 -- Table structure for table `transactionsmodel_transaction`
 --
 
-CREATE TABLE IF NOT EXISTS `transactionsmodel_transaction` (
+CREATE TABLE `transactionsmodel_transaction` (
   `TransactionsModel_TRANSACTIONSMODELID` bigint(20) NOT NULL,
   `transactions_TRANSACTIONID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -583,12 +585,6 @@ CREATE TABLE IF NOT EXISTS `transactionsmodel_transaction` (
 --
 
 INSERT INTO `transactionsmodel_transaction` (`TransactionsModel_TRANSACTIONSMODELID`, `transactions_TRANSACTIONID`) VALUES
-(8865, 8859),
-(8865, 8860),
-(8865, 8861),
-(8865, 8862),
-(8865, 8863),
-(8865, 8864),
 (1108, 9210),
 (1108, 9311),
 (1108, 9312),
@@ -616,7 +612,13 @@ INSERT INTO `transactionsmodel_transaction` (`TransactionsModel_TRANSACTIONSMODE
 (1108, 10152),
 (1108, 10153),
 (1108, 10252),
-(2204, 10403);
+(2204, 10403),
+(8865, 8859),
+(8865, 8860),
+(8865, 8861),
+(8865, 8862),
+(8865, 8863),
+(8865, 8864);
 
 --
 -- Indexes for dumped tables
@@ -626,7 +628,8 @@ INSERT INTO `transactionsmodel_transaction` (`TransactionsModel_TRANSACTIONSMODE
 -- Indexes for table `coa`
 --
 ALTER TABLE `coa`
-  ADD PRIMARY KEY (`COAID`), ADD KEY `FK_COA_CURRENCY_CURRENCYID` (`CURRENCY_CURRENCYID`);
+  ADD PRIMARY KEY (`COAID`),
+  ADD KEY `FK_COA_CURRENCY_CURRENCYID` (`CURRENCY_CURRENCYID`);
 
 --
 -- Indexes for table `currency`
@@ -638,7 +641,8 @@ ALTER TABLE `currency`
 -- Indexes for table `gl`
 --
 ALTER TABLE `gl`
-  ADD PRIMARY KEY (`GLID`), ADD KEY `FK_GL_COA_COAID` (`COA_COAID`);
+  ADD PRIMARY KEY (`GLID`),
+  ADD KEY `FK_GL_COA_COAID` (`COA_COAID`);
 
 --
 -- Indexes for table `glanalytics`
@@ -650,7 +654,8 @@ ALTER TABLE `glanalytics`
 -- Indexes for table `gl_glanalytics`
 --
 ALTER TABLE `gl_glanalytics`
-  ADD PRIMARY KEY (`GL_GLID`,`analytics_GLANALYTICSID`), ADD KEY `GLCCNTGLANALYTICSnlytcsGLANALYTICSID` (`analytics_GLANALYTICSID`);
+  ADD PRIMARY KEY (`GL_GLID`,`analytics_GLANALYTICSID`),
+  ADD KEY `GLCCNTGLANALYTICSnlytcsGLANALYTICSID` (`analytics_GLANALYTICSID`);
 
 --
 -- Indexes for table `legalentity`
@@ -659,52 +664,69 @@ ALTER TABLE `legalentity`
   ADD PRIMARY KEY (`LEGALENTITYID`);
 
 --
+-- Indexes for table `legalentitycharts`
+--
+ALTER TABLE `legalentitycharts`
+  ADD KEY `FK_LEGALENTITYCHARTS_COA_COAID` (`COA_COAID`);
+
+--
+-- Indexes for table `legalentity_legalentitycharts`
+--
+ALTER TABLE `legalentity_legalentitycharts`
+  ADD KEY `LGALENTITYLEGALENTITYCHARTSLgalEntityLEGALENTITYID` (`LegalEntity_LEGALENTITYID`);
+
+--
 -- Indexes for table `sequence`
 --
 ALTER TABLE `sequence`
   ADD PRIMARY KEY (`SEQ_NAME`);
 
 --
--- Indexes for table `taccount`
+-- Indexes for table `tacct`
 --
-ALTER TABLE `taccount`
-  ADD PRIMARY KEY (`TACCOUNTID`);
+ALTER TABLE `tacct`
+  ADD PRIMARY KEY (`TACCTID`);
 
 --
--- Indexes for table `taccount_corrcx`
+-- Indexes for table `tacct_corrcx`
 --
-ALTER TABLE `taccount_corrcx`
-  ADD KEY `FK_TAccount_CORRCX_TAccount_TACCOUNTID` (`TAccount_TACCOUNTID`);
+ALTER TABLE `tacct_corrcx`
+  ADD KEY `FK_TAcct_CORRCX_TAcct_TACCTID` (`TAcct_TACCTID`);
 
 --
--- Indexes for table `taccount_corrdx`
+-- Indexes for table `tacct_corrdx`
 --
-ALTER TABLE `taccount_corrdx`
-  ADD KEY `FK_TAccount_CORRDX_TAccount_TACCOUNTID` (`TAccount_TACCOUNTID`);
+ALTER TABLE `tacct_corrdx`
+  ADD KEY `FK_TAcct_CORRDX_TAcct_TACCTID` (`TAcct_TACCTID`);
 
 --
 -- Indexes for table `transaction`
 --
 ALTER TABLE `transaction`
-  ADD PRIMARY KEY (`TRANSACTIONID`), ADD KEY `FK_TRANSACTION_CX_TACCOUNTID` (`CX_TACCOUNTID`), ADD KEY `FK_TRANSACTION_DX_TACCOUNTID` (`DX_TACCOUNTID`);
+  ADD PRIMARY KEY (`TRANSACTIONID`),
+  ADD KEY `FK_TRANSACTION_CX_TACCTID` (`CX_TACCTID`),
+  ADD KEY `FK_TRANSACTION_DX_TACCTID` (`DX_TACCTID`);
 
 --
 -- Indexes for table `transactionsmodel`
 --
 ALTER TABLE `transactionsmodel`
-  ADD PRIMARY KEY (`TRANSACTIONSMODELID`), ADD KEY `FK_TRANSACTIONSMODEL_LGLENTITY_LEGALENTITYID` (`LGLENTITY_LEGALENTITYID`);
+  ADD PRIMARY KEY (`TRANSACTIONSMODELID`),
+  ADD KEY `FK_TRANSACTIONSMODEL_LGLENTITY_LEGALENTITYID` (`LGLENTITY_LEGALENTITYID`);
 
 --
--- Indexes for table `transactionsmodel_taccount`
+-- Indexes for table `transactionsmodel_tacct`
 --
-ALTER TABLE `transactionsmodel_taccount`
-  ADD PRIMARY KEY (`TransactionsModel_TRANSACTIONSMODELID`,`taccounts_TACCOUNTID`), ADD KEY `FK_TRANSACTIONSMODEL_TACCOUNT_taccounts_TACCOUNTID` (`taccounts_TACCOUNTID`);
+ALTER TABLE `transactionsmodel_tacct`
+  ADD PRIMARY KEY (`TransactionsModel_TRANSACTIONSMODELID`,`taccts_TACCTID`),
+  ADD KEY `FK_TRANSACTIONSMODEL_TACCT_taccts_TACCTID` (`taccts_TACCTID`);
 
 --
 -- Indexes for table `transactionsmodel_transaction`
 --
 ALTER TABLE `transactionsmodel_transaction`
-  ADD PRIMARY KEY (`TransactionsModel_TRANSACTIONSMODELID`,`transactions_TRANSACTIONID`), ADD KEY `TRNSCTIONSMODELTRANSACTIONtrnsactionsTRANSACTIONID` (`transactions_TRANSACTIONID`);
+  ADD PRIMARY KEY (`TransactionsModel_TRANSACTIONSMODELID`,`transactions_TRANSACTIONID`),
+  ADD KEY `TRNSCTIONSMODELTRANSACTIONtrnsactionsTRANSACTIONID` (`transactions_TRANSACTIONID`);
 
 --
 -- Constraints for dumped tables
@@ -714,59 +736,74 @@ ALTER TABLE `transactionsmodel_transaction`
 -- Constraints for table `coa`
 --
 ALTER TABLE `coa`
-ADD CONSTRAINT `FK_COA_CURRENCY_CURRENCYID` FOREIGN KEY (`CURRENCY_CURRENCYID`) REFERENCES `currency` (`CURRENCYID`);
+  ADD CONSTRAINT `FK_COA_CURRENCY_CURRENCYID` FOREIGN KEY (`CURRENCY_CURRENCYID`) REFERENCES `currency` (`CURRENCYID`);
 
 --
 -- Constraints for table `gl`
 --
 ALTER TABLE `gl`
-ADD CONSTRAINT `FK_GL_COA_COAID` FOREIGN KEY (`COA_COAID`) REFERENCES `coa` (`COAID`);
+  ADD CONSTRAINT `FK_GL_COA_COAID` FOREIGN KEY (`COA_COAID`) REFERENCES `coa` (`COAID`);
 
 --
 -- Constraints for table `gl_glanalytics`
 --
 ALTER TABLE `gl_glanalytics`
-ADD CONSTRAINT `GL_GLANALYTICS_GL_GLID` FOREIGN KEY (`GL_GLID`) REFERENCES `gl` (`GLID`),
-ADD CONSTRAINT `GLCCNTGLANALYTICSnlytcsGLANALYTICSID` FOREIGN KEY (`analytics_GLANALYTICSID`) REFERENCES `glanalytics` (`GLANALYTICSID`);
+  ADD CONSTRAINT `FK_GL_GLANALYTICS_GL_GLID` FOREIGN KEY (`GL_GLID`) REFERENCES `gl` (`GLID`),
+  ADD CONSTRAINT `FK_GL_GLANALYTICS_analytics_GLANALYTICSID` FOREIGN KEY (`analytics_GLANALYTICSID`) REFERENCES `glanalytics` (`GLANALYTICSID`),
+  ADD CONSTRAINT `GLCCNTGLANALYTICSnlytcsGLANALYTICSID` FOREIGN KEY (`analytics_GLANALYTICSID`) REFERENCES `glanalytics` (`GLANALYTICSID`),
+  ADD CONSTRAINT `GL_GLANALYTICS_GL_GLID` FOREIGN KEY (`GL_GLID`) REFERENCES `gl` (`GLID`);
 
 --
--- Constraints for table `taccount_corrcx`
+-- Constraints for table `legalentitycharts`
 --
-ALTER TABLE `taccount_corrcx`
-ADD CONSTRAINT `FK_TAccount_CORRCX_TAccount_TACCOUNTID` FOREIGN KEY (`TAccount_TACCOUNTID`) REFERENCES `taccount` (`TACCOUNTID`);
+ALTER TABLE `legalentitycharts`
+  ADD CONSTRAINT `FK_LEGALENTITYCHARTS_COA_COAID` FOREIGN KEY (`COA_COAID`) REFERENCES `coa` (`COAID`);
 
 --
--- Constraints for table `taccount_corrdx`
+-- Constraints for table `legalentity_legalentitycharts`
 --
-ALTER TABLE `taccount_corrdx`
-ADD CONSTRAINT `FK_TAccount_CORRDX_TAccount_TACCOUNTID` FOREIGN KEY (`TAccount_TACCOUNTID`) REFERENCES `taccount` (`TACCOUNTID`);
+ALTER TABLE `legalentity_legalentitycharts`
+  ADD CONSTRAINT `LGALENTITYLEGALENTITYCHARTSLgalEntityLEGALENTITYID` FOREIGN KEY (`LegalEntity_LEGALENTITYID`) REFERENCES `legalentity` (`LEGALENTITYID`);
+
+--
+-- Constraints for table `tacct_corrcx`
+--
+ALTER TABLE `tacct_corrcx`
+  ADD CONSTRAINT `FK_TAcct_CORRCX_TAcct_TACCTID` FOREIGN KEY (`TAcct_TACCTID`) REFERENCES `tacct` (`TACCTID`);
+
+--
+-- Constraints for table `tacct_corrdx`
+--
+ALTER TABLE `tacct_corrdx`
+  ADD CONSTRAINT `FK_TAcct_CORRDX_TAcct_TACCTID` FOREIGN KEY (`TAcct_TACCTID`) REFERENCES `tacct` (`TACCTID`);
 
 --
 -- Constraints for table `transaction`
 --
 ALTER TABLE `transaction`
-ADD CONSTRAINT `FK_TRANSACTION_CX_TACCOUNTID` FOREIGN KEY (`CX_TACCOUNTID`) REFERENCES `taccount` (`TACCOUNTID`),
-ADD CONSTRAINT `FK_TRANSACTION_DX_TACCOUNTID` FOREIGN KEY (`DX_TACCOUNTID`) REFERENCES `taccount` (`TACCOUNTID`);
+  ADD CONSTRAINT `FK_TRANSACTION_CX_TACCTID` FOREIGN KEY (`CX_TACCTID`) REFERENCES `tacct` (`TACCTID`),
+  ADD CONSTRAINT `FK_TRANSACTION_DX_TACCTID` FOREIGN KEY (`DX_TACCTID`) REFERENCES `tacct` (`TACCTID`);
 
 --
 -- Constraints for table `transactionsmodel`
 --
 ALTER TABLE `transactionsmodel`
-ADD CONSTRAINT `FK_TRANSACTIONSMODEL_LGLENTITY_LEGALENTITYID` FOREIGN KEY (`LGLENTITY_LEGALENTITYID`) REFERENCES `legalentity` (`LEGALENTITYID`);
+  ADD CONSTRAINT `FK_TRANSACTIONSMODEL_LGLENTITY_LEGALENTITYID` FOREIGN KEY (`LGLENTITY_LEGALENTITYID`) REFERENCES `legalentity` (`LEGALENTITYID`);
 
 --
--- Constraints for table `transactionsmodel_taccount`
+-- Constraints for table `transactionsmodel_tacct`
 --
-ALTER TABLE `transactionsmodel_taccount`
-ADD CONSTRAINT `FK_TRANSACTIONSMODEL_TACCOUNT_taccounts_TACCOUNTID` FOREIGN KEY (`taccounts_TACCOUNTID`) REFERENCES `taccount` (`TACCOUNTID`),
-ADD CONSTRAINT `TRNSCTNSMDLTACCOUNTTrnsctnsMdelTRANSACTIONSMODELID` FOREIGN KEY (`TransactionsModel_TRANSACTIONSMODELID`) REFERENCES `transactionsmodel` (`TRANSACTIONSMODELID`);
+ALTER TABLE `transactionsmodel_tacct`
+  ADD CONSTRAINT `FK_TRANSACTIONSMODEL_TACCT_taccts_TACCTID` FOREIGN KEY (`taccts_TACCTID`) REFERENCES `tacct` (`TACCTID`),
+  ADD CONSTRAINT `TRNSCTNSMDLTACCOUNTTrnsctnsMdelTRANSACTIONSMODELID` FOREIGN KEY (`TransactionsModel_TRANSACTIONSMODELID`) REFERENCES `transactionsmodel` (`TRANSACTIONSMODELID`);
 
 --
 -- Constraints for table `transactionsmodel_transaction`
 --
 ALTER TABLE `transactionsmodel_transaction`
-ADD CONSTRAINT `TRNSCTIONSMODELTRANSACTIONtrnsactionsTRANSACTIONID` FOREIGN KEY (`transactions_TRANSACTIONID`) REFERENCES `transaction` (`TRANSACTIONID`),
-ADD CONSTRAINT `TRNSCTNSMDLTRNSACTIONTrnsctnsMdlTRNSACTIONSMODELID` FOREIGN KEY (`TransactionsModel_TRANSACTIONSMODELID`) REFERENCES `transactionsmodel` (`TRANSACTIONSMODELID`);
+  ADD CONSTRAINT `TRNSCTIONSMODELTRANSACTIONtrnsactionsTRANSACTIONID` FOREIGN KEY (`transactions_TRANSACTIONID`) REFERENCES `transaction` (`TRANSACTIONID`),
+  ADD CONSTRAINT `TRNSCTNSMDLTRNSACTIONTrnsctnsMdlTRNSACTIONSMODELID` FOREIGN KEY (`TransactionsModel_TRANSACTIONSMODELID`) REFERENCES `transactionsmodel` (`TRANSACTIONSMODELID`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

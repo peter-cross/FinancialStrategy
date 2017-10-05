@@ -30,7 +30,7 @@ public class TransactionsModel
 	
 	// T-accounts included in Transactions Model
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
-	private Vector<TAccount> taccounts;
+	private Vector<TAcct> taccts;
 	
 	// Transactions of Transactions Model
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
@@ -54,10 +54,10 @@ public class TransactionsModel
 	 * @param taccounts List of T-accounts
 	 * @param transactions List of transactions
 	 */
-	public TransactionsModel( String name, Vector<TAccount> taccounts, Vector<Transaction> transactions )
+	public TransactionsModel( String name, Vector<TAcct> taccounts, Vector<Transaction> transactions )
 	{
 		this.name = Cipher.crypt( name );
-		this.taccounts = taccounts;
+		this.taccts = taccounts;
 		this.transactions = transactions;
 	}
 	
@@ -68,7 +68,7 @@ public class TransactionsModel
 	 * @param transactions List of transactions
 	 * @param lglEntity Legal Entity to which transactions model belongs
 	 */
-	public TransactionsModel( String name, Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
+	public TransactionsModel( String name, Vector<TAcct> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
 		this( name, taccounts, transactions );
 		this.lglEntity = lglEntity;
@@ -79,9 +79,9 @@ public class TransactionsModel
 	 * @param taccounts List of T-accounts
 	 * @param transactions List of transactions
 	 */
-	public TransactionsModel( Vector<TAccount> taccounts, Vector<Transaction> transactions )
+	public TransactionsModel( Vector<TAcct> taccounts, Vector<Transaction> transactions )
 	{
-		this.taccounts = taccounts;
+		this.taccts = taccounts;
 		this.transactions = transactions;
 	}
 	
@@ -91,7 +91,7 @@ public class TransactionsModel
 	 * @param transactions List of transactions
 	 * @param lglEntity Legal Entity to which transactions model belongs
 	 */
-	public TransactionsModel( Vector<TAccount> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
+	public TransactionsModel( Vector<TAcct> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
 		this( taccounts, transactions );
 		this.lglEntity = lglEntity;
@@ -109,9 +109,9 @@ public class TransactionsModel
 	/**
 	 * Returns list of Transactions Model T-accounts
 	 */
-	public Vector<TAccount> getTAccounts()
+	public Vector<TAcct> getTAccounts()
 	{
-		return taccounts;
+		return taccts;
 	}
 	
 	/**

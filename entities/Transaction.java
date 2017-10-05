@@ -29,15 +29,15 @@ public class Transaction
 	private int 	 row;					// Row number of transaction
 	private String	 description;			// Transaction description
 	@ManyToOne( fetch=FetchType.EAGER )
-	private TAccount dx;					// Dx account for transaction
+	private TAcct dx;					// Dx account for transaction
 	@ManyToOne( fetch=FetchType.EAGER )
-	private TAccount cx;					// Cx account for transaction
+	private TAcct cx;					// Cx account for transaction
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private COA coa;	  // Chart of Accounts to which transaction belongs
+	private COA coa;	  // ChOfAccs to which transaction belongs
 	
 	private static TransactionsGraphics[] tg; 	  // Transactions Graphics canvas
-	private static String[]				  charts; // Chart of Accounts for Legal Entity
+	private static String[]				  charts; // ChOfAccs for Legal Entity
 	
 	/**
 	 * Class mandatory constructor
@@ -54,7 +54,7 @@ public class Transaction
 	 * @param description Transaction description
 	 * @param chart Chart Of Accounts to which transaction belongs
 	 */
-	public Transaction( TAccount dx, TAccount cx, String description, COA chart )
+	public Transaction( TAcct dx, TAcct cx, String description, COA chart )
 	{
 		this.dx = dx;
 		this.cx = cx;
@@ -73,7 +73,7 @@ public class Transaction
 	 * @param dxt Dx T-account
 	 * @param cx Cx T-account
 	 */
-	public Transaction( TAccount dx, TAccount cx )
+	public Transaction( TAcct dx, TAcct cx )
 	{
 		this( dx, cx, "", dx.getChOfAccs() );
 		
@@ -121,7 +121,7 @@ public class Transaction
 	/**
 	 * Returns transaction Dx account
 	 */
-	public TAccount getDx()
+	public TAcct getDx()
 	{
 		return dx;
 	}
@@ -129,7 +129,7 @@ public class Transaction
 	/**
 	 * Returns transaction Cx account
 	 */
-	public TAccount getCx()
+	public TAcct getCx()
 	{
 		return cx;
 	}
@@ -165,7 +165,7 @@ public class Transaction
 	 * @param acct2 Second T-account
 	 * @return Row number
 	 */
-	private int getTransactionRow( TAccount acct1, TAccount acct2 )
+	private int getTransactionRow( TAcct acct1, TAcct acct2 )
 	{
 		// Get max row in which accounts are placed on grid
 		int row = Math.max( acct1.getRow(), acct2.getRow() );
@@ -252,7 +252,7 @@ public class Transaction
 			tg[idx].clearCellContent( row, col );
 		
 		// Get list of transit T-accounts
-		ArrayList<TAccount> accList = transitTAccounts();
+		ArrayList<TAcct> accList = transitTAccounts();
 		
 		// Redraw Cx and Dx T-accounts
 		cx.redrawCxAccount(row);
@@ -262,7 +262,7 @@ public class Transaction
 		TransactionsModelView.addToDelTransactions( this );
 		
 		// Redraw transit T-accounts
-		for ( TAccount acc : accList )
+		for ( TAcct acc : accList )
 			acc.drawTAccount();
 	}
 	
@@ -270,15 +270,15 @@ public class Transaction
 	 * Creates a list of transit T-accounts for specified transaction
 	 * @return List of transit T-accounts
 	 */
-	private ArrayList<TAccount> transitTAccounts()
+	private ArrayList<TAcct> transitTAccounts()
 	{
-		ArrayList<TAccount> accList = new ArrayList<>();
+		ArrayList<TAcct> accList = new ArrayList<>();
 		
 		// Loop for each transaction of Transactions Model
 		for ( Transaction tr : TransactionsModelView.getTransactions() )
 		{
-			TAccount trDx = tr.getDx();
-			TAccount trCx = tr.getCx();
+			TAcct trDx = tr.getDx();
+			TAcct trCx = tr.getCx();
 			
 			// If column of Dx account of current transaction is between columns of Cx and Dx account of the transaction 
 			// and transaction row number is not greater than Max row of Dx account of current transaction

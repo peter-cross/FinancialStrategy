@@ -13,7 +13,7 @@ import java.util.LinkedHashSet;
 
 import application.Database;
 import entities.LegalEntity;
-import entities.TAccount;
+import entities.TAcct;
 import entities.Transaction;
 import entities.TransactionsModel;
 import views.TransactionsModelView;
@@ -325,7 +325,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 		}
 		
 		// Get T-Accounts of Transactions Model
-		Vector<TAccount>  accts = transactionsModel.getTAccounts();
+		Vector<TAcct>  accts = transactionsModel.getTAccounts();
 		
 		// Get transactions of Transactions Model
 		Vector<Transaction> trs = transactionsModel.getTransactions();
@@ -344,7 +344,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 * @param trs	List of Transactions
 	 * @param tm	Transactions Model
 	 */
-	private void persistToDB( Vector<TAccount>  accts, Vector<Transaction> trs, TransactionsModel tm )
+	private void persistToDB( Vector<TAcct>  accts, Vector<Transaction> trs, TransactionsModel tm )
 	{
 		EntityTransaction et = null;
 		
@@ -359,7 +359,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 			et.begin();
 			
 			// Persist T-accounts of Transactions Model
-			for ( TAccount acct : accts )
+			for ( TAcct acct : accts )
 				em.persist( acct );
 			
 			// Persist transactions of Transactions Model

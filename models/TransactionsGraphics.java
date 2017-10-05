@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Vector;
 
-import entities.TAccount;
+import entities.TAcct;
 import entities.Transaction;
 
 import static interfaces.Constants.HEIGHT;
@@ -532,8 +532,8 @@ public class TransactionsGraphics extends Canvas
 		for ( Transaction t : transactions  )
 		{
 			int trRow = t.getRow();
-			TAccount trCx = t.getCx();
-			TAccount trDx = t.getDx();
+			TAcct trCx = t.getCx();
+			TAcct trDx = t.getDx();
 					
 			// if transaction is in specified row and specified column is between transactions Cx and Dx columns
 			if ( trRow == row && (col > trCx.getColumn() && col < trDx.getColumn()) )

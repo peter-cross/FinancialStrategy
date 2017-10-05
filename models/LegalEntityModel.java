@@ -327,7 +327,7 @@ public class LegalEntityModel extends RegistryItemModel
     		try
         	{
         		// Do query for TransactionsSimulationModel entity in DB and return results of query
-    			tms = em.createQuery( "SELECT t FROM TransactionsModel AS t WHERE t.lglEntity = :lglEntity" )
+    			tms = (List<TransactionsModel>) em.createQuery( "SELECT t FROM TransactionsModel AS t WHERE t.lglEntity = :lglEntity" )
     				    .setParameter( "lglEntity", legalEntity )
     				    .getResultList();
             }
