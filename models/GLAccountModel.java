@@ -579,7 +579,7 @@ public class GLAccountModel extends RegistryItemModel
                 accountGroup = fields.get( "accountGroup" );		// Account Group in Balance Sheet or Income Statement
                 
     	int 	quantity = Integer.parseInt( fieldTextValue( "quantity" ) ),				// Quantity flag
-    			foreignCurrency = Integer.parseInt( fieldTextValue( "foreignCurrency" ) ),	// Foreign Currency flag
+    			foreignCurrency = Integer.parseInt( fieldTextValue( "foreignCurrency" ) ),	// Foreign Crcy flag
     			contraAccount = Integer.parseInt( fieldTextValue( "contraAccount" ) );		// Contra account flag
     	
     	COA chOfAccs = fields.get( "chOfAccs" );

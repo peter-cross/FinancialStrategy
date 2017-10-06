@@ -10,7 +10,7 @@ import forms.DialogElement;
 import foundation.AssociativeList;
 import application.Database;
 import entities.COA;
-import entities.Currency;
+import entities.Crcy;
 
 import static interfaces.Utilities.getListElementBy;
 
@@ -152,7 +152,7 @@ public class COAModel extends RegistryItemModel
         hdr.width = 70;
         hdr.editable = false;
         
-        Currency currency = fields.get( "currency" );
+        Crcy currency = fields.get( "currency" );
         hdr.textValue = ( currency !=  null ? currency.toString() : "" );
         hdr.validation = validationCode( hdr.labelName );
         header[0][2] = hdr;
@@ -224,14 +224,14 @@ public class COAModel extends RegistryItemModel
      */
     protected void saveToDB()
     {
-    	String	 code	  = fields.get( "code" ),	// Currency code in the system
+    	String	 code	  = fields.get( "code" ),	// Crcy code in the system
                  name 	  = fields.get( "name" );	// Common name
-        Currency currency = fields.get( "currency" );
+        Crcy currency = fields.get( "currency" );
        
     	// Get COA object from the fields of current model
     	COA chOfAcc = fields.get( "COA" );
     	
-    	// If Currency object is not created yet
+    	// If Crcy object is not created yet
     	if ( chOfAcc == null  )
         {
             // Create instance of Legal Entity

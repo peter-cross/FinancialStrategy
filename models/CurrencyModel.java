@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.Currency;
+import entities.Crcy;
 import forms.DialogElement;
 
 import static interfaces.Utilities.getListElementBy;
@@ -40,11 +40,11 @@ public class CurrencyModel extends RegistryItemModel
     } // End of method ** getByCode **
     
     /**
-     * gets Currency Model by Currency entity object
-     * @param currency Currency entity object
-     * @return Currency Model object
+     * gets Crcy Model by Crcy entity object
+     * @param currency Crcy entity object
+     * @return Crcy Model object
      */
-    public static CurrencyModel getByCurrency( Currency currency )
+    public static CurrencyModel getByCurrency( Crcy currency )
     {
     	return (CurrencyModel) getListElementBy( list, "currency", currency );
     }
@@ -94,9 +94,9 @@ public class CurrencyModel extends RegistryItemModel
     }
 
     /**
-     * Returns Currency database entity object for current model
+     * Returns Crcy database entity object for current model
      */
-    public Currency  getCurrency ()
+    public Crcy  getCurrency ()
     {
     	return fields.get( "currency" );
     }
@@ -123,7 +123,7 @@ public class CurrencyModel extends RegistryItemModel
     }
     
     /**
-     * Creates new list of Currency  Models
+     * Creates new list of Crcy  Models
      */
     public static void createNewList()
     {
@@ -134,29 +134,29 @@ public class CurrencyModel extends RegistryItemModel
     
     /**
 	 * Gets Currencies from database
-	 * @return List of Currency objects
+	 * @return List of Crcy objects
 	 */
-    public static List<Currency> getFromDB()
+    public static List<Crcy> getFromDB()
     {
-    	return getFromDB( "Currency" );
+    	return getFromDB( "Crcy" );
     }
     
     /**
-     * Saves Currency data to Database
+     * Saves Crcy data to Database
      */
     protected void saveToDB()
     {
-    	String	code = fields.get( "code" ),	// Currency code in the system
+    	String	code = fields.get( "code" ),	// Crcy code in the system
                 name = fields.get( "name" );	// Common name
        
-    	// Get Currency object from the fields of current model
-    	Currency currency = fields.get( "currency" );
+    	// Get Crcy object from the fields of current model
+    	Crcy currency = fields.get( "currency" );
     	
-    	// If Currency object is not created yet
+    	// If Crcy object is not created yet
     	if ( currency == null  )
         {
             // Create instance of Legal Entity
-    		currency = new Currency( code, name );
+    		currency = new Crcy( code, name );
             fields.set( "currency", currency );
         }
             
@@ -177,7 +177,7 @@ public class CurrencyModel extends RegistryItemModel
     }
     
     /**
-     * Removes Currency data from database
+     * Removes Crcy data from database
      * @throws Exception 
      */
     @Override
@@ -190,12 +190,12 @@ public class CurrencyModel extends RegistryItemModel
     
     /**
      * Gets instance of created CurrencyModel object
-     * @param c Currency entity object
+     * @param c Crcy entity object
      * @return CurrencyModel object
      */
     public static CurrencyModel getInstance( Object c )
     {
-    	return new CurrencyModel( (Currency) c );
+    	return new CurrencyModel( (Crcy) c );
     }
     
     /**
@@ -222,9 +222,9 @@ public class CurrencyModel extends RegistryItemModel
     
     /**
      * Class constructor
-     * @param c Currency entity object
+     * @param c Crcy entity object
      */
-    public CurrencyModel( Currency c )
+    public CurrencyModel( Crcy c )
     {
     	super( "Currency" );
         

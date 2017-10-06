@@ -32,14 +32,14 @@ CREATE TABLE `coa` (
   `COAID` bigint(20) NOT NULL,
   `CODE` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
-  `CURRENCY_CURRENCYID` bigint(20) DEFAULT NULL
+  `CRCY_CRCYID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `coa`
 --
 
-INSERT INTO `coa` (`COAID`, `CODE`, `NAME`, `CURRENCY_CURRENCYID`) VALUES
+INSERT INTO `coa` (`COAID`, `CODE`, `NAME`, `CRCY_CRCYID`) VALUES
 (6151, 'NFX', 'Knsfshnfq (NFX)', 6053),
 (6201, 'FXUJ', 'Knsfshnfq (FXUJ)', 6051),
 (6301, 'RLR', 'Rfsfljrjsy', 6052);
@@ -47,20 +47,20 @@ INSERT INTO `coa` (`COAID`, `CODE`, `NAME`, `CURRENCY_CURRENCYID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `currency`
+-- Table structure for table `crcy`
 --
 
-CREATE TABLE `currency` (
-  `CURRENCYID` bigint(20) NOT NULL,
+CREATE TABLE `crcy` (
+  `CRCYID` bigint(20) NOT NULL,
   `CODE` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `currency`
+-- Dumping data for table `crcy`
 --
 
-INSERT INTO `currency` (`CURRENCYID`, `CODE`, `NAME`) VALUES
+INSERT INTO `crcy` (`CRCYID`, `CODE`, `NAME`) VALUES
 (6051, 'HFI', 'Hfsfinfs itqqfw'),
 (6052, 'ZXI', 'Z.X. itqqfw'),
 (6053, 'JZW', 'Jzwt'),
@@ -76,7 +76,7 @@ CREATE TABLE `gl` (
   `GLID` bigint(20) NOT NULL,
   `ACCTGRP` varchar(255) DEFAULT NULL,
   `CONTRAACCT` int(11) DEFAULT NULL,
-  `FOREIGNCURRENCY` int(11) DEFAULT NULL,
+  `FOREIGNCRCY` int(11) DEFAULT NULL,
   `GLNUMBER` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   `QUANTITY` int(11) DEFAULT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `gl` (
 -- Dumping data for table `gl`
 --
 
-INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FOREIGNCURRENCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_COAID`) VALUES
+INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FOREIGNCRCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_COAID`) VALUES
 (6451, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '6555', 'Hfxm Ts Mfsi', 0, 'Gfqfshj Xmjjy', 6151),
 (6501, 'Xmtwy-Yjwr Nsajxyrjsyx', 0, 1, '6505', 'Rfwpjyfgqj Xjhzwnynjx', 1, 'Gfqfshj Xmjjy', 6151),
 (6551, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '655', 'Hfxm ts Mfsi', 0, 'Gfqfshj Xmjjy', 6201),
@@ -629,13 +629,13 @@ INSERT INTO `transactionsmodel_transaction` (`TransactionsModel_TRANSACTIONSMODE
 --
 ALTER TABLE `coa`
   ADD PRIMARY KEY (`COAID`),
-  ADD KEY `FK_COA_CURRENCY_CURRENCYID` (`CURRENCY_CURRENCYID`);
+  ADD KEY `FK_COA_CRCY_CRCYID` (`CRCY_CRCYID`);
 
 --
--- Indexes for table `currency`
+-- Indexes for table `crcy`
 --
-ALTER TABLE `currency`
-  ADD PRIMARY KEY (`CURRENCYID`);
+ALTER TABLE `crcy`
+  ADD PRIMARY KEY (`CRCYID`);
 
 --
 -- Indexes for table `gl`
@@ -736,7 +736,7 @@ ALTER TABLE `transactionsmodel_transaction`
 -- Constraints for table `coa`
 --
 ALTER TABLE `coa`
-  ADD CONSTRAINT `FK_COA_CURRENCY_CURRENCYID` FOREIGN KEY (`CURRENCY_CURRENCYID`) REFERENCES `currency` (`CURRENCYID`);
+  ADD CONSTRAINT `FK_COA_CRCY_CRCYID` FOREIGN KEY (`CRCY_CRCYID`) REFERENCES `crcy` (`CRCYID`);
 
 --
 -- Constraints for table `gl`
