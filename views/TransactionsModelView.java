@@ -188,7 +188,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 			transactions = trs;
 		
 		// Get T-accounts of Transactions Model
-		Vector<TAcct> accts = transactionsModel.getTAccounts();
+		Vector<TAcct> accts = transactionsModel.getTAccs();
 				
 		if ( accts != null )
 			accounts = accts;
@@ -227,8 +227,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 			// Get names of ChOfAccs from Legal Entity database entity object
 			charts = legalEntity.getChOfAccs();
 		
-		TAcct.setChartsOfAccounts( charts );
-		Transaction.setChartsOfAccounts( charts );
+		TAcct.setChOfAccs( charts );
+		Transaction.setChOfAccs( charts );
 	}
 	
 	/**
@@ -289,7 +289,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 			// If T-account is not in list
 			if ( !acctList.contains( acct ) )
 				// Draw it 
-				acct.drawTAccount();
+				acct.drawTAcct();
 		}			
 	}
 	
@@ -595,14 +595,14 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 * Draws T-Account on canvas
 	 * @param e Mouse event
 	 */
-	private void drawTAccount( MouseEvent e )
+	private void drawTAcct( MouseEvent e )
 	{
 		// Get T-account of current cell
 		TAcct acct = getCurrentCell(e);
 		
 		if ( acct != null )
 			// Draw T-account
-			acct.drawTAccount();
+			acct.drawTAcct();
 		else
 		{
 			// Get current column and row numbers
@@ -704,7 +704,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// If T-account is specified
 		if ( tAcc != null )
 			// Delete T-account from current cell
-			tAcc.deleteTAccount();
+			tAcc.deleteTAcct();
 		
 		else
 			// Loop through list of all transactions
@@ -735,7 +735,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private void editCell( MouseEvent e )
 	{
 		// Draw T-account
-		drawTAccount( e );
+		drawTAcct( e );
   	  	
 		COA chart = selectedChOfAccs();
 		int chartIndex = 0;
@@ -768,7 +768,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		toAddTAccounts.add( acct );
 	  	
 		// Draw T-account name
-		acct.drawAccountName();
+		acct.drawAcctName();
 		
 	  	// Set T-account for current cell
 	  	setCellTAccount( e, acct );

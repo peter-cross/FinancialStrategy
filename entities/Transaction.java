@@ -62,8 +62,8 @@ public class Transaction
 		
 		row = getTransactionRow( cx, dx );
 		
-		cx.addCorrDxAccount( row );
-		dx.addCorrCxAccount( row );
+		cx.addCorrDxAcct( row );
+		dx.addCorrCxAcct( row );
                 
 		coa = chart;
 	}
@@ -91,11 +91,11 @@ public class Transaction
 	
 	/**
 	 * Sets names for Chart Of Accounts array
-	 * @param chartOfAccounts Array of Chart Of Accounts' names
+	 * @param chOfAccs Array of ChOfAccs' names
 	 */
-	public static void setChartsOfAccounts( String[] chartOfAccounts )
+	public static void setChOfAccs( String[] chOfAccs )
 	{
-		charts = chartOfAccounts;
+		charts = chOfAccs;
 	}
 	
 	/**
@@ -135,9 +135,9 @@ public class Transaction
 	}
 	
 	/**
-	 * Returns Chart Of Accounts to which transaction belongs
+	 * Returns ChOfAccs to which transaction belongs
 	 */
-	public COA getChartOfAccounts()
+	public COA getChOfAccs()
 	{
 		return coa;
 	}
@@ -189,8 +189,8 @@ public class Transaction
 	public void drawTransaction()
 	{
 		// Draw Cx and Dx T-accounts
-		cx.drawTAccount();
-		dx.drawTAccount();
+		cx.drawTAcct();
+		dx.drawTAcct();
 		
 		// Draw middle part of transaction
 		drawTransactionMiddlePart();
@@ -224,8 +224,8 @@ public class Transaction
 	 */
 	private void createTransaction()
 	{
-		cx.drawTAccount();
-		dx.drawTAccount();
+		cx.drawTAcct();
+		dx.drawTAcct();
 		
 		// Draw middle part of transaction
 		drawTransactionMiddlePart();
@@ -252,25 +252,25 @@ public class Transaction
 			tg[idx].clearCellContent( row, col );
 		
 		// Get list of transit T-accounts
-		ArrayList<TAcct> accList = transitTAccounts();
+		ArrayList<TAcct> accList = transitTAccs();
 		
 		// Redraw Cx and Dx T-accounts
-		cx.redrawCxAccount(row);
-		dx.redrawDxAccount(row);
+		cx.redrawCxAcct(row);
+		dx.redrawDxAcct(row);
 		
 		// Add current transaction to the list of transactions that have to be deleted from DB
 		TransactionsModelView.addToDelTransactions( this );
 		
 		// Redraw transit T-accounts
 		for ( TAcct acc : accList )
-			acc.drawTAccount();
+			acc.drawTAcct();
 	}
 	
 	/**
 	 * Creates a list of transit T-accounts for specified transaction
 	 * @return List of transit T-accounts
 	 */
-	private ArrayList<TAcct> transitTAccounts()
+	private ArrayList<TAcct> transitTAccs()
 	{
 		ArrayList<TAcct> accList = new ArrayList<>();
 		

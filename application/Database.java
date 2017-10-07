@@ -127,7 +127,7 @@ public class Database
 				et.begin();
 				
 				// Remove Model's T-Accounts from DB
-				for ( TAcct acct : tm.getTAccounts() )
+				for ( TAcct acct : tm.getTAccs() )
 					em.remove( acct );
 				
 				// Remove Model's Transactions from DB

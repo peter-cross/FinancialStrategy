@@ -34,7 +34,7 @@ public class LegalEntity
 	private String	contact;		// Contact in the company
 	private String	address;		// Address
 	
-	// Charts of Accounts for Legal Entity
+	// ChOfAccs for Legal Entity
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.PERSIST )
 	private Vector<LegalEntityCharts> legalEntityCharts;
 	

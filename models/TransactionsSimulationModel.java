@@ -325,7 +325,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 		}
 		
 		// Get T-Accounts of Transactions Model
-		Vector<TAcct>  accts = transactionsModel.getTAccounts();
+		Vector<TAcct>  accts = transactionsModel.getTAccs();
 		
 		// Get transactions of Transactions Model
 		Vector<Transaction> trs = transactionsModel.getTransactions();

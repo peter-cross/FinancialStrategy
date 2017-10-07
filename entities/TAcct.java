@@ -106,7 +106,7 @@ public class TAcct
 	 * Sets ChOfAccs' names 
 	 * @param chOfAccs Array of ChOfAccs' names 
 	 */
-	public static void setChartsOfAccounts( String[] chOfAccs )
+	public static void setChOfAccs( String[] chOfAccs )
 	{
 		charts = chOfAccs;
 	}
@@ -200,7 +200,7 @@ public class TAcct
 	 * Adds row number for corresponding debix account
 	 * @param acctRow Account row number to add
 	 */
-	public void addCorrDxAccount( int acctRow )
+	public void addCorrDxAcct( int acctRow )
 	{
 		if ( acctRow >= 0 )
 			corrDx.add( acctRow );
@@ -210,7 +210,7 @@ public class TAcct
 	 * Adds row number for corresponding credix account
 	 * @param acctRow Account row number to add
 	 */
-	public void addCorrCxAccount( int acctRow )
+	public void addCorrCxAcct( int acctRow )
 	{
 		if ( acctRow >= 0 )
 			corrCx.add( acctRow );
@@ -220,7 +220,7 @@ public class TAcct
 	 * Deletes row number for corresponding debix account
 	 * @param acctRow Row number to delete
 	 */
-	private void delCorrDxAccount( int acctRow )
+	private void delCorrDxAcct( int acctRow )
 	{
 		// Try to find specified row in the list of corr.Dx accounts
 		int ind = corrDx.indexOf( acctRow );
@@ -234,7 +234,7 @@ public class TAcct
 	 * Deletes row number for corresponding credix account
 	 * @param acctRow Row number to delete
 	 */
-	private void delCorrCxAccount( int acctRow )
+	private void delCorrCxAcct( int acctRow )
 	{
 		// Try to find specified row in the list of corr.Cr accounts
 		int ind = corrCx.indexOf( acctRow );
@@ -247,7 +247,7 @@ public class TAcct
 	/**
 	 * Draws T-account on canvas
 	 */
-	public void drawTAccount()
+	public void drawTAcct()
 	{
 		// Loop for each row of T-account
 		for ( int r = row; r <= getMaxRow(); r++ )
@@ -270,7 +270,7 @@ public class TAcct
 			
 			// There is no transaction at this row
 			else if ( idx1 < 0 && idx2 < 0 )
-				drawTAccountWithoutTransaction(r);
+				drawTAcctWithoutTransaction(r);
 		}
 	}
 	
@@ -289,7 +289,7 @@ public class TAcct
 			tg[idx].drawTransactionLeftTAccount( row, col );
 		
 			// Draw T-account name
-			drawAccountName();
+			drawAcctName();
 		}
 		else
 			// Draw straight vertical line with left part of transaction
@@ -311,7 +311,7 @@ public class TAcct
 			tg[idx].drawTransactionRightTAccount( row, col );
 			
 			// Draw T-account name
-			drawAccountName();
+			drawAcctName();
 		}
 		else
 			// Draw straight vertical line with right part of transaction
@@ -333,7 +333,7 @@ public class TAcct
 			tg[idx].drawTransactionTAccount( row, col );
 			
 			// Draw T-account name
-			drawAccountName();
+			drawAcctName();
 		}
 		else
 			// Draw straight vertical line with right and left part of transaction
@@ -344,7 +344,7 @@ public class TAcct
 	 * Draws part of T-account without transaction
 	 * @param acctRow Row to draw 
 	 */
-	private void drawTAccountWithoutTransaction( int acctRow )
+	private void drawTAcctWithoutTransaction( int acctRow )
 	{
 		int idx = chartIndex();
 		
@@ -356,7 +356,7 @@ public class TAcct
 			// Draw just T-account sign
 			tg[idx].drawTAccount( row, col );
 			// Draw T-account name
-			drawAccountName();
+			drawAcctName();
 		}
 		else
 		{
@@ -384,7 +384,7 @@ public class TAcct
 	/**
 	 * Draws T-account name on canvas
 	 */
-	public void drawAccountName()
+	public void drawAcctName()
 	{
 		// Get index for ChOfAccs for current Tab
 		int idx = chartIndex();
@@ -401,7 +401,7 @@ public class TAcct
 	/**
 	 * Clears content of T-account row
 	 */
-	public void clearAccountRowContent()
+	public void clearAcctRowContent()
 	{
 		int idx = chartIndex();
 		
@@ -415,15 +415,15 @@ public class TAcct
 	 * Redraws credix account of transaction in specified row
 	 * @param acctRow Row of transaction
 	 */
-	public void redrawCxAccount( int accRow )
+	public void redrawCxAcct( int accRow )
 	{
-		clearAccountRowContent();
+		clearAcctRowContent();
 		
 		// For credix account delete row of corresponding debix account
-		delCorrDxAccount( accRow );
+		delCorrDxAcct( accRow );
 		
 		// Redraw Transaction credix account
-		drawTAccount();
+		drawTAcct();
 		
 		// Get index of T-account's ChOfAccs
 		int idx = chartIndex();
@@ -441,15 +441,15 @@ public class TAcct
 	 * Redraws debix account of transaction in specified row
 	 * @param acctRow Row of transaction
 	 */
-	public void redrawDxAccount( int accRow )
+	public void redrawDxAcct( int accRow )
 	{
-		clearAccountRowContent();
+		clearAcctRowContent();
 		
 		// For Dx account delete row of corresponding credix account
-		delCorrCxAccount( accRow );
+		delCorrCxAcct( accRow );
 		
 		// Redraw Transaction Dx account
-		drawTAccount();
+		drawTAcct();
 		
 		// Get index of T-account's ChOfAccs
 		int idx = chartIndex();
@@ -466,7 +466,7 @@ public class TAcct
 	/**
 	 * Deletes T-account
 	 */
-	public void deleteTAccount()
+	public void deleteTAcct()
 	{
 		ArrayList<Transaction> transList = new ArrayList<>();
 		
@@ -489,7 +489,7 @@ public class TAcct
 			t.deleteTransaction();
 		
 		// Clear T-Account cells and cells around it's 1st cell
-		clearTAccountCellsAndArountdIt( idx );
+		clearTAcctCellsAndArountdIt( idx );
 		
 		// Loop for each row starting with T-account's row till the bottom of the grid
 		for ( int r = row; r < TransactionsModelView.ROWS; r++ )
@@ -504,7 +504,7 @@ public class TAcct
 	 * Clears T-Account cells and cells to the top and to the right of 1st cell
 	 * @param idx Chart Of Accounts index
 	 */
-	private void clearTAccountCellsAndArountdIt( int idx )
+	private void clearTAcctCellsAndArountdIt( int idx )
 	{
 		// Clear content around T-account's cell to the top and to the right
 		tg[idx].clearCellContent( row-1, col );

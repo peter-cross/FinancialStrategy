@@ -25,7 +25,7 @@ public class GL
 	private String	acctGrp;		// Balance Sheet or Income Statement account group to which G/L acct.belongs
 	
 	private int		quantity;			// Quantity flag - indicates if quantitative accounting is necessary
-	private int		foreignCrcy;	// Foreign Crcy Flag - indicates if posting amounts in foreign currency is necessary
+	private int		frgnCrcy;	// Foreign Crcy Flag - indicates if posting amounts in foreign currency is necessary
 	private int		contraAcct;		// Contra Account flag
 	
 	@ManyToOne( fetch=FetchType.EAGER )
@@ -83,7 +83,7 @@ public class GL
 		this.acctGrp = Cipher.crypt( accountGroup );
 		
 		this.quantity = quantity;
-		this.foreignCrcy = foreignCurrency;
+		this.frgnCrcy = foreignCurrency;
 		this.contraAcct = contraAccount;
 		
 		if ( analytics != null && analytics.size() > 0 )
@@ -132,7 +132,7 @@ public class GL
 	// Returns G/L account foreign currency flag
 	public int getForeignCurrency()
 	{
-		return foreignCrcy;
+		return frgnCrcy;
 	}
 	
 	// Returns G/L account contra-account flag

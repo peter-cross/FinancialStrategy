@@ -17,7 +17,7 @@ public class LegalEntityCharts
 	
 	private int lineNum;		// Line number in screen form
 	
-	private String chartName;	// Chart Of Account's name specific to Legal entity
+	private String chartName;	// ChOfAccs's name specific to Legal entity
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private COA coa; // ChOfAccs 

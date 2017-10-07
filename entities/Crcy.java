@@ -19,8 +19,8 @@ public class Crcy
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long 	crcyId;
 	
-	private String	code;	// Crcy code in the system
-	private String	name;	// Crcy common name
+	private String	code;	// Currency code in the system
+	private String	name;	// Currency common name
 	
 	/**
 	 * Class mandatory constructor
@@ -32,8 +32,8 @@ public class Crcy
 	
 	/**
 	 * Class constructor
-	 * @param code Crcy code
-	 * @param name Crcy name
+	 * @param code Currency code
+	 * @param name Currency name
 	 */
 	public Crcy( String	code, String name ) 
 	{
@@ -41,9 +41,9 @@ public class Crcy
 	}
 	
 	/**
-	 * Updates Crcy object attributes
-	 * @param code Crcy code
-	 * @param name Crcy name
+	 * Updates Currency object attributes
+	 * @param code Currency code
+	 * @param name Currency name
 	 */
 	public void update( String code, String name ) 
 	{
@@ -51,19 +51,19 @@ public class Crcy
 		this.name = Cipher.crypt( name );
 	}
 	
-	// Returns Crcy code
+	// Returns Currency code
 	public String getCode()
 	{
 		return Cipher.decrypt( code );
 	}
 	
-	// Returns Crcy name
+	// Returns Currency name
 	public String getName()
 	{
 		return Cipher.decrypt( name );
 	}
     
-	// Returns String representation of Crcy
+	// Returns String representation of Currency
     public String toString()
     {
         return getCode();

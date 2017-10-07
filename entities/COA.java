@@ -20,11 +20,11 @@ public class COA
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long coaId;
 	
-	private String	code;		// Chart Of Accounts code 
-	private String	name;		// Chart Of Accounts' name
+	private String	code;		// ChOfAccs' code 
+	private String	name;		// ChOfAccs' name
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private Crcy crcy;	// Crcy of Chart Of Accounts
+	private Crcy crcy;	// Currency of ChOfAccs
 	
 	/**
 	 * Class mandatory constructor
@@ -38,7 +38,7 @@ public class COA
 	 * Class constructor
 	 * @param code Chart Of Accounts code
 	 * @param name Chart Of Accounts name
-	 * @param currency Crcy for Chart Of Accounts
+	 * @param currency Currency for Chart Of Accounts
 	 */
 	public COA( String	code, String name, Crcy currency ) 
 	{
@@ -49,13 +49,13 @@ public class COA
 	 * Updates attributes of class object
 	 * @param code Chart Of Accounts code
 	 * @param name Chart Of Accounts name
-	 * @param currency Crcy for Chart Of Accounts
+	 * @param currency Currency for Chart Of Accounts
 	 */
-	public void update( String code, String name, Crcy currency ) 
+	public void update( String code, String name, Crcy crcy ) 
 	{
 		this.code = Cipher.crypt( code );
 		this.name = Cipher.crypt( name );
-		this.crcy = currency;
+		this.crcy = crcy;
 	}
 	
 	// Returns Chart Of Accounts' code

@@ -107,9 +107,9 @@ public class TransactionsModel
 	}
 	
 	/**
-	 * Returns list of Transactions Model T-accounts
+	 * Returns list of Transactions Model T-accs
 	 */
-	public Vector<TAcct> getTAccounts()
+	public Vector<TAcct> getTAccs()
 	{
 		return taccts;
 	}

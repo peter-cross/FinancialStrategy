@@ -76,7 +76,7 @@ CREATE TABLE `gl` (
   `GLID` bigint(20) NOT NULL,
   `ACCTGRP` varchar(255) DEFAULT NULL,
   `CONTRAACCT` int(11) DEFAULT NULL,
-  `FOREIGNCRCY` int(11) DEFAULT NULL,
+  `FRGNCRCY` int(11) DEFAULT NULL,
   `GLNUMBER` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   `QUANTITY` int(11) DEFAULT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `gl` (
 -- Dumping data for table `gl`
 --
 
-INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FOREIGNCRCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_COAID`) VALUES
+INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FRGNCRCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_COAID`) VALUES
 (6451, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '6555', 'Hfxm Ts Mfsi', 0, 'Gfqfshj Xmjjy', 6151),
 (6501, 'Xmtwy-Yjwr Nsajxyrjsyx', 0, 1, '6505', 'Rfwpjyfgqj Xjhzwnynjx', 1, 'Gfqfshj Xmjjy', 6151),
 (6551, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '655', 'Hfxm ts Mfsi', 0, 'Gfqfshj Xmjjy', 6201),
