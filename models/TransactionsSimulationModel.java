@@ -34,12 +34,14 @@ public class TransactionsSimulationModel extends RegistryItemModel
     
 	private static	ArrayList<LegalEntityModel> entities;	// List of Legal Entities
 	
+	private static final String transModelStr = "Transactions Model";
+	
 	/**
 	 * Class default constructor
 	 */
 	public TransactionsSimulationModel()
 	{
-		super( "Transactions Model" );
+		super( transModelStr );
 	}
 	
 	/**
@@ -48,7 +50,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 */
 	public TransactionsSimulationModel( String entityName )
 	{
-		super( "Transactions Model", entityName );
+		super( transModelStr, entityName );
 	}
 	
 	/**
@@ -58,7 +60,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 */
 	public TransactionsSimulationModel( Stage st, String entityName ) throws Exception
 	{
-		super( st, "Transactions Model", entityName );
+		super( st, transModelStr, entityName );
 	}
 	
 	/**
@@ -67,7 +69,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	 */
 	public TransactionsSimulationModel( TransactionsModel tm, String entityName )
 	{
-		super( "Transactions Model", entityName );
+		super( transModelStr, entityName );
 		
 		fields.set( "title", tm.getName() );
 		fields.set( "transactionsModel", tm );
@@ -324,7 +326,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 				transactionsModel.setLegalEntity( legalEntity );
 		}
 		
-		// Get T-Accounts of Transactions Model
+		// Get T-Accts of Transactions Model
 		Vector<TAcct>  accts = transactionsModel.getTAccs();
 		
 		// Get transactions of Transactions Model
@@ -340,7 +342,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 	
 	/**
 	 * Persists changes to Database
-	 * @param accts List of T-Accounts
+	 * @param accts List of T-Accts
 	 * @param trs	List of Transactions
 	 * @param tm	Transactions Model
 	 */
@@ -358,7 +360,7 @@ public class TransactionsSimulationModel extends RegistryItemModel
 			// Start transaction
 			et.begin();
 			
-			// Persist T-accounts of Transactions Model
+			// Persist T-accts of Transactions Model
 			for ( TAcct acct : accts )
 				em.persist( acct );
 			

@@ -145,8 +145,8 @@ public class Controller implements Constants, Utilities
     	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnReferences() ) );
     	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LegalEntityModel" ) );
     	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "COAModel" ) );
-    	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAccountModel", "COAModel" ) );
-    	registries.set( "Currencies", 						new RegistryView( stage, "List of Currencies", "CurrencyModel" ) );
+    	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAcctModel", "COAModel" ) );
+    	registries.set( "Currencies", 						new RegistryView( stage, "List of Currencies", "CrcyModel" ) );
     }
     
     /**

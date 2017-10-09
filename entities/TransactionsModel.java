@@ -51,49 +51,49 @@ public class TransactionsModel
 	/**
 	 * Class constructor with all info of Transactions Model
 	 * @param name Name of Transactions Model
-	 * @param taccounts List of T-accounts
+	 * @param taccts List of T-accts
 	 * @param transactions List of transactions
 	 */
-	public TransactionsModel( String name, Vector<TAcct> taccounts, Vector<Transaction> transactions )
+	public TransactionsModel( String name, Vector<TAcct> taccts, Vector<Transaction> transactions )
 	{
 		this.name = Cipher.crypt( name );
-		this.taccts = taccounts;
+		this.taccts = taccts;
 		this.transactions = transactions;
 	}
 	
 	/**
 	 * Class constructor with all info for Transactions Model and Legal Entity it belongs to
 	 * @param name Name of Transactions Model
-	 * @param taccounts List of T-accounts
+	 * @param taccounts List of T-accts
 	 * @param transactions List of transactions
 	 * @param lglEntity Legal Entity to which transactions model belongs
 	 */
-	public TransactionsModel( String name, Vector<TAcct> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
+	public TransactionsModel( String name, Vector<TAcct> taccts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
-		this( name, taccounts, transactions );
+		this( name, taccts, transactions );
 		this.lglEntity = lglEntity;
 	}
 	
 	/**
-	 * Class constructor with List of T-accounts and list of transactions
-	 * @param taccounts List of T-accounts
+	 * Class constructor with List of T-accts and list of transactions
+	 * @param taccounts List of T-accts
 	 * @param transactions List of transactions
 	 */
-	public TransactionsModel( Vector<TAcct> taccounts, Vector<Transaction> transactions )
+	public TransactionsModel( Vector<TAcct> taccts, Vector<Transaction> transactions )
 	{
-		this.taccts = taccounts;
+		this.taccts = taccts;
 		this.transactions = transactions;
 	}
 	
 	/**
-	 * Class constructor with List of T-accounts and list of transactions and Legal Entity Transaction Model belongs to
-	 * @param taccounts List of T-accounts
+	 * Class constructor with List of T-accts and list of transactions and Legal Entity Transaction Model belongs to
+	 * @param taccounts List of T-accts
 	 * @param transactions List of transactions
 	 * @param lglEntity Legal Entity to which transactions model belongs
 	 */
-	public TransactionsModel( Vector<TAcct> taccounts, Vector<Transaction> transactions, LegalEntity lglEntity )
+	public TransactionsModel( Vector<TAcct> taccts, Vector<Transaction> transactions, LegalEntity lglEntity )
 	{
-		this( taccounts, transactions );
+		this( taccts, transactions );
 		this.lglEntity = lglEntity;
 	}
 	
@@ -107,7 +107,7 @@ public class TransactionsModel
 	}
 	
 	/**
-	 * Returns list of Transactions Model T-accs
+	 * Returns list of Transactions Model T-accts
 	 */
 	public Vector<TAcct> getTAccs()
 	{

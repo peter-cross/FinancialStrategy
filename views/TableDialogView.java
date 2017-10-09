@@ -31,7 +31,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.time.LocalDate;
 
-import models.GLAccountModel;
+import models.GLAcctModel;
 import models.RegistryItemModel;
 
 import forms.DateDialog;
@@ -1583,7 +1583,7 @@ public class TableDialogView implements Buttons, Encapsulation
         ArrayList<String> acctAttr = (ArrayList<String>) elList.get( "G/L Acct" );
         
         String initVal = "", accnt = "";
-        GLAccountModel account;
+        GLAcctModel account;
         
         if ( dimsAttr.size() > 0 && index < dimsAttr.size() )
             initVal = dimsAttr.get( index );
@@ -1594,9 +1594,9 @@ public class TableDialogView implements Buttons, Encapsulation
         String tab = (String) elList.get( "Tab" );
         
         if ( tab != null && !tab.isEmpty() )
-            account = GLAccountModel.getByCode( accnt, tab );
+            account = GLAcctModel.getByCode( accnt, tab );
         else
-            account = GLAccountModel.getByCode( accnt );
+            account = GLAcctModel.getByCode( accnt );
 
         String[] result = new DynamicDimensions( account, stage, initVal ).result( cell );
 

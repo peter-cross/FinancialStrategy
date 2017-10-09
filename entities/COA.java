@@ -24,7 +24,7 @@ public class COA
 	private String	name;		// ChOfAccs' name
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private Crcy crcy;	// Currency of ChOfAccs
+	private Crcy crcy;	// Crcy of ChOfAccs
 	
 	/**
 	 * Class mandatory constructor
@@ -36,20 +36,20 @@ public class COA
    
 	/**
 	 * Class constructor
-	 * @param code Chart Of Accounts code
-	 * @param name Chart Of Accounts name
-	 * @param currency Currency for Chart Of Accounts
+	 * @param code ChOfAccs code
+	 * @param name ChOfAccs name
+	 * @param currency Crcy for ChOfAccs
 	 */
-	public COA( String	code, String name, Crcy currency ) 
+	public COA( String	code, String name, Crcy crcy ) 
 	{
-		update( code, name, currency );
+		update( code, name, crcy );
 	}
 	
 	/**
 	 * Updates attributes of class object
-	 * @param code Chart Of Accounts code
-	 * @param name Chart Of Accounts name
-	 * @param currency Currency for Chart Of Accounts
+	 * @param code ChOfAccs' code
+	 * @param name ChOfAccs' name
+	 * @param currency Crcy for ChOfAccs
 	 */
 	public void update( String code, String name, Crcy crcy ) 
 	{
@@ -58,20 +58,20 @@ public class COA
 		this.crcy = crcy;
 	}
 	
-	// Returns Chart Of Accounts' code
+	// Returns ChOfAccs' code
 	public String getCode()
 	{
 		return Cipher.decrypt( code );
 	}
 	
-	// Returns Chart Of Accounts' name
+	// Returns ChOfAccs' name
 	public String getName()
 	{
 		return Cipher.decrypt( name );
 	}		
 	
-	// Returns Chart Of Accounts' currency
-	public Crcy getCurrency()
+	// Returns ChOfAccs' crcy
+	public Crcy getCrcy()
 	{
 		return crcy;
 	}		

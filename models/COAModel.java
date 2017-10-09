@@ -22,6 +22,8 @@ public class COAModel extends RegistryItemModel
 {
     protected static  LinkedHashSet list;       // List of Items
     
+    private static final String chOfAccsStr = "Chart Of Accounts";
+    
     /**
      * Gets ChOfAcc by its name
      * @param name Name of a ChOfAcc
@@ -51,7 +53,7 @@ public class COAModel extends RegistryItemModel
      */
     public static COAModel getByChOfAccs( COA chOfAcc )
     {
-    	return (COAModel) getListElementBy( list, "COA", chOfAcc );
+    	return (COAModel) getListElementBy( list, "chOfAcc", chOfAcc );
     }
     
     /**
@@ -147,13 +149,14 @@ public class COAModel extends RegistryItemModel
         header[0][1] = hdr;
         
         hdr = new DialogElement( "Currency" );
+        hdr.attributeName = "crcy";
         hdr.valueType = "List";
-        hdr.list = CurrencyModel.createList()[0];
+        hdr.list = CrcyModel.createList()[0];
         hdr.width = 70;
         hdr.editable = false;
         
-        Crcy currency = fields.get( "currency" );
-        hdr.textValue = ( currency !=  null ? currency.toString() : "" );
+        Crcy crcy = fields.get( "crcy" );
+        hdr.textValue = ( crcy !=  null ? crcy.toString() : "" );
         hdr.validation = validationCode( hdr.labelName );
         header[0][2] = hdr;
         
@@ -165,7 +168,7 @@ public class COAModel extends RegistryItemModel
      */
     public COA getChOfAccs()
     {
-    	return fields.get( "COA" );
+    	return fields.get( "chOfAcc" );
     }
     
     /**
@@ -182,10 +185,10 @@ public class COAModel extends RegistryItemModel
         fields.set( "code", header[0][0] );
         fields.set( "name", header[0][1] );
         
-        CurrencyModel curModel =  CurrencyModel.getByCode( header[0][2] );
+        CrcyModel curModel =  CrcyModel.getByCode( header[0][2] );
         
         if ( curModel != null )
-            fields.set( "currency", curModel.getCurrency() );
+            fields.set( "crcy", curModel.getCrcy() );
     }
 
     /**
@@ -226,22 +229,22 @@ public class COAModel extends RegistryItemModel
     {
     	String	 code	  = fields.get( "code" ),	// Crcy code in the system
                  name 	  = fields.get( "name" );	// Common name
-        Crcy currency = fields.get( "currency" );
+        Crcy crcy = fields.get( "crcy" );
        
     	// Get COA object from the fields of current model
-    	COA chOfAcc = fields.get( "COA" );
+    	COA chOfAcc = fields.get( "chOfAcc" );
     	
     	// If Crcy object is not created yet
     	if ( chOfAcc == null  )
         {
             // Create instance of Legal Entity
-    		chOfAcc = new COA( code, name, currency );
-            fields.set( "chartOfAccounts", chOfAcc );
+    		chOfAcc = new COA( code, name, crcy );
+            fields.set( "chOfAcc", chOfAcc );
         }
         // Otherwise
     	else
             // Update ChOfAccs information
-    		chOfAcc.update( code, name, currency );
+    		chOfAcc.update( code, name, crcy );
     	
     	try
     	{
@@ -277,12 +280,12 @@ public class COAModel extends RegistryItemModel
     
     /**
      * Gets instance of created COAModel
-     * @param chart COA entity object
+     * @param chOfAcc COA entity object
      * @return
      */
-    public static COAModel getInstance( Object chart )
+    public static COAModel getInstance( Object chOfAcc )
     {
-    	return new COAModel( (COA) chart );
+    	return new COAModel( (COA) chOfAcc );
     }
     
     /**
@@ -290,7 +293,7 @@ public class COAModel extends RegistryItemModel
      */
     public COAModel()
     {
-        super( "Chart of Accounts" );
+        super( chOfAccsStr );
         
         list.add( this );
     }
@@ -302,7 +305,7 @@ public class COAModel extends RegistryItemModel
      */
     public COAModel( Stage stage ) throws Exception
     {
-    	super( stage, "Chart of Accounts", null );
+    	super( stage, chOfAccsStr, null );
         
         if ( stage != null )
         	list.add( this );
@@ -314,12 +317,12 @@ public class COAModel extends RegistryItemModel
      */
     public COAModel( COA chart )
     {
-    	super( "Chart Of Accounts" );
+    	super( chOfAccsStr );
         
-    	fields.set( "COA", chart );
+    	fields.set( "chOfAcc", chart );
     	fields.set( "code", chart.getCode() );
         fields.set( "name", chart.getName() );
-        fields.set( "currency", chart.getCurrency() );
+        fields.set( "crcy", chart.getCrcy() );
     }
     
 } // End of class ** COAModel **

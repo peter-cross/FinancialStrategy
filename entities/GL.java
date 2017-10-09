@@ -19,14 +19,14 @@ public class GL
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long 	glId;
 	
-	private String	glNumber;			// G/L Account Number
-	private String	name;				// G/L Account Name
-	private String	type;				// Type ofG/L Account
-	private String	acctGrp;		// Balance Sheet or Income Statement account group to which G/L acct.belongs
+	private String	glNumber;		// G/L Acct Number
+	private String	name;			// G/L Acct Name
+	private String	type;			// Type of G/L Acct
+	private String	acctGrp;		// Balance Sheet or Income Statement acct grp to which G/L acct.belongs
 	
-	private int		quantity;			// Quantity flag - indicates if quantitative accounting is necessary
-	private int		frgnCrcy;	// Foreign Crcy Flag - indicates if posting amounts in foreign currency is necessary
-	private int		contraAcct;		// Contra Account flag
+	private int		quantity;		// Quantity flag - indicates if quantitative accounting is necessary
+	private int		frgnCrcy;		// Foreign Crcy Flag - indicates if posting amounts in frgn crcy is necessary
+	private int		contraAcct;		// Contra Acct flag
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private COA coa;
@@ -44,47 +44,47 @@ public class GL
    
 	/**
 	 * Class constructor
-	 * @param glNumber Number of G/L account
-	 * @param name G/L account name
-	 * @param type G/L account type
-	 * @param accountGroup Account group to which belongs G/L account 
+	 * @param glNumber Number of G/L acct
+	 * @param name G/L acct name
+	 * @param type G/L acct type
+	 * @param acctGrp Acct group to which belongs G/L acct 
 	 * @param quantity Quantity flag
-	 * @param foreignCurrency Foreign Crcy flag
-	 * @param contraAccount Contra-account flag
+	 * @param frgnCrcy Frgn Crcy flag
+	 * @param contraAcct Contra-acct flag
 	 * @param analyticsControl List of Analytics Controls
 	 * @param analyticsType List of types for Analytics Controls
-	 * @param chartOfAccounts Chart of Accounts to which G/L account belongs
+	 * @param chOfAccs ChOfAccs to which G/L acct belongs
 	 */
-	public GL( String glNumber, String name, String type, String accountGroup, int quantity, int foreignCurrency, int contraAccount, List<String> analyticsControl, List<String> analyticsType, COA chartOfAccounts )
+	public GL( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, COA chOfAccs )
 	{
-		update( glNumber, name, type, accountGroup, quantity, foreignCurrency, contraAccount, analyticsControl, analyticsType, chartOfAccounts );
+		update( glNumber, name, type, acctGrp, quantity, frgnCrcy, contraAcct, analyticsControl, analyticsType, chOfAccs );
 	}
 	
 	/**
-	 * Updates G/L account object attributes
-	 * @param glNumber Number of G/L account
-	 * @param name G/L account name
-	 * @param type G/L account type
-	 * @param accountGroup Account group to which belongs G/L account 
+	 * Updates G/L acct object attributes
+	 * @param glNumber Number of G/L acct
+	 * @param name G/L acct name
+	 * @param type G/L acct type
+	 * @param acctGrp Acct grp to which belongs G/L acct 
 	 * @param quantity Quantity flag
-	 * @param foreignCurrency Foreign Crcy flag
-	 * @param contraAccount Contra-account flag
+	 * @param frgnCrcy Frgn Crcy flag
+	 * @param contraAcct Contra-acct flag
 	 * @param analyticsControl List of Analytics Controls
 	 * @param analyticsType List of types for Analytics Controls
-	 * @param chartOfAccounts Chart of Accounts to which G/L account belongs
+	 * @param chOfAccs ChOfAccs to which G/L acct belongs
 	 */
-	public void update( String glNumber, String name, String type, String accountGroup, int quantity, int foreignCurrency, int contraAccount, List<String> analyticsControl, List<String> analyticsType, COA coa )
+	public void update( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, COA chOfAccs )
 	{
-		this.coa = coa;
+		this.coa = chOfAccs;
 		
 		this.glNumber = Cipher.crypt( glNumber );
 		this.name = Cipher.crypt( name );
 		this.type = Cipher.crypt( type );
-		this.acctGrp = Cipher.crypt( accountGroup );
+		this.acctGrp = Cipher.crypt( acctGrp );
 		
 		this.quantity = quantity;
-		this.frgnCrcy = foreignCurrency;
-		this.contraAcct = contraAccount;
+		this.frgnCrcy = frgnCrcy;
+		this.contraAcct = contraAcct;
 		
 		if ( analytics != null && analytics.size() > 0 )
 			Database.removeFromDB( analytics );
@@ -99,49 +99,49 @@ public class GL
 		}
 	}
 	
-	// Returns G/L number for G/L account
+	// Returns G/L number for G/L acct
 	public String getGlNumber()
 	{
 		return Cipher.decrypt( glNumber );
 	}
 	
-	// Returns G/L account names
+	// Returns G/L acct names
 	public String getName()
 	{
 		return Cipher.decrypt( name );
 	}
 	
-	// Returns G/L account type
+	// Returns G/L acct type
 	public String getType()
 	{
 		return Cipher.decrypt( type );
 	}
 	
-	// Returns Group name to which G/L account belongs
-	public String getAccountGroup()
+	// Returns Grp name to which G/L acct belongs
+	public String getAcctGrp()
 	{
 		return Cipher.decrypt( acctGrp );
 	}
 	
-	// Returns G/L account quantity flag
+	// Returns G/L acct quantity flag
 	public int getQuantity()
 	{
 		return quantity;
 	}
 	
-	// Returns G/L account foreign currency flag
-	public int getForeignCurrency()
+	// Returns G/L acct foreign crcy flag
+	public int getFrgnCrcy()
 	{
 		return frgnCrcy;
 	}
 	
-	// Returns G/L account contra-account flag
-	public int getContraAccount()
+	// Returns G/L acct contra-acct flag
+	public int getContraAcct()
 	{
 		return contraAcct;
 	}
 	
-	// Returns Array of Analytics Controls for G/L account
+	// Returns Array of Analytics Controls for G/L acct
 	public String[] getAnalyticsControl()
 	{
 		String[] list = new String[ analytics.size() ];
@@ -155,7 +155,7 @@ public class GL
 		return list;
 	}
 	
-	// Returns Array of types for G/L account Analytics Controls
+	// Returns Array of types for G/L acct Analytics Controls
 	public String[] getAnalyticsType()
 	{
 		String[] list = new String[ analytics.size() ];
@@ -169,7 +169,7 @@ public class GL
 		return list;
 	}
 		
-	// Returns ChOfAccs to which G/L account belongs
+	// Returns ChOfAccs to which G/L acct belongs
 	public COA getChOfAccs()
 	{
 		return coa;

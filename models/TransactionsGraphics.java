@@ -14,7 +14,7 @@ import static interfaces.Constants.HEIGHT;
 import static interfaces.Constants.WIDTH;
 
 /**
- * Class TransactionsGraphics - graphic tools for drawing T-accounts and transactions
+ * Class TransactionsGraphics - graphic tools for drawing T-accts and transactions
  * @author Peter Cross
  *
  */
@@ -149,37 +149,37 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-Account on canvas
+	 * Draws T-Acct on canvas
 	 */
-	public void drawTAccount( int row, int col )
+	public void drawTAcct( int row, int col )
 	{
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-		drawTAccountHorizontalLine( row, col );
+		drawTAcctHorizontalLine( row, col );
 		
-		drawTAccountVerticalLine( row, col );
+		drawTAcctVerticalLine( row, col );
 		
 		displayDrawnLines();
 	}
 	
 	/**
-	 * Draw horizontal line for T-account
-	 * @param row Row of T-account
-	 * @param col Column of T-account
+	 * Draw horizontal line for T-acct
+	 * @param row Row of T-acct
+	 * @param col Column of T-acct
 	 */
-	private void drawTAccountHorizontalLine( int row, int col )
+	private void drawTAcctHorizontalLine( int row, int col )
 	{
-		// Draw horizontal line for T-Account
+		// Draw horizontal line for T-Acct
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH  + CELL_WIDTH*0.06, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH  + CELL_WIDTH*0.94, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 );
 	}
 	
 	/**
-	 * Draws vertical line for T-account
-	 * @param row Row of T-account
-	 * @param col Column of T-account
+	 * Draws vertical line for T-acct
+	 * @param row Row of T-acct
+	 * @param col Column of T-acct
 	 */
-	private void drawTAccountVerticalLine( int row, int col )
+	private void drawTAcctVerticalLine( int row, int col )
 	{
 		// Draw vertical line for T-account
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
@@ -187,9 +187,9 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Sets drawing settings for drawing t-account on canvas
+	 * Sets drawing settings for drawing T-acct on canvas
 	 */
-	public void setTAccountDrawingSettings()
+	public void setTAcctDrawingSettings()
 	{
 		// Set stroke and line width for drawing
 		gc.setStroke( Color.BROWN );
@@ -200,16 +200,16 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws Vertical Line for T-Account for the height of the cell
+	 * Draws Vertical Line for T-Acct for the height of the cell
 	 * @param row Row number
 	 * @param col Column number
 	 */
-	public void drawAccountVerticalLine( int row, int col )
+	public void drawAcctVerticalLine( int row, int col )
 	{
-		// Set drawing settings for drawing T-account
-		setTAccountDrawingSettings();
+		// Set drawing settings for drawing T-acct
+		setTAcctDrawingSettings();
 		
-		// Draw vertical line for T-account
+		// Draw vertical line for T-acct
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + row*CELL_HEIGHT ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 		
@@ -301,7 +301,7 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-account in highlighted color
+	 * Draws T-acct in highlighted color
 	 * @param row Row
 	 * @param col Column
 	 */
@@ -314,26 +314,26 @@ public class TransactionsGraphics extends Canvas
 		// Start drawing path
 		gc.beginPath();
         
-		drawTAccountHorizontalLine( row, col );
-		drawTAccountVerticalLine( row, col );
+		drawTAcctHorizontalLine( row, col );
+		drawTAcctVerticalLine( row, col );
 		
 		displayDrawnLines();
 	}
 	
 	/**
-	 * Draws T-account with transaction left part
+	 * Draws T-acct with transaction left part
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
-	public void drawTransactionLeftTAccount( int row, int col )
+	public void drawTransactionLeftTAcct( int row, int col )
 	{
 		clearCellContent( row, col );
 		
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-		drawTAccountHorizontalLine( row, col );
+		drawTAcctHorizontalLine( row, col );
 		
-		// Draw vertical line for T-account
+		// Draw vertical line for T-acct
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
@@ -345,7 +345,7 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction left part without T-account
+	 * Draws transaction left part without T-acct
 	 * @param row1 Row where to start
 	 * @param row2 Row where to finish
 	 * @param col Column
@@ -357,12 +357,12 @@ public class TransactionsGraphics extends Canvas
 		
 		clearCellContent( row2, col );
 		
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-        // Loop for each row of T-Account
+        // Loop for each row of T-Acct
 		for ( int r = row1; r <= row2; r++ )
         {
-        	// Draw vertical line for T-account
+        	// Draw vertical line for T-acct
     		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + r*CELL_HEIGHT ) ;
     		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (r+1)*CELL_HEIGHT ) ;
     	}
@@ -375,19 +375,19 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-account with transaction right part
+	 * Draws T-acct with transaction right part
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
-	public void drawTransactionRightTAccount( int row, int col )
+	public void drawTransactionRightTAcct( int row, int col )
 	{
 		clearCellContent( row, col );
 		
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-		drawTAccountHorizontalLine( row, col );
+		drawTAcctHorizontalLine( row, col );
 		
-		// Draw vertical line for T-account
+		// Draw vertical line for T-acct
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
@@ -399,19 +399,19 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-account with right and left parts of transaction
+	 * Draws T-acct with right and left parts of transaction
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
-	public void drawTransactionTAccount( int row, int col )
+	public void drawTransactionTAcct( int row, int col )
 	{
 		clearCellContent( row, col );
 		
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-		drawTAccountHorizontalLine( row, col );
+		drawTAcctHorizontalLine( row, col );
 		
-		// Draw vertical line for T-account
+		// Draw vertical line for T-acct
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
@@ -427,7 +427,7 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction right part without T-account
+	 * Draws transaction right part without T-acct
 	 * @param row1 Row where to start
 	 * @param row2 Row where to finish
 	 * @param col Column
@@ -439,12 +439,12 @@ public class TransactionsGraphics extends Canvas
 		
 		clearCellContent( row2, col );
 		
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-		// Loop for each row of T-Account
+		// Loop for each row of T-Acct
         for ( int r = row1; r <= row2; r++ )
         {
-        	// Draw vertical line for T-account
+        	// Draw vertical line for T-acct
     		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + r*CELL_HEIGHT ) ;
     		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (r+1)*CELL_HEIGHT ) ;
     	}
@@ -457,7 +457,7 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction right and left parts without T-account
+	 * Draws transaction right and left parts without T-acct
 	 * @param row1 Row where to start
 	 * @param row2 Row where to finish
 	 * @param col Column
@@ -467,16 +467,16 @@ public class TransactionsGraphics extends Canvas
 		if ( row1 > row2 )
 			return;
 		
-		// Loop for each row of T-Account
+		// Loop for each row of T-acct
 		for ( int r = row1; r <= row2; r++ )
 	        clearCellContent( r, col );
 		
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
-		// Loop for each row of T-Account
+		// Loop for each row of T-acct
 		for ( int r = row1; r <= row2; r++ )
         {
-        	// Draw vertical line for T-account
+        	// Draw vertical line for T-acct
     		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + r*CELL_HEIGHT ) ;
     		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (r+1)*CELL_HEIGHT ) ;
     	}
@@ -500,7 +500,7 @@ public class TransactionsGraphics extends Canvas
 	 */
 	public void drawTransactionMiddlePart( int row, int col1, int col2 )
 	{
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		        
         // Draw horizontal line for transaction
 		gc.moveTo( SHIFT_X + col1*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
@@ -521,12 +521,12 @@ public class TransactionsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transit transaction for specified row and T-account
+	 * Draws transit transaction for specified row and T-acct
 	 * @param row Row of transit transaction
 	 */
 	public void drawTransitTransaction( int row, int col, Vector<Transaction> transactions )
 	{
-		setTAccountDrawingSettings();
+		setTAcctDrawingSettings();
 		
 		// Loop for each transaction from the list 
 		for ( Transaction t : transactions  )

@@ -249,7 +249,7 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         	Object obj = fields.get( fieldName );
             
             if ( c!= null )
-                textValue = (String) c.getMethod("toString").invoke(obj);
+                textValue = (String) c.getMethod( "toString" ).invoke(obj);
         }
         catch ( Exception e ) {}
        

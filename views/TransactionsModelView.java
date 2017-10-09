@@ -29,7 +29,7 @@ import entities.TAcct;
 import entities.Transaction;
 import entities.TransactionsModel;
 import models.COAModel;
-import models.GLAccountModel;
+import models.GLAcctModel;
 import models.LegalEntityModel;
 import models.TransactionsGraphics;
 import foundation.AssociativeList;
@@ -37,10 +37,10 @@ import foundation.TaskTimer;
 import foundation.UserDialog;
 import interfaces.Utilities;
 
-import static interfaces.Utilities.enterTAccountInfo;
+import static interfaces.Utilities.enterTAcctInfo;
 
 /**
- * Class TransactionsSimulationModel - Modeling accounting transactions
+ * Class TransactionsSimulationModel - Modeling accting transactions
  * @author Peter Cross
  *
  */
@@ -57,15 +57,15 @@ public class TransactionsModelView extends NodeView implements Utilities
 	
 	private static TransactionsModel		transactionsModel;	// To store transactions Model entity object
 	private static Vector<Transaction>		transactions;		// To store all transactions
-	private static Vector<TAcct>			accounts;			// To store T-accounts
+	private static Vector<TAcct>			accts;				// To store T-accts
 	private LegalEntity						legalEntity;		// Legal entity of Transactions Model
 	
-	private static ArrayList<TAcct>		toAddTAccounts;		// T-Accounts to add
+	private static ArrayList<TAcct>			toAddTAccts;		// T-Accts to add
+	private static ArrayList<TAcct>			toDelTAccts;		// T-Accts to delete
 	private static ArrayList<Transaction>	toAddTransactions;	// Transactions to add
-	private static ArrayList<TAcct>		toDelTAccounts;		// T-Accounts to delete
 	private static ArrayList<Transaction>	toDelTransactions;	// Transactions to delete
 	
-	private ArrayList<TAcct>				selectedTAccounts;	// To store selected T-accounts
+	private ArrayList<TAcct>				selectedTAccts;		// To store selected T-accts
 	private AssociativeList					output;				// Results of input to pass
 	private TextField 						title;				// Model Title
 	
@@ -79,7 +79,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	private TabPane 		tabPane;				// TabPane object for document with multiple tabs
 	private AssociativeList fields;
 	
-	private ArrayList<ArrayList<TAcct>>[] grid; 	// To store cell accounts as a grid
+	private ArrayList<ArrayList<TAcct>>[] grid; 	// To store cell accts as a grid
 	private TransactionsGraphics[]			 tg;	// Graphics object for displaying transactions
 	
 	/**
@@ -148,7 +148,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Sets Legal Entity for model and Tabs for Legal Entity Charts Of Accounts
+	 * Sets Legal Entity for model and Tabs for Legal Entity ChOfAccs
 	 */
 	private void setLegalEntity()
 	{
@@ -163,7 +163,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 			
 			// If Legal Entity Model is specified
 			if ( entityModel != null )
-				// Get Chart Of Accounts names  from Legal Entity Model
+				// Get ChOfAccs names  from Legal Entity Model
 				tabs = entityModel.getChartNames();
 			else
 				// Get ChOfAccs names  from Legal Entity database entity object
@@ -174,7 +174,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Gets T-Accounts and Transactions for Transactions Model 
+	 * Gets T-Accts and Transactions for Transactions Model 
 	 */
 	private void setAccountsAndTransactions()
 	{
@@ -187,11 +187,11 @@ public class TransactionsModelView extends NodeView implements Utilities
 		if ( trs != null )
 			transactions = trs;
 		
-		// Get T-accounts of Transactions Model
+		// Get T-accts of Transactions Model
 		Vector<TAcct> accts = transactionsModel.getTAccs();
 				
 		if ( accts != null )
-			accounts = accts;
+			this.accts = accts;
 	}
 	
 	/**
@@ -239,15 +239,15 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Create ArrayList for transactions
 		transactions = new Vector<>();
 		
-		// Create ArrayList for T-Accounts
-		accounts = new Vector<>();
+		// Create ArrayList for T-Accts
+		accts = new Vector<>();
 		
-		// Create ArrayList for selected T-accounts
-		selectedTAccounts = new ArrayList<>();
+		// Create ArrayList for selected T-accts
+		selectedTAccts = new ArrayList<>();
 		
-		toAddTAccounts = new ArrayList<>();
+		toAddTAccts = new ArrayList<>();
+		toDelTAccts = new ArrayList<>();
 		toAddTransactions = new ArrayList<>();
-		toDelTAccounts = new ArrayList<>();
 		toDelTransactions = new ArrayList<>();
 		
 		output = new AssociativeList();
@@ -258,7 +258,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void restoreGridAndTransactions()
 	{
-		// Create ArrayList for model T-accounts
+		// Create ArrayList for model T-accts
 		ArrayList<TAcct> acctList = new ArrayList<>();
 		
 		// Loop for each model transaction
@@ -267,26 +267,26 @@ public class TransactionsModelView extends NodeView implements Utilities
 			TAcct trDx = tr.getDx();
 			TAcct trCx = tr.getCx();
 			
-			// If Dx and Cx accounts are specified
+			// If Dx and Cx accts are specified
 			if ( trCx != null && trDx != null )
 			{
 				tr.drawTransaction();
 				
-				// Add accounts to list of model T-accounts
+				// Add accts to list of model T-accts
 				acctList.add( trCx );
 				acctList.add( trDx );
 			}
 		}
 			
-		// Loop for each model T-account
-		for ( TAcct acct : accounts )
+		// Loop for each model T-acct
+		for ( TAcct acct : accts )
 		{
 			int idx = acct.chartIndex();
 			
-			// Set T-account in grid
+			// Set T-acct in grid
 			grid[idx].get( acct.getRow() ).set( acct.getColumn(), acct );
 			
-			// If T-account is not in list
+			// If T-acct is not in list
 			if ( !acctList.contains( acct ) )
 				// Draw it 
 				acct.drawTAcct();
@@ -359,13 +359,13 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Returns Transaction Model's T-accounts 
+	 * Returns Transaction Model's T-accts 
 	 */
-	public static Vector<TAcct> getTAccounts()
+	public static Vector<TAcct> getTAccts()
 	{
-		Vector<TAcct> tAccList = new Vector( accounts );
-		tAccList.addAll( toAddTAccounts );
-		tAccList.removeAll( toDelTAccounts );
+		Vector<TAcct> tAccList = new Vector( accts );
+		tAccList.addAll( toAddTAccts );
+		tAccList.removeAll( toDelTAccts );
 		
 		return tAccList;
 	}
@@ -484,8 +484,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// If About box for model did not show up yet
 		else if ( !newAbout )
 		{
-			// If there are no T-accounts (i.e. it's a completely new model)
-			if ( accounts.size() == 0 )
+			// If there are no T-accts (i.e. it's a completely new model)
+			if ( accts.size() == 0 )
 				// Display About box through Event Dispatch Thread of UserDialog
 				new UserDialog( () -> btnAboutEventHandler(e) ).start();
 	    	
@@ -500,7 +500,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void onClickCell( MouseEvent e )
 	{
-		// If in current cell there is no T-Account
+		// If in current cell there is no T-Acct
 		if ( getCurrentCell(e) == null )
 			// Invoke editing cell
 			editCell(e);
@@ -512,9 +512,9 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Get T-Account of current cell
+	 * Get T-Acct of current cell
 	 * @param e Mouse event
-	 * @return T-Account
+	 * @return T-Acct
 	 */
 	private TAcct getCurrentCell( MouseEvent e )
 	{
@@ -527,16 +527,16 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		int tabNum = selectedTabNumber();
 		
-		// Get T-Account from current cell and return it
+		// Get T-Acct from current cell and return it
 		return (TAcct) grid[tabNum].get(row).get(col);
 	}
 	
 	/**
-	 * Sets T-Account in current cell
+	 * Sets T-Acct in current cell
 	 * @param e Mouse event
-	 * @param acct T-Account to set
+	 * @param acct T-Acct to set
 	 */
-	private void setCellTAccount( MouseEvent e, TAcct acct )
+	private void setCellTAcct( MouseEvent e, TAcct acct )
 	{
 		// Get column and row of current cell
 		int col = getColumn(e), 
@@ -547,7 +547,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 		
 		int tabNum = selectedTabNumber();
 		
-		// Set T-Account for specified column
+		// Set T-Acct for specified column
 		grid[tabNum].get(row).set( col, acct );
 	}
 	
@@ -592,16 +592,16 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Draws T-Account on canvas
+	 * Draws T-Acct on canvas
 	 * @param e Mouse event
 	 */
 	private void drawTAcct( MouseEvent e )
 	{
-		// Get T-account of current cell
+		// Get T-acct of current cell
 		TAcct acct = getCurrentCell(e);
 		
 		if ( acct != null )
-			// Draw T-account
+			// Draw T-acct
 			acct.drawTAcct();
 		else
 		{
@@ -611,45 +611,45 @@ public class TransactionsModelView extends NodeView implements Utilities
 			
 			int tabNum = selectedTabNumber();
 			
-			// Draw just image of simple T-account
-			tg[tabNum].drawTAccount( row, col );
+			// Draw just image of simple T-acct
+			tg[tabNum].drawTAcct( row, col );
 		}
 	}
 	
 	/**
-	 * Adds T-Account to the list of accounts to add
-	 * @param tAcc T-Account to add
+	 * Adds T-Acct to the list of accts to add
+	 * @param tAcc T-Acct to add
 	 */
-	public static void addToAddTAccounts( TAcct tAcc )
+	public static void addToAddTAccts( TAcct tAcc )
 	{
-		toAddTAccounts.add( tAcc );
+		toAddTAccts.add( tAcc );
 	}
 	
 	/**
-	 * Adds T-Account to the list of accounts to delete
-	 * @param tAcc T-Account to add
+	 * Adds T-Acct to the list of accts to delete
+	 * @param tAcc T-Acct to add
 	 */
-	public static void addToDelTAccounts( TAcct tAcc )
+	public static void addToDelTAccts( TAcct tAcc )
 	{
-		toDelTAccounts.add( tAcc );
+		toDelTAccts.add( tAcc );
 	}
 	
 	/**
-	 * Gets list of T-Accounts to add
-	 * @return List of T-Accounts
+	 * Gets list of T-Accts to add
+	 * @return List of T-Accts
 	 */
-	public static ArrayList<TAcct> getToAddTAccounts()
+	public static ArrayList<TAcct> getToAddTAccts()
 	{
-		return toAddTAccounts;
+		return toAddTAccts;
 	}
 	
 	/**
-	 * Gets list of T-Accounts to delete
-	 * @return List of T-Accounts
+	 * Gets list of T-Accts to delete
+	 * @return List of T-Accts
 	 */
-	public static ArrayList<TAcct> getToDelTAccounts()
+	public static ArrayList<TAcct> getToDelTAccts()
 	{
-		return toDelTAccounts;
+		return toDelTAccts;
 	}
 	
 	/**
@@ -698,12 +698,12 @@ public class TransactionsModelView extends NodeView implements Utilities
 		int row = getRow(e);
 		int col = getColumn(e);
 		
-		// Get T-account of current cell
+		// Get T-acct of current cell
 		TAcct tAcc = getCurrentCell(e);
 		
-		// If T-account is specified
+		// If T-acct is specified
 		if ( tAcc != null )
-			// Delete T-account from current cell
+			// Delete T-acct from current cell
 			tAcc.deleteTAcct();
 		
 		else
@@ -724,8 +724,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 		// Clear content of current cell
 		tg[tabNum].clearCellContent( row, col );
 		
-		// Set current cell T-Account to null
-		setCellTAccount( e, null );
+		// Set current cell T-Acct to null
+		setCellTAcct( e, null );
 	}
 	
 	/**
@@ -734,7 +734,7 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void editCell( MouseEvent e )
 	{
-		// Draw T-account
+		// Draw T-acct
 		drawTAcct( e );
   	  	
 		COA chart = selectedChOfAccs();
@@ -743,8 +743,8 @@ public class TransactionsModelView extends NodeView implements Utilities
 		if ( chart != null )
 			chartIndex = COAModel.getIndexByName( chart.getName() );
 		
-		// Enter T-account info through the dialog window
-        String[] tAccInfo = enterTAccountInfo( this, chartIndex, fields );
+		// Enter T-acct info through the dialog window
+        String[] tAccInfo = enterTAcctInfo( this, chartIndex, fields );
         
         // Get G/L number and name
         String glCode = tAccInfo[0];
@@ -754,43 +754,43 @@ public class TransactionsModelView extends NodeView implements Utilities
         
         // If G/L number is specified
         if ( glCode == null || glCode.isEmpty() )
-	        // Enter T-account name and create object for T-account
+	        // Enter T-acct name and create object for T-acct
 			acct = new TAcct( accName, e, chart );
         else
         {
-        	GL glAcc = getGLAccount( glCode, chartIndex );
+        	GL glAcc = getGLAcct( glCode, chartIndex );
         	
-        	// Create T-account database entity object
+        	// Create T-acct database entity object
         	acct = new TAcct( accName, e, chart, glAcc );
         }
 		
-		// Add created T-account to the list of T-accounts
-		toAddTAccounts.add( acct );
+		// Add created T-acct to the list of T-accts
+		toAddTAccts.add( acct );
 	  	
-		// Draw T-account name
+		// Draw T-acct name
 		acct.drawAcctName();
 		
-	  	// Set T-account for current cell
-	  	setCellTAccount( e, acct );
+	  	// Set T-acct for current cell
+	  	setCellTAcct( e, acct );
 	}
 	
 	/**
-	 * Gets G/L Account database entity by G/L code and index of ChOfAccs
+	 * Gets G/L Acct database entity by G/L code and index of ChOfAccs
 	 * @param glCode G/L code
 	 * @param chartIndex Index of ChOfAccs
-	 * @return G/L Account database entity
+	 * @return G/L Acct database entity
 	 */
-	private GL getGLAccount( String glCode, int chartIndex )
+	private GL getGLAcct( String glCode, int chartIndex )
 	{
-		// Get G/L account model by G/L account number and index of ChOfAccs
-    	GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
+		// Get G/L acct model by G/L acct number and index of ChOfAccs
+    	GLAcctModel glModel = GLAcctModel.getByCode( glCode, chartIndex );
     	
     	GL glAcc = null;
     	
-    	// If G/L account model is specified
+    	// If G/L acct model is specified
     	if ( glModel != null )
-    		// Get G/L account database entity from G/L account model
-    		glAcc = glModel.getGLAccount();
+    		// Get G/L acct database entity from G/L acct model
+    		glAcc = glModel.getGLAcct();
     	
     	return glAcc;
 	}
@@ -801,18 +801,18 @@ public class TransactionsModelView extends NodeView implements Utilities
 	 */
 	private void selectCell( MouseEvent e )
 	{
-		// Get T-account of current cell
+		// Get T-acct of current cell
 		TAcct acct = getCurrentCell(e);
 		
-		// If there is T-account in selected cell
+		// If there is T-acct in selected cell
 		if ( acct != null )
 		{
-			// Add T-account to list of selected T-accounts
-			selectedTAccounts.add( acct );
+			// Add T-acct to list of selected T-accts
+			selectedTAccts.add( acct );
 			
-			// If there are 2 T-accounts selected
-			if ( selectedTAccounts.size() > 1 )
-				// Draw transaction with selected T-accounts
+			// If there are 2 T-accts selected
+			if ( selectedTAccts.size() > 1 )
+				// Draw transaction with selected T-accts
 				drawTransaction();
 				
 			else
@@ -830,43 +830,43 @@ public class TransactionsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Draws transaction for selected accounts
+	 * Draws transaction for selected accts
 	 */
 	private void drawTransaction()
 	{
 		TAcct acct1, acct2;
 		
-		if ( selectedTAccounts.size() == 2 )
+		if ( selectedTAccts.size() == 2 )
 		{
-			acct1 = selectedTAccounts.get(0);
-			acct2 = selectedTAccounts.get(1);
+			acct1 = selectedTAccts.get(0);
+			acct2 = selectedTAccts.get(1);
 			
 			drawTransaction( acct1, acct2 );
 			
-			selectedTAccounts.clear();
+			selectedTAccts.clear();
 		}
 	}
 	
 	/**
-	 * Draws transaction for specified T-accounts 
-	 * @param acct1 First T-account
-	 * @param acct2 Second T-account
+	 * Draws transaction for specified T-accts 
+	 * @param acct1 First T-acct
+	 * @param acct2 Second T-acct
 	 */
 	private void drawTransaction( TAcct acct1, TAcct acct2 )
 	{
 		int acct1Col = acct1.getColumn();
 		int acct2Col = acct2.getColumn();
 		
-		// Check if 1st account is what should be credit account of transaction
+		// Check if 1st acct is what should be credit acct of transaction
 		if ( acct1Col > acct2Col )
 		{
-			// Swap T-accounts
+			// Swap T-accts
 			TAcct tmp = acct1;
 			acct1 = acct2;
 			acct2 = tmp;
 		}
 		
-		// Create transaction with provided T-accounts
+		// Create transaction with provided T-accts
 		Transaction tr = new Transaction( acct2, acct1 );
 		
 		// Add transaction to the list of transactions
@@ -1016,22 +1016,22 @@ public class TransactionsModelView extends NodeView implements Utilities
     	for ( Transaction tr : toDelTransactions )
     		transactions.remove( tr );
     	
-    	for ( TAcct tAcc : toDelTAccounts )
-    		accounts.remove( tAcc );
+    	for ( TAcct tAcc : toDelTAccts )
+    		accts.remove( tAcc );
     	
     	Database.removeFromDB( toDelTransactions );
-    	Database.removeFromDB( toDelTAccounts );
+    	Database.removeFromDB( toDelTAccts );
     	
     	toDelTransactions.clear();
-    	toDelTAccounts.clear();
+    	toDelTAccts.clear();
     	
     	transactions.addAll( toAddTransactions );
-    	accounts.addAll( toAddTAccounts );
+    	accts.addAll( toAddTAccts );
     	
     	String titleTxt = title.getText();
             
         if ( transactionsModel == null )
-    		transactionsModel = new TransactionsModel( titleTxt, accounts, transactions, legalEntity );
+    		transactionsModel = new TransactionsModel( titleTxt, accts, transactions, legalEntity );
         else
         	transactionsModel.setName( titleTxt );
     	
@@ -1103,12 +1103,12 @@ public class TransactionsModelView extends NodeView implements Utilities
     		
     		corrAcc = dx.getCorrCx();
     		
-    		if ( accounts.contains(dx) && corrAcc.contains(row) )
+    		if ( accts.contains(dx) && corrAcc.contains(row) )
     			corrAcc.remove( (Integer)row );
     		
     		corrAcc = cx.getCorrDx();
     		
-    		if ( accounts.contains(cx) && corrAcc.contains(row) )
+    		if ( accts.contains(cx) && corrAcc.contains(row) )
     			corrAcc.remove( (Integer)row );
     	}
     }

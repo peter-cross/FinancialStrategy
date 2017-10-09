@@ -28,6 +28,8 @@ public class LegalEntityModel extends RegistryItemModel
 {
     protected static  LinkedHashSet  list;       // List of Registry Items
     
+    private static final String lglEntityStr = "Legaal Entity";
+    
     /**
      * Get LegalEntityModel object by Legal Entity name
      * @param name Legal Entity name
@@ -204,7 +206,7 @@ public class LegalEntityModel extends RegistryItemModel
     public TableOutput getOutput()
     {
         // Display input form and get the results of input
-        TableOutput result =  new OneColumnTableView( this, "Legal Entity", 5 ).result();
+        TableOutput result =  new OneColumnTableView( this, lglEntityStr, 5 ).result();
         
         // Assign the input results to object properties
         init( result.header, result.table );
@@ -396,7 +398,7 @@ public class LegalEntityModel extends RegistryItemModel
      */
     public LegalEntityModel()
     {
-        super( "Legal Entity" );
+        super( lglEntityStr );
         
         list.add( this );
     }
@@ -408,7 +410,7 @@ public class LegalEntityModel extends RegistryItemModel
      */
     public LegalEntityModel( Stage stage ) throws Exception
     {
-        super( stage, "Legal Entity", null );
+        super( stage, lglEntityStr, null );
         
         if ( stage != null )
             list.add( this );
@@ -430,7 +432,7 @@ public class LegalEntityModel extends RegistryItemModel
      */
     public LegalEntityModel( LegalEntity le )
     {
-    	super( "Legal Entity" );
+    	super( lglEntityStr );
     	fields.set( "legalEntity", le );
     	
     	fields.set( "iD", le.getId() );

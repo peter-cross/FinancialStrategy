@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import application.Main;
-import models.GLAccountModel;
+import models.GLAcctModel;
 import models.RegistryItemModel;
 import views.NodeView;
 import views.OneColumnView;
@@ -80,19 +80,19 @@ public interface Utilities extends Encapsulation
 	}
 	
 	/**
-	 * Invokes dialog for entering T-account info
+	 * Invokes dialog for entering T-acct info
 	 * @return Entered text info
 	 */
-	public static String[] enterTAccountInfo( NodeView owner, int chartIndex, AssociativeList fields )
+	public static String[] enterTAcctInfo( NodeView owner, int chartIndex, AssociativeList fields )
 	{
 		// Create dialog element for dialog field
 		DialogElement glAcct = new DialogElement( "G/L Account" );
 		glAcct.width = 70;
 		glAcct.editable = false;
-		// Get G/L Account Model Items List for selected Chart Of Accounts
-		glAcct.list = GLAccountModel.getItemsList()[ chartIndex ];
+		// Get G/L Acct Model Items List for selected ChOfAccs
+		glAcct.list = GLAcctModel.getItemsList()[ chartIndex ];
 		// Set lambda expression that will be executed on change of field value
-		glAcct.onChange = onGLAccountChange( chartIndex );
+		glAcct.onChange = onGLAcctChange( chartIndex );
 		
 		// Create dialog element for dialog field
 		DialogElement acctName = new DialogElement( "Account Name" );
@@ -105,11 +105,11 @@ public interface Utilities extends Encapsulation
 	}
 	
 	/**
-	 * Lambda expression executed on change of G/L account
-	 * @param chartIndex Index of ChOfAccs to which belongs G/L account
+	 * Lambda expression executed on change of G/L acct
+	 * @param chartIndex Index of ChOfAccs to which belongs G/L acct
 	 * @return Lambda expression
 	 */
-	static OnElementChange onGLAccountChange( int chartIndex )
+	static OnElementChange onGLAcctChange( int chartIndex )
 	{
 		return ( elList ) -> 
 		{
@@ -119,22 +119,22 @@ public interface Utilities extends Encapsulation
 			// If nothing is specified - finish
 			if ( field == null ) return;
 			
-			// Get string value of selected G/L account
+			// Get string value of selected G/L acct
 			String glCode = (String) field.getValue();
 			
 			// If G/L code is specified
 			if ( glCode != null )
 			{
 				// Find G/L account model by G/L code and ChOfAccs Index
-				GLAccountModel glModel = GLAccountModel.getByCode( glCode, chartIndex );
+				GLAcctModel glModel = GLAcctModel.getByCode( glCode, chartIndex );
 				
-				// Get value of form field with name 'Account Name'
+				// Get value of form field with name 'Acct Name'
 				TextField nameField  = (TextField) elList.get( "Account Name" );
 				
 				// Make field non-editable
 				nameField.setEditable( false );
 	        
-	            // Set G/L account model name as text value of 'Account Name' field
+	            // Set G/L acct model name as text value of 'Acct Name' field
 				nameField.setText( glModel.getName() );
 			}
 		};

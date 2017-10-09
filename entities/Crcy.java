@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import foundation.Cipher;
 
 /**
- * Class Crcy - Entity implementation for Currency Model objects
+ * Class Crcy - Entity implementation for Crcy Model objects
  * @author Peter Cross
  *
  */
@@ -19,8 +19,8 @@ public class Crcy
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long 	crcyId;
 	
-	private String	code;	// Currency code in the system
-	private String	name;	// Currency common name
+	private String	code;	// Crcy code in the system
+	private String	name;	// Crcy common name
 	
 	/**
 	 * Class mandatory constructor
@@ -32,8 +32,8 @@ public class Crcy
 	
 	/**
 	 * Class constructor
-	 * @param code Currency code
-	 * @param name Currency name
+	 * @param code Crcy code
+	 * @param name Crcy name
 	 */
 	public Crcy( String	code, String name ) 
 	{
@@ -41,9 +41,9 @@ public class Crcy
 	}
 	
 	/**
-	 * Updates Currency object attributes
-	 * @param code Currency code
-	 * @param name Currency name
+	 * Updates Crcy object attributes
+	 * @param code Crcy code
+	 * @param name Crcy name
 	 */
 	public void update( String code, String name ) 
 	{
@@ -51,19 +51,19 @@ public class Crcy
 		this.name = Cipher.crypt( name );
 	}
 	
-	// Returns Currency code
+	// Returns Crcy code
 	public String getCode()
 	{
 		return Cipher.decrypt( code );
 	}
 	
-	// Returns Currency name
+	// Returns Crcy name
 	public String getName()
 	{
 		return Cipher.decrypt( name );
 	}
     
-	// Returns String representation of Currency
+	// Returns String representation of Crcy
     public String toString()
     {
         return getCode();

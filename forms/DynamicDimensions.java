@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-import models.GLAccountModel;
+import models.GLAcctModel;
 import views.NodeView;
 import foundation.AssociativeList;
 import foundation.Item;
@@ -49,7 +49,7 @@ public class DynamicDimensions extends NodeView  implements Constants
                             height = 150;   // Window height 
     private AssociativeList attributesList;	// Passed attributes list
     
-    private GLAccountModel  glAccount;		// G/L account for which to enter dimensions
+    private GLAcctModel  glAccount;		// G/L account for which to enter dimensions
     private AssociativeList initValue;		// Initial values for the dimension
     private String[]        init;			// String array of initial values
     
@@ -319,7 +319,7 @@ public class DynamicDimensions extends NodeView  implements Constants
      * @param stage Stage object
      * @param initValue Initial values for the dimension
      */
-    public DynamicDimensions( GLAccountModel account, Stage stage, String initValue )
+    public DynamicDimensions( GLAcctModel account, Stage stage, String initValue )
     {
         super( title );
     	
