@@ -37,6 +37,8 @@ import interfaces.Lambda.OnElementChange;
  */
 public interface Utilities extends Encapsulation
 {
+	static final String glAcctStr = "G/L Account";
+	
 	/**
      * Displays About box
      */
@@ -86,7 +88,7 @@ public interface Utilities extends Encapsulation
 	public static String[] enterTAcctInfo( NodeView owner, int chartIndex, AssociativeList fields )
 	{
 		// Create dialog element for dialog field
-		DialogElement glAcct = new DialogElement( "G/L Account" );
+		DialogElement glAcct = new DialogElement( glAcctStr );
 		glAcct.width = 70;
 		glAcct.editable = false;
 		// Get G/L Acct Model Items List for selected ChOfAccs
@@ -114,7 +116,7 @@ public interface Utilities extends Encapsulation
 		return ( elList ) -> 
 		{
 			// Get value of current ComboBox field
-			ComboBox field = (ComboBox) elList.get( "G/L Account" );
+			ComboBox field = (ComboBox) elList.get( glAcctStr );
 			
 			// If nothing is specified - finish
 			if ( field == null ) return;

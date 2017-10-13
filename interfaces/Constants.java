@@ -49,7 +49,7 @@ public interface Constants
         d.set( "Employees", "Employee" );
         d.set( "Expenses", "Expense" );
         d.set( "Inventory", "Inventory" );
-        d.set( "Legal Entities", "LegalEntity" );
+        d.set( "Legal Entities", "LglEntity" );
         d.set( "Locations", "Location" );
         d.set( "Long Term Assets", "LongTermAsset" );
         d.set( "Marketable Securities", "Securities" );

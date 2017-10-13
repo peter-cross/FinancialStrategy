@@ -37,7 +37,7 @@ public class Controller implements Constants, Utilities
 		
 		setRegistries();
 		
-		// Open Transaction Models Journal first
+		// Open TrActn Models Journal first
 		openTransactionModelsJournal();
 	}
 	
@@ -53,7 +53,7 @@ public class Controller implements Constants, Utilities
     	return stage;
     }
     
-    // Opens Transaction Models Journal without any events
+    // Opens TrActn Models Journal without any events
     private void openTransactionModelsJournal()
     {
     	if ( secondaryView != null )
@@ -142,7 +142,7 @@ public class Controller implements Constants, Utilities
     {
     	registries = new AssociativeList();
 		
-    	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TransactionsSimulationModel", "LegalEntityModel", btnReferences() ) );
+    	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TractnsSimulationModel", "LegalEntityModel", btnReferences() ) );
     	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LegalEntityModel" ) );
     	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "COAModel" ) );
     	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAcctModel", "COAModel" ) );

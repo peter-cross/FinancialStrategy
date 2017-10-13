@@ -8,8 +8,8 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 import entities.TAcct;
-import entities.Transaction;
-import entities.TransactionsModel;
+import entities.TrActn;
+import entities.TractnsModel;
 
 import interfaces.Lambda.ObjectAction;
 
@@ -71,14 +71,14 @@ public class Database
     	// Get instance of Entity Manager
     	em = getEntityManager();
     	
-    	// Entity Transaction object
+    	// Entity TrActn object
     	EntityTransaction et = null;
 		
     	// If instance of Entity Manager was successfully created
         if ( em != null )
         	try
         	{
-        		// Get Entity Transaction
+        		// Get Entity TrActn
         		et = em.getTransaction();
         		
         		// Start transaction
@@ -101,7 +101,7 @@ public class Database
         	}
     		catch ( Exception e )
 	     	{
-	     		// If Entity Transaction was successfully created
+	     		// If Entity TrActn was successfully created
     			if ( et != null )
 	     			// Rollback transaction because something failed
 	     			et.rollback();
@@ -112,11 +112,11 @@ public class Database
      * Removes TransactionModel object from database
      * @param tm TransactionModel object
      */
-    public static void removeFromDB( TransactionsModel tm )
+    public static void removeFromDB( TractnsModel tm )
     {
     	EntityTransaction et = null;
 		
-    	// If EntityManager object is created and TransactionsSimulationModel argument is specified
+    	// If EntityManager object is created and TractnsSimulationModel argument is specified
         if ( em != null && tm != null  )
         {
         	try
@@ -126,12 +126,12 @@ public class Database
         		// Start transaction
 				et.begin();
 				
-				// Remove Model's T-Accounts from DB
+				// Remove Model's T-Accts from DB
 				for ( TAcct acct : tm.getTAccs() )
 					em.remove( acct );
 				
 				// Remove Model's Transactions from DB
-				for ( Transaction tr : tm.getTransactions() )
+				for ( TrActn tr : tm.getTransactions() )
 					em.remove( tr );
 				
 				// Remove Transactions Model from DB

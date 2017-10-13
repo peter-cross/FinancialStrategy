@@ -9,8 +9,8 @@ import java.util.List;
 
 import application.Database;
 import entities.COA;
-import entities.LegalEntity;
-import entities.TransactionsModel;
+import entities.LglEntity;
+import entities.TractnsModel;
 import views.OneColumnTableView;
 import forms.DialogElement;
 import forms.TableElement;
@@ -46,7 +46,7 @@ public class LegalEntityModel extends RegistryItemModel
      * @param entity Legal Entity database entity object
      * @return Legal Entity Model object
      */
-    public static LegalEntityModel getByEntity( LegalEntity entity )
+    public static LegalEntityModel getByEntity( LglEntity entity )
     {
     	return (LegalEntityModel) getListElementBy( list, "legalEntity", entity );
     }
@@ -224,7 +224,7 @@ public class LegalEntityModel extends RegistryItemModel
     /**
      * Returns Legal Entity database entity object for current model
      */
-    public LegalEntity getLegalEntity()
+    public LglEntity getLegalEntity()
     {
     	return fields.get( "legalEntity" );
     }
@@ -273,13 +273,13 @@ public class LegalEntityModel extends RegistryItemModel
     	}	
     	
     	// Get Legal Entity object from the fields of current model
-    	LegalEntity legalEntity = fields.get( "legalEntity" );
+    	LglEntity legalEntity = fields.get( "legalEntity" );
     	
     	// If Legal Entity object is not created yet
     	if ( legalEntity == null  )
         {
             // Create instance of Legal Entity
-            legalEntity = new LegalEntity( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
+            legalEntity = new LglEntity( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
             fields.set( "legalEntity", legalEntity );
         }
             
@@ -301,11 +301,11 @@ public class LegalEntityModel extends RegistryItemModel
     
     /**
 	 * Gets Legal Entities from database
-	 * @return List of LegalEntity objects
+	 * @return List of LglEntity objects
 	 */
-    public static List<LegalEntity> getFromDB()
+    public static List<LglEntity> getFromDB()
     {
-    	return getFromDB( "LegalEntity" );
+    	return getFromDB( "LglEntity" );
     }
     
     /**
@@ -319,17 +319,17 @@ public class LegalEntityModel extends RegistryItemModel
     	EntityManager em = Database.getEntityManager();
     	
     	// Get Legal Entity from the fields
-    	LegalEntity legalEntity = fields.get( "legalEntity" );
+    	LglEntity legalEntity = fields.get( "legalEntity" );
     	
     	// If Legal Entity is created as an object
     	if ( legalEntity != null )
     	{
-    		List<TransactionsModel> tms = null;
+    		List<TractnsModel> tms = null;
     		
     		try
         	{
-        		// Do query for TransactionsSimulationModel entity in DB and return results of query
-    			tms = (List<TransactionsModel>) em.createQuery( "SELECT t FROM TransactionsModel AS t WHERE t.lglEntity = :lglEntity" )
+        		// Do query for TractnsSimulationModel entity in DB and return results of query
+    			tms = (List<TractnsModel>) em.createQuery( "SELECT t FROM TractnsModel AS t WHERE t.lglEntity = :lglEntity" )
     				    .setParameter( "lglEntity", legalEntity )
     				    .getResultList();
             }
@@ -341,7 +341,7 @@ public class LegalEntityModel extends RegistryItemModel
     			
     			if ( choice == 0  )
     			{
-    				for ( TransactionsModel tm : tms  )
+    				for ( TractnsModel tm : tms  )
         				Database.removeFromDB( tm );
         			
         			// Remove Legal Entity data from database
@@ -418,19 +418,19 @@ public class LegalEntityModel extends RegistryItemModel
     
     /**
      * Create instance of LegalEntityModel 
-     * @param le LegalEntity database entity object
+     * @param le LglEntity database entity object
      * @return LegalEntityModel object
      */
     public static LegalEntityModel getInstance( Object le )
     {
-    	return new LegalEntityModel( (LegalEntity) le );
+    	return new LegalEntityModel( (LglEntity) le );
     }
     
     /**
      * Class constructor for recreating Legal Entity from database data
      * @param le Legal Entity database entity object
      */
-    public LegalEntityModel( LegalEntity le )
+    public LegalEntityModel( LglEntity le )
     {
     	super( lglEntityStr );
     	fields.set( "legalEntity", le );

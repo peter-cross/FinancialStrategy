@@ -98,8 +98,7 @@ public class TableDialogView implements Buttons, Encapsulation
         tblObj.display();
 
         int headElms = arrayCount( dialogElement[0] );  // Number of head elements
-        int cols = maxCols;                             // Number of columns
-
+        
         // Create array for row counters
         int[] rows = new int[tableElement.length];
 
@@ -132,14 +131,23 @@ public class TableDialogView implements Buttons, Encapsulation
             
         } // End of loop ** for each table element **
 		
-        // Create output object
-        TableOutput output = new TableOutput( headElms, maxRows, cols, tableElement.length );
+        // Return output object
+        return (T)resultOutput( headElms, maxRows );
+
+    } // End of method ** result **
+    
+    private TableOutput resultOutput( int headElms, int maxRows )
+    {
+    	// Create output object
+        TableOutput output = new TableOutput( headElms, maxRows, maxCols, tableElement.length );
         
         // Get element content for current dialog form
         String[][]  elementContent = (String[][]) dlgElementsList.get( "elementContent" );
         
         System.arraycopy( elementContent[0], 0, output.header[0], 0, headElms ); // Get text value of head element
 
+        ObservableList items;
+    	
         // Loop for each tab
         for ( int t = 0; t < tableElement.length; t++ )
         {
@@ -164,10 +172,8 @@ public class TableDialogView implements Buttons, Encapsulation
                 }
         }
         
-        // Return output object
-        return (T)output;
-
-    } // End of method ** result **
+        return output;
+    }
     
     /**
      * Adds buttons to the form
@@ -475,7 +481,7 @@ public class TableDialogView implements Buttons, Encapsulation
     	// Create Ctrl Button column
         TableColumn column = createCtrlBtnColumn();
 
-        // Set preferred width with value passed to the form proportionate to all columns width
+        // Set preferred width with value passed to the form proportioned to all columns width
         column.prefWidthProperty().bind( tbl.widthProperty().multiply( (double) ctrlBtnWidth/columnsWidth  ) );
 
         // Add column to to current table
@@ -841,49 +847,73 @@ public class TableDialogView implements Buttons, Encapsulation
 	    
             // Create combo box object for list of choices 
             // and define anonymous class overriding ComboBoxTableCell
-            ComboBoxTableCell comboBox = new ComboBoxTableCell( choices )
-            {
-                // Gets called when cell item is updated
-                @Override
-                public void updateItem( Object item, boolean empty )
-                {
-                    // Invoke parent class method
-                    super.updateItem( item, empty );
-
-                    // If cell is empty
-                    if ( !empty )
-                    	updateComboBoxItem( this, column, tblItems, elList );
-                    	
-                    // If item is specified 
-                    if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );	
-                    
-                } // End of method ** updateItem **
-				
-                // Gets called when end-user starts editing table cell
-                @Override
-                public void startEdit()
-                {
-                    // Create cell text label
-                    setText( null );
-                    // Invoke parent class method
-                    super.startEdit();
-
-                    ArrayList<String> filteredChoices = elList.get( column.getText() );
-                            
-                 } // End of method ** startEdit **
-                
-            }; // End of ** anonymous class overriding ComboBoxTableCell **
-
+            ComboBoxTableCell comboBox = createComboBoxTableCell( column, tblEl, choices, elList, tblItems );
+            
             // Set editable attribute for combo box
             comboBox.setComboBoxEditable( tblEl.editable );
             
             // Return created combo box
             return comboBox;	
         };
+    }
+    
+    /**
+     * Runs OnChange lambda expression
+     * @param tblEl Table Element
+     * @param elList Elements List
+     */
+    private void runOnChange( TableElement tblEl, AssociativeList elList )
+    {
+    	// If there is action to be performed on element change
+        if ( tblEl.onChange != null )
+            // Invoke lambda expression when element changes
+            tblEl.onChange.run( elList );	
+    }
+    
+    /**
+     * Creates custom ComboBox TableCell
+     * @param column Table column
+     * @param tblEl Table element
+     * @param choices Array of choices
+     * @param elList Elements list
+     * @param tblItems Table Items
+     * @return Custom ComboBox TableCell
+     */
+    private ComboBoxTableCell createComboBoxTableCell( TableColumn column, TableElement tblEl, String[] choices, AssociativeList elList, ObservableList tblItems )
+    {
+    	return new ComboBoxTableCell( choices )
+        {
+            // Gets called when cell item is updated
+            @Override
+            public void updateItem( Object item, boolean empty )
+            {
+                // Invoke parent class method
+                super.updateItem( item, empty );
+
+                // If cell is empty
+                if ( !empty )
+                	updateComboBoxItem( this, column, tblItems, elList );
+                	
+                // If item is specified 
+                if ( item != null && !empty )
+                	runOnChange( tblEl, elList );
+                
+            } // End of method ** updateItem **
+			
+            // Gets called when end-user starts editing table cell
+            @Override
+            public void startEdit()
+            {
+                // Create cell text label
+                setText( null );
+                // Invoke parent class method
+                super.startEdit();
+
+                ArrayList<String> filteredChoices = elList.get( column.getText() );
+                        
+             } // End of method ** startEdit **
+            
+        }; // End of ** anonymous class overriding ComboBoxTableCell **
     }
     
     /**
@@ -971,10 +1001,7 @@ public class TableDialogView implements Buttons, Encapsulation
                     
                     // If item is specified 
                     if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );	
+                    	runOnChange( tblEl, elList );
                     
                 } // End of method ** updateItem **
             };
@@ -1083,10 +1110,7 @@ public class TableDialogView implements Buttons, Encapsulation
 
                     // If item is specified 
                     if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );
+                    	runOnChange( tblEl, elList );
                     
                 } // End of method ** updateItem **
                 
@@ -1269,10 +1293,7 @@ public class TableDialogView implements Buttons, Encapsulation
 
                     // If item is specified 
                     if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );
+                    	runOnChange( tblEl, elList );
                 
                 } // End of method ** updateItem **
                 
@@ -1463,10 +1484,7 @@ public class TableDialogView implements Buttons, Encapsulation
                     
                     // If item is specified 
                     if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );	
+                    	runOnChange( tblEl, elList );	
                     
                 } // End of ** method updateItem **
             };
@@ -1556,10 +1574,7 @@ public class TableDialogView implements Buttons, Encapsulation
                     
                     // If item is specified 
                     if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );
+                    	runOnChange( tblEl, elList );
                     
                 } // End of method ** updateItem **
             };
@@ -1689,10 +1704,7 @@ public class TableDialogView implements Buttons, Encapsulation
                     
                     // If item is specified 
                     if ( item != null && !empty )
-                        // If there is action to be performed on element change
-                        if ( tblEl.onChange != null )
-                            // Invoke lambda expression when element changes
-                            tblEl.onChange.run( elList );	
+                    	runOnChange( tblEl, elList );	
                     
                 } // End of ** method updateItem **
                 
@@ -1788,10 +1800,7 @@ public class TableDialogView implements Buttons, Encapsulation
         { 
             setRowDataValue( event, column );
             
-            // If there is action to be performed on cell value change
-            if ( tblEl.onChange != null )
-                // Invoke lambda expression for on value change event
-                tblEl.onChange.run( elList ); 
+            runOnChange( tblEl, elList ); 
         };
     }
     

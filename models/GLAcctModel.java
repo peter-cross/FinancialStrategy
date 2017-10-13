@@ -631,7 +631,7 @@ public class GLAcctModel extends RegistryItemModel
     {
     	GL glAcct  = fields.get( "glAcct" );
     	
-    	// If EntityManager object is created and TransactionsSimulationModel argument is specified
+    	// If EntityManager object is created and TractnsSimulationModel argument is specified
         if ( glAcct != null  )
         {
         	COA chart = glAcct.getChOfAccs();

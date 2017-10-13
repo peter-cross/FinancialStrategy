@@ -195,11 +195,11 @@ INSERT INTO `gl_glanalytics` (`GL_GLID`, `analytics_GLANALYTICSID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `legalentity`
+-- Table structure for table `lglentity`
 --
 
-CREATE TABLE `legalentity` (
-  `LEGALENTITYID` bigint(20) NOT NULL,
+CREATE TABLE `lglentity` (
+  `LGLENTITYID` bigint(20) NOT NULL,
   `ADDRESS` varchar(255) DEFAULT NULL,
   `CONTACT` varchar(255) DEFAULT NULL,
   `ID` varchar(255) DEFAULT NULL,
@@ -209,10 +209,10 @@ CREATE TABLE `legalentity` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `legalentity`
+-- Dumping data for table `lglentity`
 --
 
-INSERT INTO `legalentity` (`LEGALENTITYID`, `ADDRESS`, `CONTACT`, `ID`, `LEGALNAME`, `NAME`, `PHONE`) VALUES
+INSERT INTO `lglentity` (`LGLENTITYID`, `ADDRESS`, `CONTACT`, `ID`, `LEGALNAME`, `NAME`, `PHONE`) VALUES
 (2601, '6883 Xjdrtzw Xywjjy, Afshtzajw, GH', 'Ujyjw Hwtxx', '1', 'Ifsijqtns Jsyjwuwnxj Nsh.', 'Ifsijqnts', '6-159-333-0220'),
 (2602, '656 Iwfpj Xywjjy, Afshtzajw, GH', 'Wfd Jfs', '2', 'Xufwyfs Lwtzu Nsh.', 'Xufwyfs', '6-159-222-5656'),
 (7351, '', '', '3', 'Ejxy Nsh', 'Ejxy', '');
@@ -220,21 +220,21 @@ INSERT INTO `legalentity` (`LEGALENTITYID`, `ADDRESS`, `CONTACT`, `ID`, `LEGALNA
 -- --------------------------------------------------------
 
 --
--- Table structure for table `legalentitycharts`
+-- Table structure for table `lglentitycharts`
 --
 
-CREATE TABLE `legalentitycharts` (
-  `LEGALENTITYCHARTSID` bigint(20) NOT NULL,
+CREATE TABLE `lglentitycharts` (
+  `LGLENTITYCHARTSID` bigint(20) NOT NULL,
   `CHARTNAME` varchar(255) DEFAULT NULL,
   `LINENUM` int(11) DEFAULT NULL,
   `COA_COAID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `legalentitycharts`
+-- Dumping data for table `lglentitycharts`
 --
 
-INSERT INTO `legalentitycharts` (`LEGALENTITYCHARTSID`, `CHARTNAME`, `LINENUM`, `COA_COAID`) VALUES
+INSERT INTO `lglentitycharts` (`LGLENTITYCHARTSID`, `CHARTNAME`, `LINENUM`, `COA_COAID`) VALUES
 (8301, 'Knsfshnfq', 0, 6151),
 (8302, 'Rfsfljrjsy', 1, 6301),
 (8303, 'Knsfshnfq', 0, 6201),
@@ -246,19 +246,19 @@ INSERT INTO `legalentitycharts` (`LEGALENTITYCHARTSID`, `CHARTNAME`, `LINENUM`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `legalentity_legalentitycharts`
+-- Table structure for table `lglentity_lglentitycharts`
 --
 
-CREATE TABLE `legalentity_legalentitycharts` (
-  `LegalEntity_LEGALENTITYID` bigint(20) NOT NULL,
-  `legalEntityCharts_LEGALENTITYCHARTSID` bigint(20) NOT NULL
+CREATE TABLE `lglentity_lglentitycharts` (
+  `LglEntity_LGLENTITYID` bigint(20) NOT NULL,
+  `lglEntityCharts_LGLENTITYCHARTSID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `legalentity_legalentitycharts`
+-- Dumping data for table `lglentity_lglentitycharts`
 --
 
-INSERT INTO `legalentity_legalentitycharts` (`LegalEntity_LEGALENTITYID`, `legalEntityCharts_LEGALENTITYCHARTSID`) VALUES
+INSERT INTO `lglentity_lglentitycharts` (`LglEntity_LGLENTITYID`, `lglEntityCharts_LGLENTITYCHARTSID`) VALUES
 (2601, 8301),
 (2601, 8302),
 (2602, 8303),
@@ -446,11 +446,11 @@ INSERT INTO `tacct_corrdx` (`TAcct_TACCTID`, `VALUE`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaction`
+-- Table structure for table `tractn`
 --
 
-CREATE TABLE `transaction` (
-  `TRANSACTIONID` bigint(20) NOT NULL,
+CREATE TABLE `tractn` (
+  `TRACTNID` bigint(20) NOT NULL,
   `DESCRIPTION` varchar(255) DEFAULT NULL,
   `ROW` int(11) DEFAULT NULL,
   `CX_TACCTID` bigint(20) DEFAULT NULL,
@@ -459,10 +459,10 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transaction`
+-- Dumping data for table `tractn`
 --
 
-INSERT INTO `transaction` (`TRANSACTIONID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTID`, `COA_COAID`) VALUES
+INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTID`, `COA_COAID`) VALUES
 (3957, 'Rfyjwnfqx uzwhmfxj', 3, 3955, 3956, NULL),
 (8859, 'Nsajsytwd uzwhmfxj', 1, 8851, 8852, 6151),
 (8860, 'Rffyjwnfqx uzwhmfxj', 4, 8851, 8853, 6151),
@@ -502,20 +502,20 @@ INSERT INTO `transaction` (`TRANSACTIONID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactionsmodel`
+-- Table structure for table `tractnsmodel`
 --
 
-CREATE TABLE `transactionsmodel` (
-  `TRANSACTIONSMODELID` bigint(20) NOT NULL,
+CREATE TABLE `tractnsmodel` (
+  `TRACTNSMODELID` bigint(20) NOT NULL,
   `NAME` varchar(255) DEFAULT NULL,
-  `LGLENTITY_LEGALENTITYID` bigint(20) DEFAULT NULL
+  `LGLENTITY_LGLENTITYID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transactionsmodel`
+-- Dumping data for table `tractnsmodel`
 --
 
-INSERT INTO `transactionsmodel` (`TRANSACTIONSMODELID`, `NAME`, `LGLENTITY_LEGALENTITYID`) VALUES
+INSERT INTO `tractnsmodel` (`TRACTNSMODELID`, `NAME`, `LGLENTITY_LGLENTITYID`) VALUES
 (1108, 'Ljsjwfq Jsyjwuwnxj Rtijq', 2601),
 (2204, 'Nsajxyrjsy Rtijq', 2601),
 (3954, 'Xufwyfs Rtijq', 2602),
@@ -524,19 +524,19 @@ INSERT INTO `transactionsmodel` (`TRANSACTIONSMODELID`, `NAME`, `LGLENTITY_LEGAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactionsmodel_tacct`
+-- Table structure for table `tractnsmodel_tacct`
 --
 
-CREATE TABLE `transactionsmodel_tacct` (
-  `TransactionsModel_TRANSACTIONSMODELID` bigint(20) NOT NULL,
+CREATE TABLE `tractnsmodel_tacct` (
+  `TractnsModel_TRACTNSMODELID` bigint(20) NOT NULL,
   `taccts_TACCTID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transactionsmodel_tacct`
+-- Dumping data for table `tractnsmodel_tacct`
 --
 
-INSERT INTO `transactionsmodel_tacct` (`TransactionsModel_TRANSACTIONSMODELID`, `taccts_TACCTID`) VALUES
+INSERT INTO `tractnsmodel_tacct` (`TractnsModel_TRACTNSMODELID`, `taccts_TACCTID`) VALUES
 (1108, 9102),
 (1108, 9202),
 (1108, 9203),
@@ -572,19 +572,19 @@ INSERT INTO `transactionsmodel_tacct` (`TransactionsModel_TRANSACTIONSMODELID`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transactionsmodel_transaction`
+-- Table structure for table `tractnsmodel_tractn`
 --
 
-CREATE TABLE `transactionsmodel_transaction` (
-  `TransactionsModel_TRANSACTIONSMODELID` bigint(20) NOT NULL,
-  `transactions_TRANSACTIONID` bigint(20) NOT NULL
+CREATE TABLE `tractnsmodel_tractn` (
+  `TractnsModel_TRACTNSMODELID` bigint(20) NOT NULL,
+  `tractns_TRACTNID` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `transactionsmodel_transaction`
+-- Dumping data for table `tractnsmodel_tractn`
 --
 
-INSERT INTO `transactionsmodel_transaction` (`TransactionsModel_TRANSACTIONSMODELID`, `transactions_TRANSACTIONID`) VALUES
+INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACTNID`) VALUES
 (1108, 9210),
 (1108, 9311),
 (1108, 9312),
@@ -658,22 +658,22 @@ ALTER TABLE `gl_glanalytics`
   ADD KEY `GLCCNTGLANALYTICSnlytcsGLANALYTICSID` (`analytics_GLANALYTICSID`);
 
 --
--- Indexes for table `legalentity`
+-- Indexes for table `lglentity`
 --
-ALTER TABLE `legalentity`
-  ADD PRIMARY KEY (`LEGALENTITYID`);
+ALTER TABLE `lglentity`
+  ADD PRIMARY KEY (`LGLENTITYID`);
 
 --
--- Indexes for table `legalentitycharts`
+-- Indexes for table `lglentitycharts`
 --
-ALTER TABLE `legalentitycharts`
-  ADD KEY `FK_LEGALENTITYCHARTS_COA_COAID` (`COA_COAID`);
+ALTER TABLE `lglentitycharts`
+  ADD KEY `FK_LGLENTITYCHARTS_COA_COAID` (`COA_COAID`);
 
 --
--- Indexes for table `legalentity_legalentitycharts`
+-- Indexes for table `lglentity_lglentitycharts`
 --
-ALTER TABLE `legalentity_legalentitycharts`
-  ADD KEY `LGALENTITYLEGALENTITYCHARTSLgalEntityLEGALENTITYID` (`LegalEntity_LEGALENTITYID`);
+ALTER TABLE `lglentity_lglentitycharts`
+  ADD KEY `LGLENTITYLGLENTITYCHARTSLglEntityLGLENTITYID` (`LglEntity_LGLENTITYID`);
 
 --
 -- Indexes for table `sequence`
@@ -700,33 +700,33 @@ ALTER TABLE `tacct_corrdx`
   ADD KEY `FK_TAcct_CORRDX_TAcct_TACCTID` (`TAcct_TACCTID`);
 
 --
--- Indexes for table `transaction`
+-- Indexes for table `tractn`
 --
-ALTER TABLE `transaction`
-  ADD PRIMARY KEY (`TRANSACTIONID`),
-  ADD KEY `FK_TRANSACTION_CX_TACCTID` (`CX_TACCTID`),
-  ADD KEY `FK_TRANSACTION_DX_TACCTID` (`DX_TACCTID`);
+ALTER TABLE `tractn`
+  ADD PRIMARY KEY (`TRACTNID`),
+  ADD KEY `FK_TRACTN_CX_TACCTID` (`CX_TACCTID`),
+  ADD KEY `FK_TRACTN_DX_TACCTID` (`DX_TACCTID`);
 
 --
--- Indexes for table `transactionsmodel`
+-- Indexes for table `tractnsmodel`
 --
-ALTER TABLE `transactionsmodel`
-  ADD PRIMARY KEY (`TRANSACTIONSMODELID`),
-  ADD KEY `FK_TRANSACTIONSMODEL_LGLENTITY_LEGALENTITYID` (`LGLENTITY_LEGALENTITYID`);
+ALTER TABLE `tractnsmodel`
+  ADD PRIMARY KEY (`TRACTNSMODELID`),
+  ADD KEY `FK_TRACTNSMODEL_LGLENTITY_LGLENTITYID` (`LGLENTITY_LGLENTITYID`);
 
 --
--- Indexes for table `transactionsmodel_tacct`
+-- Indexes for table `tractnsmodel_tacct`
 --
-ALTER TABLE `transactionsmodel_tacct`
-  ADD PRIMARY KEY (`TransactionsModel_TRANSACTIONSMODELID`,`taccts_TACCTID`),
-  ADD KEY `FK_TRANSACTIONSMODEL_TACCT_taccts_TACCTID` (`taccts_TACCTID`);
+ALTER TABLE `tractnsmodel_tacct`
+  ADD PRIMARY KEY (`TractnsModel_TRACTNSMODELID`,`taccts_TACCTID`),
+  ADD KEY `FK_TRACTNSMODEL_TACCT_taccts_TACCTID` (`taccts_TACCTID`);
 
 --
--- Indexes for table `transactionsmodel_transaction`
+-- Indexes for table `tractnsmodel_tractn`
 --
-ALTER TABLE `transactionsmodel_transaction`
-  ADD PRIMARY KEY (`TransactionsModel_TRANSACTIONSMODELID`,`transactions_TRANSACTIONID`),
-  ADD KEY `TRNSCTIONSMODELTRANSACTIONtrnsactionsTRANSACTIONID` (`transactions_TRANSACTIONID`);
+ALTER TABLE `tractnsmodel_tractn`
+  ADD PRIMARY KEY (`TractnsModel_TRACTNSMODELID`,`tractns_TRACTNID`),
+  ADD KEY `TRNSCTNSMODELTRACTNtractnsTRACTNID` (`tractns_TRACTNID`);
 
 --
 -- Constraints for dumped tables
@@ -754,16 +754,16 @@ ALTER TABLE `gl_glanalytics`
   ADD CONSTRAINT `GL_GLANALYTICS_GL_GLID` FOREIGN KEY (`GL_GLID`) REFERENCES `gl` (`GLID`);
 
 --
--- Constraints for table `legalentitycharts`
+-- Constraints for table `lglentitycharts`
 --
-ALTER TABLE `legalentitycharts`
-  ADD CONSTRAINT `FK_LEGALENTITYCHARTS_COA_COAID` FOREIGN KEY (`COA_COAID`) REFERENCES `coa` (`COAID`);
+ALTER TABLE `lglentitycharts`
+  ADD CONSTRAINT `FK_LGLENTITYCHARTS_COA_COAID` FOREIGN KEY (`COA_COAID`) REFERENCES `coa` (`COAID`);
 
 --
--- Constraints for table `legalentity_legalentitycharts`
+-- Constraints for table `lglentity_lglentitycharts`
 --
-ALTER TABLE `legalentity_legalentitycharts`
-  ADD CONSTRAINT `LGALENTITYLEGALENTITYCHARTSLgalEntityLEGALENTITYID` FOREIGN KEY (`LegalEntity_LEGALENTITYID`) REFERENCES `legalentity` (`LEGALENTITYID`);
+ALTER TABLE `lglentity_lglentitycharts`
+  ADD CONSTRAINT `LGLENTITYLGLENTITYCHARTSLglEntityLGLENTITYID` FOREIGN KEY (`LglEntity_LGLENTITYID`) REFERENCES `lglentity` (`LGLENTITYID`);
 
 --
 -- Constraints for table `tacct_corrcx`
@@ -778,31 +778,31 @@ ALTER TABLE `tacct_corrdx`
   ADD CONSTRAINT `FK_TAcct_CORRDX_TAcct_TACCTID` FOREIGN KEY (`TAcct_TACCTID`) REFERENCES `tacct` (`TACCTID`);
 
 --
--- Constraints for table `transaction`
+-- Constraints for table `tractn`
 --
-ALTER TABLE `transaction`
-  ADD CONSTRAINT `FK_TRANSACTION_CX_TACCTID` FOREIGN KEY (`CX_TACCTID`) REFERENCES `tacct` (`TACCTID`),
-  ADD CONSTRAINT `FK_TRANSACTION_DX_TACCTID` FOREIGN KEY (`DX_TACCTID`) REFERENCES `tacct` (`TACCTID`);
+ALTER TABLE `tractn`
+  ADD CONSTRAINT `FK_TRACTN_CX_TACCTID` FOREIGN KEY (`CX_TACCTID`) REFERENCES `tacct` (`TACCTID`),
+  ADD CONSTRAINT `FK_TRACTN_DX_TACCTID` FOREIGN KEY (`DX_TACCTID`) REFERENCES `tacct` (`TACCTID`);
 
 --
--- Constraints for table `transactionsmodel`
+-- Constraints for table `tractnsmodel`
 --
-ALTER TABLE `transactionsmodel`
-  ADD CONSTRAINT `FK_TRANSACTIONSMODEL_LGLENTITY_LEGALENTITYID` FOREIGN KEY (`LGLENTITY_LEGALENTITYID`) REFERENCES `legalentity` (`LEGALENTITYID`);
+ALTER TABLE `tractnsmodel`
+  ADD CONSTRAINT `FK_TRACTNSMODEL_LGLENTITY_LGLENTITYID` FOREIGN KEY (`LGLENTITY_LGLENTITYID`) REFERENCES `lglentity` (`LGLENTITYID`);
 
 --
--- Constraints for table `transactionsmodel_tacct`
+-- Constraints for table `tractnsmodel_tacct`
 --
-ALTER TABLE `transactionsmodel_tacct`
-  ADD CONSTRAINT `FK_TRANSACTIONSMODEL_TACCT_taccts_TACCTID` FOREIGN KEY (`taccts_TACCTID`) REFERENCES `tacct` (`TACCTID`),
-  ADD CONSTRAINT `TRNSCTNSMDLTACCOUNTTrnsctnsMdelTRANSACTIONSMODELID` FOREIGN KEY (`TransactionsModel_TRANSACTIONSMODELID`) REFERENCES `transactionsmodel` (`TRANSACTIONSMODELID`);
+ALTER TABLE `tractnsmodel_tacct`
+  ADD CONSTRAINT `FK_TRACTNSMODEL_TACCT_taccts_TACCTID` FOREIGN KEY (`taccts_TACCTID`) REFERENCES `tacct` (`TACCTID`),
+  ADD CONSTRAINT `TRNSCTNSMDLTACCTTrnsctnsMdelTRACTNSMODELID` FOREIGN KEY (`TractnsModel_TRACTNSMODELID`) REFERENCES `tractnsmodel` (`TRACTNSMODELID`);
 
 --
--- Constraints for table `transactionsmodel_transaction`
+-- Constraints for table `tractnsmodel_tractn`
 --
-ALTER TABLE `transactionsmodel_transaction`
-  ADD CONSTRAINT `TRNSCTIONSMODELTRANSACTIONtrnsactionsTRANSACTIONID` FOREIGN KEY (`transactions_TRANSACTIONID`) REFERENCES `transaction` (`TRANSACTIONID`),
-  ADD CONSTRAINT `TRNSCTNSMDLTRNSACTIONTrnsctnsMdlTRNSACTIONSMODELID` FOREIGN KEY (`TransactionsModel_TRANSACTIONSMODELID`) REFERENCES `transactionsmodel` (`TRANSACTIONSMODELID`);
+ALTER TABLE `tractnsmodel_tractn`
+  ADD CONSTRAINT `TRNSCTNSMODELTRACTNtrnsactnsTRACTNID` FOREIGN KEY (`tractns_TRACTNID`) REFERENCES `tractn` (`TRACTNID`),
+  ADD CONSTRAINT `TRNSCTNSMDLTRNSACTNTrnsctnsMdlTRNSACTIONSMODELID` FOREIGN KEY (`TractnsModel_TRACTNSMODELID`) REFERENCES `tractnsmodel` (`TRACTNSMODELID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

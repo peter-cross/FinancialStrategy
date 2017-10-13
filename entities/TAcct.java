@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.ArrayList;
 
-import models.TransactionsGraphics;
-import views.TransactionsModelView;
+import models.TractnsGraphics;
+import views.TractnsModelView;
 import foundation.Cipher;
 import interfaces.Utilities;
 
@@ -50,7 +50,7 @@ public class TAcct
 	@ManyToOne( fetch=FetchType.EAGER )
 	private GL gl;				  	// G/L Acct of T-acct
 	
-	private static TransactionsGraphics[] tg;	  // Transactions graphics canvas
+	private static TractnsGraphics[] tg;	  // Transactions graphics canvas
 	private static String[]				  charts; // ChOfAccs for Legal Entity
 	
 	/**
@@ -70,8 +70,8 @@ public class TAcct
 	public TAcct( String acctName, MouseEvent e, COA chart )
 	{
 		name = Cipher.crypt( acctName );
-		col = TransactionsModelView.getColumn( e );
-		row = TransactionsModelView.getRow( e );
+		col = TractnsModelView.getColumn( e );
+		row = TractnsModelView.getRow( e );
 		
 		corrDx = new ArrayList<>(); 
 		corrCx = new ArrayList<>();
@@ -97,7 +97,7 @@ public class TAcct
 	 * Sets graphics context for class objects
 	 * @param trGraph Transactions Graphics object
 	 */
-	public static void setGraphics( TransactionsGraphics[] trGraph )
+	public static void setGraphics( TractnsGraphics[] trGraph )
 	{
 		tg = trGraph;
 	}
@@ -363,17 +363,17 @@ public class TAcct
 			// Draw vertical line for T-acct for the whole height of cell
 			tg[idx].drawAcctVerticalLine( acctRow, col );
 			
-			// Create copy of Transaction Model transactions
-			Vector<Transaction> transactions = new Vector( TransactionsModelView.getTransactions() );
+			// Create copy of TrActn Model transactions
+			Vector<TrActn> transactions = new Vector( TractnsModelView.getTransactions() );
 			
 			// Get list of transactions that have to be deleted from DB
-			List<Transaction> toDel = TransactionsModelView.getToDelTransactions();
-			// Remove these transactions from copy of existing Transaction Model transactions
+			List<TrActn> toDel = TractnsModelView.getToDelTransactions();
+			// Remove these transactions from copy of existing TrActn Model transactions
 			transactions.removeAll( toDel );
 			
 			// Get list of transactions that have to be added to DB
-			List<Transaction> toAdd = TransactionsModelView.getToAddTransactions();
-			// Add these transactions to the copy of existing Transaction Model transactions
+			List<TrActn> toAdd = TractnsModelView.getToAddTransactions();
+			// Add these transactions to the copy of existing TrActn Model transactions
 			transactions.addAll( toAdd );
 			
 			// Draw transaction that goes though specified row and column
@@ -422,14 +422,14 @@ public class TAcct
 		// For credix acct delete row of corresponding debix acct
 		delCorrDxAcct( accRow );
 		
-		// Redraw Transaction credix acct
+		// Redraw TrActn credix acct
 		drawTAcct();
 		
 		// Get index of T-acct's ChOfAccs
 		int idx = chartIndex();
 		
-		// Get all transactions in TransactionsModelView form for specified ChOfAccs
-		Vector<Transaction> transactions = TransactionsModelView.getTransactions( idx );
+		// Get all transactions in TractnsModelView form for specified ChOfAccs
+		Vector<TrActn> transactions = TractnsModelView.getTransactions( idx );
 		
 		// Loop for each row starting with T-acct's row till specified row
 		for ( int r = row; r <= accRow; r++ )
@@ -448,14 +448,14 @@ public class TAcct
 		// For Dx acct delete row of corresponding credix acct
 		delCorrCxAcct( accRow );
 		
-		// Redraw Transaction Dx acct
+		// Redraw TrActn Dx acct
 		drawTAcct();
 		
 		// Get index of T-acct's ChOfAccs
 		int idx = chartIndex();
 		
-		// Get all transactions in TransactionsModelView form for specified ChOfAccs
-		Vector<Transaction> transactions = TransactionsModelView.getTransactions( idx );
+		// Get all transactions in TractnsModelView form for specified ChOfAccs
+		Vector<TrActn> transactions = TractnsModelView.getTransactions( idx );
 				
 		// Loop for each row starting with T-acct's row till specified row
 		for ( int r = row; r <= accRow; r++ )
@@ -468,23 +468,23 @@ public class TAcct
 	 */
 	public void deleteTAcct()
 	{
-		ArrayList<Transaction> transList = new ArrayList<>();
+		ArrayList<TrActn> transList = new ArrayList<>();
 		
 		// Get index of T-acct's ChOfAccs
 		int idx = chartIndex();
 		
-		// Get all transactions in TransactionsModelView form for specified ChOfAccs
-		Vector<Transaction> transactions = TransactionsModelView.getTransactions( idx );
+		// Get all transactions in TractnsModelView form for specified ChOfAccs
+		Vector<TrActn> transactions = TractnsModelView.getTransactions( idx );
 		
 		// Loop through list of all transactions
-		for ( Transaction t : transactions )
+		for ( TrActn t : transactions )
 			// If T-acct belongs to current transaction
 			if ( this == t.getDx() || this == t.getCx() )
 				// Add transaction to list of T-acct transactions
 				transList.add( t );
 		
 		// Loop for each transaction of T-acct
-		for ( Transaction t : transList )
+		for ( TrActn t : transList )
 			// Delete current transaction of T-acct
 			t.deleteTransaction();
 		
@@ -492,12 +492,12 @@ public class TAcct
 		clearTAcctCellsAndArountdIt( idx );
 		
 		// Loop for each row starting with T-acct's row till the bottom of the grid
-		for ( int r = row; r < TransactionsModelView.ROWS; r++ )
+		for ( int r = row; r < TractnsModelView.ROWS; r++ )
 			// Redraw transit transaction line if there is one
 			tg[idx].drawTransitTransaction( r, col, transactions );
 		
 		// Add this T-acct to the list of T-accts that have to be deleted from DB
-		TransactionsModelView.addToDelTAccts( this );
+		TractnsModelView.addToDelTAccts( this );
 	}
 	
 	/**
