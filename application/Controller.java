@@ -123,13 +123,14 @@ public class Controller implements Constants, Utilities
     {
     	SubMenu menu = new SubMenu( "" );
     	
-    	MenuItem[] menuItems = new MenuItem[6];
+    	MenuItem[] menuItems = new MenuItem[7];
     	menuItems[0] = menu.createMenuItem( "Legal Entities", WIDTH * 0.95 );
     	menuItems[1] = menu.createMenuItem( "List of Charts Of Accounts", WIDTH * 0.5 );
     	menuItems[2] = menu.createMenuItem( "Charts Of Accounts", WIDTH * 0.5 );
     	menuItems[3] = menu.createMenuItem( "Currencies", WIDTH * 0.4 );
-    	menuItems[4] = menu.createMenuItem( "Clock", this::clock );
-    	menuItems[5] = menu.createMenuItem( "About", this::about );
+    	menuItems[4] = menu.createMenuItem( "Transactions Descriptions", WIDTH * 0.5 );
+    	menuItems[5] = menu.createMenuItem( "Clock", this::clock );
+    	menuItems[6] = menu.createMenuItem( "About", this::about );
     	
     	// Create Menu Button and return it
     	return newMenuButton( "Menu", menuItems );
@@ -142,11 +143,12 @@ public class Controller implements Constants, Utilities
     {
     	registries = new AssociativeList();
 		
-    	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TractnsSimulationModel", "LegalEntityModel", btnReferences() ) );
-    	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LegalEntityModel" ) );
+    	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TractnsSimulationModel", "LglEntityModel", btnReferences() ) );
+    	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LglEntityModel" ) );
     	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "COAModel" ) );
     	registries.set( "Charts Of Accounts", 				new RegistryView( stage, "Charts Of Accounts", "GLAcctModel", "COAModel" ) );
     	registries.set( "Currencies", 						new RegistryView( stage, "List of Currencies", "CrcyModel" ) );
+    	registries.set( "Transactions Descriptions", 		new RegistryView( stage, "List of Transactions Descriptions" , "TractnsDscrModel" ) );
     }
     
     /**

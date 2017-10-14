@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2017 at 12:24 PM
+-- Generation Time: Oct 14, 2017 at 04:07 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -203,7 +203,7 @@ CREATE TABLE `lglentity` (
   `ADDRESS` varchar(255) DEFAULT NULL,
   `CONTACT` varchar(255) DEFAULT NULL,
   `ID` varchar(255) DEFAULT NULL,
-  `LEGALNAME` varchar(255) DEFAULT NULL,
+  `LGLNAME` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   `PHONE` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -212,7 +212,7 @@ CREATE TABLE `lglentity` (
 -- Dumping data for table `lglentity`
 --
 
-INSERT INTO `lglentity` (`LGLENTITYID`, `ADDRESS`, `CONTACT`, `ID`, `LEGALNAME`, `NAME`, `PHONE`) VALUES
+INSERT INTO `lglentity` (`LGLENTITYID`, `ADDRESS`, `CONTACT`, `ID`, `LGLNAME`, `NAME`, `PHONE`) VALUES
 (2601, '6883 Xjdrtzw Xywjjy, Afshtzajw, GH', 'Ujyjw Hwtxx', '1', 'Ifsijqtns Jsyjwuwnxj Nsh.', 'Ifsijqnts', '6-159-333-0220'),
 (2602, '656 Iwfpj Xywjjy, Afshtzajw, GH', 'Wfd Jfs', '2', 'Xufwyfs Lwtzu Nsh.', 'Xufwyfs', '6-159-222-5656'),
 (7351, '', '', '3', 'Ejxy Nsh', 'Ejxy', '');
@@ -283,7 +283,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '10600');
+('SEQ_GEN', '10700');
 
 -- --------------------------------------------------------
 
@@ -502,6 +502,47 @@ INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTI
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tractnsdscr`
+--
+
+CREATE TABLE `tractnsdscr` (
+  `tractnsDscrId` bigint(20) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tractnsdscr`
+--
+
+INSERT INTO `tractnsdscr` (`tractnsDscrId`, `code`, `description`) VALUES
+(10601, '56', 'Nsajsytwd uzwhmfxj'),
+(10602, '57', 'Rfyjwnfqx uzwhmfxj'),
+(10603, '58', 'Xjwanhjx wjhjnaji'),
+(10651, '59', 'Htxy tk nsajsytwd xtqi'),
+(10652, '50', 'Rfyjwnfqx yt uwtizhynts'),
+(10653, '51', 'Uwtizhynts tzyuzy'),
+(10654, '52', 'Htxy tk uwtizhyx xtqi'),
+(10655, '53', 'Uwtizhynts jcujsxjx'),
+(10656, '54', 'Tajwmjfi jcujsxjx'),
+(10657, '65', 'Sts-tujwfyntsfq jcujsxjx'),
+(10658, '66', 'Ufdwtqq jcujsxjx'),
+(10659, '67', 'Nshtrj yfc'),
+(10660, '68', 'Htrufsd ufdwtqq yfcjx'),
+(10661, '69', 'LXY ts uzwhmfxjx'),
+(10662, '60', 'LXY ts xfqjx'),
+(10663, '61', 'UXY ts xfqjx'),
+(10664, '62', 'Uwtkny kwtr tujwfyntsx'),
+(10665, '63', 'Xfqjx sjy tk yfcjx'),
+(10666, '64', 'Ufni gd hfxm'),
+(10667, '75', 'Ufni gd hmjvzj'),
+(10668, '76', 'Ufni gd hwjiny hfwi'),
+(10669, '76', 'Hqjfwji hmjvzjx'),
+(10670, '77', 'Hwjiny ufdrjsyx');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tractnsmodel`
 --
 
@@ -685,7 +726,8 @@ ALTER TABLE `sequence`
 -- Indexes for table `tacct`
 --
 ALTER TABLE `tacct`
-  ADD PRIMARY KEY (`TACCTID`);
+  ADD PRIMARY KEY (`TACCTID`),
+  ADD KEY `FK_TACCT_GL_GLID` (`GL_GLID`);
 
 --
 -- Indexes for table `tacct_corrcx`
@@ -766,6 +808,12 @@ ALTER TABLE `lglentity_lglentitycharts`
   ADD CONSTRAINT `LGLENTITYLGLENTITYCHARTSLglEntityLGLENTITYID` FOREIGN KEY (`LglEntity_LGLENTITYID`) REFERENCES `lglentity` (`LGLENTITYID`);
 
 --
+-- Constraints for table `tacct`
+--
+ALTER TABLE `tacct`
+  ADD CONSTRAINT `FK_TACCT_GL_GLID` FOREIGN KEY (`GL_GLID`) REFERENCES `gl` (`GLID`);
+
+--
 -- Constraints for table `tacct_corrcx`
 --
 ALTER TABLE `tacct_corrcx`
@@ -801,8 +849,10 @@ ALTER TABLE `tractnsmodel_tacct`
 -- Constraints for table `tractnsmodel_tractn`
 --
 ALTER TABLE `tractnsmodel_tractn`
-  ADD CONSTRAINT `TRNSCTNSMODELTRACTNtrnsactnsTRACTNID` FOREIGN KEY (`tractns_TRACTNID`) REFERENCES `tractn` (`TRACTNID`),
-  ADD CONSTRAINT `TRNSCTNSMDLTRNSACTNTrnsctnsMdlTRNSACTIONSMODELID` FOREIGN KEY (`TractnsModel_TRACTNSMODELID`) REFERENCES `tractnsmodel` (`TRACTNSMODELID`);
+  ADD CONSTRAINT `FK_TRACTNSMODEL_TRACTN_TractnsModel_TRACTNSMODELID` FOREIGN KEY (`TractnsModel_TRACTNSMODELID`) REFERENCES `tractnsmodel` (`TRACTNSMODELID`),
+  ADD CONSTRAINT `FK_TRACTNSMODEL_TRACTN_tractns_TRACTNID` FOREIGN KEY (`tractns_TRACTNID`) REFERENCES `tractn` (`TRACTNID`),
+  ADD CONSTRAINT `TRNSCTNSMDLTRNSACTNTrnsctnsMdlTRNSACTIONSMODELID` FOREIGN KEY (`TractnsModel_TRACTNSMODELID`) REFERENCES `tractnsmodel` (`TRACTNSMODELID`),
+  ADD CONSTRAINT `TRNSCTNSMODELTRACTNtrnsactnsTRACTNID` FOREIGN KEY (`tractns_TRACTNID`) REFERENCES `tractn` (`TRACTNID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

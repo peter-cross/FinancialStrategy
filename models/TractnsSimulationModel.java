@@ -32,7 +32,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 {
 	private static	LinkedHashSet[] list;       			// List of TrActn Simulation Models for each Legal Entity
     
-	private static	ArrayList<LegalEntityModel> entities;	// List of Legal Entities
+	private static	ArrayList<LglEntityModel> entities;	// List of Legal Entities
 	
 	private static final String transModelStr = "Transactions Model";
 	
@@ -87,10 +87,10 @@ public class TractnsSimulationModel extends RegistryItemModel
 		tabName = entityName;
 		
 		// Get Legal Entity Model by entity name
-		LegalEntityModel lglEntityModel = LegalEntityModel.getByName( entityName );
+		LglEntityModel lglEntityModel = LglEntityModel.getByName( entityName );
 		
 		// Find index of legal Entity Model and assign it as Tab number
-		tabNum = Math.max( 0, getListIndex( LegalEntityModel.getItemsList(), lglEntityModel ) );
+		tabNum = Math.max( 0, getListIndex( LglEntityModel.getItemsList(), lglEntityModel ) );
 		
 		LglEntity legalEntity = null;
 		
@@ -184,7 +184,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 	 */
 	private static void initEmptyList()
 	{
-		Class c = createModelClass( "LegalEntityModel" );
+		Class c = createModelClass( "LglEntityModel" );
 
 		try
         {
@@ -216,13 +216,13 @@ public class TractnsSimulationModel extends RegistryItemModel
 	private static void createNewList()
 	{
 		// Get instance of Legal Entity Model Class
-		Class c = createModelClass( "LegalEntityModel" );
+		Class c = createModelClass( "LglEntityModel" );
 
 		// Min number of entities is one
 		int numEntities = 1;
 		
 		// Array List to store new list of Legal Entities
-    	ArrayList<LegalEntityModel>  newEntities = null;
+    	ArrayList<LglEntityModel>  newEntities = null;
     	
     	try
         {
@@ -276,7 +276,7 @@ public class TractnsSimulationModel extends RegistryItemModel
             for ( TractnsModel tm : dbTrModels )
             {
                 // Create TractnsSimulationModel object based on provided Transactions Model
-                LglEntity lglEntity = tm.getLegalEntity();
+                LglEntity lglEntity = tm.getLglEntity();
 
                 int entityNum = 0;
 
@@ -284,12 +284,12 @@ public class TractnsSimulationModel extends RegistryItemModel
                 if ( lglEntity != null )
                 {
                     // Get Legal Entity Model by Legal Entity instance
-                	LegalEntityModel  lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
+                	LglEntityModel  lglEntityModel = LglEntityModel.getByEntity( lglEntity );
 
                     // If Legal Entity Model is found
                 	if ( lglEntityModel != null )
                 		// Get entity index by Legal Entity Model
-                    	entityNum = getListIndex( LegalEntityModel.getItemsList(), lglEntityModel );
+                    	entityNum = getListIndex( LglEntityModel.getItemsList(), lglEntityModel );
                 }
 
                 // Create new instance of class based on provided TractnsModel and legal Entity name
@@ -315,7 +315,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 		TractnsModel transactionsModel = fields.get( "transactionsModel" );
 		
 		// If Legal Entity of TractnsModel is not specified
-		if ( transactionsModel.getLegalEntity() == null )
+		if ( transactionsModel.getLglEntity() == null )
 		{
 			// Try to get Legal Entity instance from fields 
 			LglEntity legalEntity = fields.get( "legalEntity" );
@@ -394,13 +394,13 @@ public class TractnsSimulationModel extends RegistryItemModel
         if ( tm != null  )
         {
         	// Get LglEntity from TractnsModel
-        	LglEntity lglEntity = tm.getLegalEntity();
+        	LglEntity lglEntity = tm.getLglEntity();
         	
         	// If LglEntity is specified
         	if ( lglEntity != null )
         	{
         		// Get Legal Entity Model by Legal Entity
-        		LegalEntityModel lglEntityModel = LegalEntityModel.getByEntity( lglEntity );
+        		LglEntityModel lglEntityModel = LglEntityModel.getByEntity( lglEntity );
         		
         		// Try to find Legal Entity Model in current list of entities
         		int idx = entities.indexOf( lglEntityModel );

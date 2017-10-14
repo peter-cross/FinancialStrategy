@@ -16,7 +16,7 @@ import application.Database;
 import foundation.Cipher;
 
 /**
- * Entity implementation class for : LegalEntityModel database data
+ * Entity implementation class for : LglEntityModel database data
  * @author Peter Cross
  * 
  */
@@ -27,14 +27,14 @@ public class LglEntity
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long 	lglEntityId;
 	
-	private String	iD;				// Legal Entity ID in the system
+	private String	iD;				// Lgl Entity ID in the system
 	private String	name;			// Common name
-	private String	legalName;		// Official legal name
+	private String	lglName;		// Official legal name
 	private String	phone;			// Phone number
 	private String	contact;		// Contact in the company
 	private String	address;		// Address
 	
-	// ChOfAccs for Legal Entity
+	// ChOfAccs for Lgl Entity
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.PERSIST )
 	private Vector<LglEntityCharts> lglEntityCharts;
 	
@@ -47,34 +47,34 @@ public class LglEntity
 	}
 	
 	/**
-	 * Class constructor with all required info for creating Legal Entity object
+	 * Class constructor with all required info for creating Lgl Entity object
 	 * @param iD ID for user
 	 * @param name Common name
-	 * @param legalName Legal name of legal entity
+	 * @param lglName Lgl name of lgl entity
 	 * @param phone Phone number
 	 * @param contact Contact person
-	 * @param address Address of Legal Entity
+	 * @param address Address of Lgl Entity
 	 */
-	public LglEntity( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs ) 
+	public LglEntity( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs ) 
 	{
-		update( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
+		update( iD, name, lglName, phone, contact, address, chartNames, chOfAccs );
 	}
 	
 	/**
-	 * Updates information of existing legal entity
+	 * Updates information of existing lgl entity
 	 * @param iD ID for user
 	 * @param name Common name
-	 * @param legalName Legal name of legal entity
+	 * @param lglName Lgl name of lgl entity
 	 * @param phone Phone number
 	 * @param contact Contact person
-	 * @param address Address of Legal Entity
+	 * @param address Address of Lgl Entity
 	 */
-	public void update( String iD, String name, String legalName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs )
+	public void update( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs )
 	{
 		// Save provided info and crypt sensitive info
 		this.iD = iD;
 		this.name = Cipher.crypt( name );
-		this.legalName = Cipher.crypt( legalName );
+		this.lglName = Cipher.crypt( lglName );
 		this.phone = Cipher.crypt( phone );
 		this.contact = Cipher.crypt( contact );
 		this.address = Cipher.crypt( address );
@@ -92,43 +92,43 @@ public class LglEntity
 		}
 	}
 	
-	// Returns ID of Legal Entity
+	// Returns ID of Lgl Entity
 	public String getId()
 	{
 		return iD;
 	}
 	
-	// Returns name of Legal Entity
+	// Returns name of Lgl Entity
 	public String getName()
 	{
 		return Cipher.decrypt( name );
 	}
 	
-	// Returns legal name of Legal Entity
-	public String getLegalName()
+	// Returns legal name of Lgl Entity
+	public String getLglName()
 	{
-		return Cipher.decrypt( legalName );
+		return Cipher.decrypt( lglName );
 	}
 	
-	// Returns phone of Legal Entity
+	// Returns phone of Lgl Entity
 	public String getPhone()
 	{
 		return Cipher.decrypt( phone );
 	}
 	
-	// Returns contact person info of Legal Entity
+	// Returns contact person info of Lgl Entity
 	public String getContact()
 	{
 		return Cipher.decrypt( contact );
 	}
 	
-	// Returns address of Legal Entity
+	// Returns address of Lgl Entity
 	public String getAddress()
 	{
 		return Cipher.decrypt( address );
 	}
 	
-	// Returns array of ChOfAccs names specific for Legal entity 
+	// Returns array of ChOfAccs names specific for Lgl entity 
 	public String[] getChartNames()
 	{
 		String[] list = new String[ lglEntityCharts.size() ];
@@ -142,7 +142,7 @@ public class LglEntity
 		return list;
 	}
 	
-	// Returns array of Legal entity ChOfAccs names in the system
+	// Returns array of Lgl entity ChOfAccs names in the system
 	public String[] getChOfAccs()
 	{
 		String[] list = new String[ lglEntityCharts.size() ];

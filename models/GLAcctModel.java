@@ -291,11 +291,11 @@ public class GLAcctModel extends RegistryItemModel
                 // If acct type is Balance Sheet
                 if ( accType == "Balance Sheet" )
                     // Create Balance Sheet Tree object and pass it to the form
-                    elementsList.set( fieldName + "Object", new BalanceSheetTree( st ) );
+                    elementsList.set( fieldName + "Object", new BSTree( st ) );
                 // If acct type is Income Statement
                 else if ( accType == "Income Statement" )
                     // Create Income Statement Tree object and pass it to the form
-                    elementsList.set( fieldName + "Object", new IncomeStatementTree( st ) );
+                    elementsList.set( fieldName + "Object", new ISTree( st ) );
         };
     }
     

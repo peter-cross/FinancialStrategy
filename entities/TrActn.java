@@ -37,7 +37,7 @@ public class TrActn
 	private COA coa;	  				// ChOfAccs to which transaction belongs
 	
 	private static TractnsGraphics[] tg; 	  // Transactions Graphics canvas
-	private static String[]				  charts; // ChOfAccs for Legal Entity
+	private static String[]			 charts;  // ChOfAccs for Legal Entity
 	
 	/**
 	 * Class mandatory constructor

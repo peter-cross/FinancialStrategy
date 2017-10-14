@@ -30,7 +30,7 @@ import entities.TrActn;
 import entities.TractnsModel;
 import models.COAModel;
 import models.GLAcctModel;
-import models.LegalEntityModel;
+import models.LglEntityModel;
 import models.TractnsGraphics;
 import foundation.AssociativeList;
 import foundation.TaskTimer;
@@ -159,7 +159,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		if ( legalEntity != null )
 		{
 			// Get Legal Entity Model by Legal Entity database entity object
-			LegalEntityModel entityModel = LegalEntityModel.getByEntity( legalEntity );
+			LglEntityModel entityModel = LglEntityModel.getByEntity( legalEntity );
 			
 			// If Legal Entity Model is specified
 			if ( entityModel != null )

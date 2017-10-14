@@ -17,7 +17,7 @@ public class LglEntityCharts
 	
 	private int lineNum;		// Line number in screen form
 	
-	private String chartName;	// ChOfAccs's name specific to Legal entity
+	private String chartName;	// ChOfAccs's name specific to Lgl entity
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private COA coa; // ChOfAccs 
@@ -49,7 +49,7 @@ public class LglEntityCharts
 		return lineNum;
 	}
 	
-	// Returns ChOfAcc's name specific to Legal entity
+	// Returns ChOfAcc's name specific to Lgl entity
 	public String getChartName()
 	{
 		return Cipher.decrypt( chartName );

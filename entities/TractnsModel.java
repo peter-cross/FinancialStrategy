@@ -28,7 +28,7 @@ public class TractnsModel
 	// Name of Transactions Model
 	private String name;
 	
-	// T-accounts included in Transactions Model
+	// T-accts included in Transactions Model
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
 	private Vector<TAcct> taccts;
 	
@@ -131,19 +131,19 @@ public class TractnsModel
 	}
 	
 	/**
-	 * Returns Legal Entity of Transactions Model
+	 * Returns Lgl Entity of Transactions Model
 	 */
-	public LglEntity getLegalEntity()
+	public LglEntity getLglEntity()
 	{
 		return lglEntity;
 	}
 	
 	/**
-	 * Sets Legal Entity of Transactions Model
-	 * @param legalEntity Legal Entity current Transactions Model belongs to
+	 * Sets Lgl Entity of Transactions Model
+	 * @param lglEntity Legal Entity current Transactions Model belongs to
 	 */
-	public void setLegalEntity( LglEntity legalEntity )
+	public void setLegalEntity( LglEntity lglEntity )
 	{
-		lglEntity = legalEntity;
+		this.lglEntity = lglEntity;
 	}
 }
