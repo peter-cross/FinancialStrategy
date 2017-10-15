@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import application.Main;
 import models.GLAcctModel;
 import models.RegistryItemModel;
+import models.TractnsDscrModel;
 import views.NodeView;
 import views.OneColumnView;
 import forms.DialogElement;
@@ -38,6 +39,7 @@ import interfaces.Lambda.OnElementChange;
 public interface Utilities extends Encapsulation
 {
 	static final String glAcctStr = "G/L Account";
+	static final String tractnStr = "Transaction";
 	
 	/**
      * Displays About box
@@ -107,6 +109,27 @@ public interface Utilities extends Encapsulation
 	}
 	
 	/**
+	 * Displays window to enter information about transaction description
+	 * @param owner Object from which to invoke this new form
+	 * @return Result as string array
+	 */
+	public static String[] enterTractnInfo( NodeView owner )
+	{
+		DialogElement tractnCode = new DialogElement( tractnStr );
+		tractnCode.width = 50;
+		tractnCode.editable = false;
+		tractnCode.list = TractnsDscrModel.getItemsList();
+		tractnCode.onChange = onTractnChange();
+		
+		DialogElement tractnDscr = new DialogElement( "Description" );
+		
+		String[][] result = new OneColumnView( owner, "Enter Transaction Description", new DialogElement[]{ tractnCode, tractnDscr } ).result();
+		
+		// If there is entered information - return it, otherwise - just return empty string
+		return result != null ? result[0] : new String[] {null, null};
+	}
+	
+	/**
 	 * Lambda expression executed on change of G/L acct
 	 * @param chartIndex Index of ChOfAccs to which belongs G/L acct
 	 * @return Lambda expression
@@ -138,6 +161,37 @@ public interface Utilities extends Encapsulation
 	        
 	            // Set G/L acct model name as text value of 'Acct Name' field
 				nameField.setText( glModel.getName() );
+			}
+		};
+	}
+	
+	/**
+	 * Gets invoked on change of selected transaction field
+	 */
+	static OnElementChange onTractnChange()
+	{
+		return ( elList ) -> 
+		{
+			// Get value of current ComboBox field
+			ComboBox field = (ComboBox) elList.get( tractnStr );
+			
+			// If nothing is specified - finish
+			if ( field == null ) return;
+			
+			// Get string value of selected Transaction description
+			String tractnDscr = (String) field.getValue();
+			
+			// If description is specified
+			if ( tractnDscr != null )
+			{
+				// Get value of form field with description
+				TextField nameField  = (TextField) elList.get( "Description" );
+				
+				// Make field non-editable
+				nameField.setEditable( false );
+	        
+	            // Set Transaction Description model description as text value of the field
+				nameField.setText( tractnDscr );
 			}
 		};
 	}

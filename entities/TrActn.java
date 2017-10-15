@@ -7,11 +7,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import static interfaces.Utilities.enterTAcctInfo;
+import static interfaces.Utilities.enterTractnInfo;
+
 import java.util.ArrayList;
 
+import foundation.AssociativeList;
 import foundation.Cipher;
 import interfaces.Utilities;
 import models.TractnsGraphics;
+import views.NodeView;
 import views.TractnsModelView;
 
 /**
@@ -232,8 +237,13 @@ public class TrActn
 		
 		int idx = chartIndex();
 		
+		String[] transInfo = Utilities.enterTractnInfo( (NodeView)tg[idx].getOwner() );
+		
+		String descr = transInfo[1];
+		
 		// Enter transaction description
-		setDescription( Utilities.enterTextInfo( tg[idx].getOwner(), "TrActn description") );
+		//setDescription( Utilities.enterTextInfo( tg[idx].getOwner(), "TrActn description") );
+		setDescription( descr );
 		
 		// Draw transaction description on canvas
 		drawTransactionDescription();

@@ -1,5 +1,7 @@
 package models;
 
+import static interfaces.Utilities.getListElementBy;
+
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,12 +23,20 @@ public class TractnsDscrModel extends RegistryItemModel
     
     private static final String tractsDscrStr = "Transaction Description";
 
+    /**
+     * Default class constructor
+     */
     public TractnsDscrModel()
     {
     	super( tractsDscrStr );
     	list.add( this );
     }
     
+    /**
+     * Class constructor for objects to display
+     * @param st Stage object where to display
+     * @throws Exception
+     */
     public TractnsDscrModel( Stage st ) throws Exception
     {
     	super( st, tractsDscrStr, null );
@@ -35,6 +45,10 @@ public class TractnsDscrModel extends RegistryItemModel
     		list.add( this );
     }
     
+    /**
+     * Class constructor for creating object based on corresponding database entity object
+     * @param tractnsDscr Database entity transactions description object
+     */
     public TractnsDscrModel( TractnsDscr tractnsDscr )
     {
     	super( tractsDscrStr );
@@ -44,6 +58,18 @@ public class TractnsDscrModel extends RegistryItemModel
     	fields.set( "description", tractnsDscr.getDescription() );
     }
     
+    /**
+     * Returns Transactions Description Model object based on model code
+     */
+    public static TractnsDscrModel getByCode( String code )
+    {
+        return (TractnsDscrModel) getListElementBy( list, "code", code );
+        
+    } // End of method ** getByCode **
+    
+    /**
+     * Gets invoked to save entered or changed info from screen form
+     */
 	@Override
 	protected void init(String[][] header, String[][][] table) 
 	{
@@ -54,6 +80,9 @@ public class TractnsDscrModel extends RegistryItemModel
         fields.set( "description", header[0][1] );
 	}
 
+	/**
+	 * Gets invoked to object about structure of head part of the screen form
+	 */
 	@Override
 	protected DialogElement[][] createHeader() 
 	{
@@ -79,16 +108,33 @@ public class TractnsDscrModel extends RegistryItemModel
         return header;
 	}
 
+	/**
+	 * Returns corresponding database entity object for Transactions Description Model
+	 */
 	public TractnsDscr getTractnsDscr()
 	{
 		return fields.get( "tractnsDscr" );
 	}
 	
+	/**
+	 * Returns description of Transactions Description Model
+	 */
+	public String getDescription()
+	{
+		return fields.get( "description" );
+	}
+	
+	/**
+	 * Returns form items list as LinedHashSet object
+	 */
 	public static LinkedHashSet getItemsList()
     {
         return list;
     }
     
+	/**
+	 * Creates list for new form as LinedHashSet object if it does not exist and returns it
+	 */
     public static  LinkedHashSet[] createList()
     {
     	if ( list == null )
@@ -97,6 +143,9 @@ public class TractnsDscrModel extends RegistryItemModel
         return new LinkedHashSet[] { list };
     }
     
+    /**
+     *  Creates list of Class object items as LinedHashSet object
+     */
     public static void createNewList()
     {
         list = new LinkedHashSet<>();
@@ -104,16 +153,27 @@ public class TractnsDscrModel extends RegistryItemModel
         createNewList( list, "TractnsDscrModel" );
     }
     
+    /**
+     * Gets instance of class object based on corresponding database entity object
+     * @param c Database entity object
+     * @return Created Transactions Description Model object
+     */
     public static TractnsDscrModel getInstance( Object c )
     {
     	return new TractnsDscrModel( (TractnsDscr) c );
     }
     
+    /**
+     * Gets data about corresponding database entity objects from database and returns it as a list
+     */
     public static List<TractnsDscr> getFromDB()
     {
     	return getFromDB( "TractnsDscr" );
     }
     
+    /**
+     * Saves data about current object into database as corresponding database entity object
+     */
 	@Override
 	protected void saveToDB() 
 	{
@@ -145,6 +205,9 @@ public class TractnsDscrModel extends RegistryItemModel
     	}
 	} 
 	
+	/**
+	 * Removes data about current class object from database and from list of class object items
+	 */
 	@Override
     public void removeFromDB() throws Exception
     { 
@@ -153,6 +216,9 @@ public class TractnsDscrModel extends RegistryItemModel
     	list.remove( this );
     }
 	
+	/**
+	 * Returns string representation about current class object
+	 */
 	public String toString()
     {
         return (String) fields.get( "description" );
