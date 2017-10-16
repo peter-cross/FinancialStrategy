@@ -13,7 +13,7 @@ import forms.DialogElement;
 import javafx.stage.Stage;
 
 /**
- * Class TractnsDscrModel - Transactions Description Model
+ * Class TractnsDscrModel - Tractns Description Model
  * @author Peter Cross
  *
  */
@@ -47,7 +47,7 @@ public class TractnsDscrModel extends RegistryItemModel
     
     /**
      * Class constructor for creating object based on corresponding database entity object
-     * @param tractnsDscr Database entity transactions description object
+     * @param tractnsDscr Database entity tractns description object
      */
     public TractnsDscrModel( TractnsDscr tractnsDscr )
     {
@@ -59,7 +59,7 @@ public class TractnsDscrModel extends RegistryItemModel
     }
     
     /**
-     * Returns Transactions Description Model object based on model code
+     * Returns Tractns Description Model object based on model code
      */
     public static TractnsDscrModel getByCode( String code )
     {
@@ -109,7 +109,7 @@ public class TractnsDscrModel extends RegistryItemModel
 	}
 
 	/**
-	 * Returns corresponding database entity object for Transactions Description Model
+	 * Returns corresponding database entity object for Tractns Description Model
 	 */
 	public TractnsDscr getTractnsDscr()
 	{
@@ -117,7 +117,7 @@ public class TractnsDscrModel extends RegistryItemModel
 	}
 	
 	/**
-	 * Returns description of Transactions Description Model
+	 * Returns description of Tractns Description Model
 	 */
 	public String getDescription()
 	{
@@ -156,7 +156,7 @@ public class TractnsDscrModel extends RegistryItemModel
     /**
      * Gets instance of class object based on corresponding database entity object
      * @param c Database entity object
-     * @return Created Transactions Description Model object
+     * @return Created Tractns Description Model object
      */
     public static TractnsDscrModel getInstance( Object c )
     {
@@ -184,19 +184,19 @@ public class TractnsDscrModel extends RegistryItemModel
     	
     	if ( tractnsDscr == null  )
         {
-            // Create instance of Transactions Description Entity
+            // Create instance of Tractns Description Entity
     		tractnsDscr = new TractnsDscr( code, description );
             fields.set( "tractnsDscr", tractnsDscr );
         }
             
     	// Otherwise
     	else
-            // Update Transactions Description Entity information
+            // Update Tractns Description Entity information
     		tractnsDscr.update( code, description );
     	
     	try
     	{
-    		// Persist Transactions Description Entity data to database
+    		// Persist Tractns Description Entity data to database
     		Database.persistToDB( tractnsDscr );
     	}
     	catch ( Exception e ) 

@@ -109,7 +109,7 @@ public interface Utilities extends Encapsulation
 	}
 	
 	/**
-	 * Displays window to enter information about transaction description
+	 * Displays window to enter information about Tractn description
 	 * @param owner Object from which to invoke this new form
 	 * @return Result as string array
 	 */
@@ -150,7 +150,7 @@ public interface Utilities extends Encapsulation
 			// If G/L code is specified
 			if ( glCode != null )
 			{
-				// Find G/L account model by G/L code and ChOfAccs Index
+				// Find G/L acct model by G/L code and ChOfAccs Index
 				GLAcctModel glModel = GLAcctModel.getByCode( glCode, chartIndex );
 				
 				// Get value of form field with name 'Acct Name'
@@ -166,7 +166,7 @@ public interface Utilities extends Encapsulation
 	}
 	
 	/**
-	 * Gets invoked on change of selected transaction field
+	 * Gets invoked on change of selected tractn field
 	 */
 	static OnElementChange onTractnChange()
 	{
@@ -178,7 +178,7 @@ public interface Utilities extends Encapsulation
 			// If nothing is specified - finish
 			if ( field == null ) return;
 			
-			// Get string value of selected Transaction description
+			// Get string value of selected Tractn description
 			String tractnDscr = (String) field.getValue();
 			
 			// If description is specified
@@ -190,7 +190,7 @@ public interface Utilities extends Encapsulation
 				// Make field non-editable
 				nameField.setEditable( false );
 	        
-	            // Set Transaction Description model description as text value of the field
+	            // Set Tractn Description model description as text value of the field
 				nameField.setText( tractnDscr );
 			}
 		};

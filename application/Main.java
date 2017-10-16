@@ -16,7 +16,7 @@ import interfaces.Utilities;
  */
 public final class Main extends Application
 {
-	public static final String TITLE = "Financial Strategy v.1.2";
+	public static final String TITLE = "Financial Strategy v.1.3";
 	
 	/**
      * Starts the program

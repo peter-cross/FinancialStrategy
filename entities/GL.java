@@ -22,9 +22,9 @@ public class GL
 	private String	glNumber;		// G/L Acct Number
 	private String	name;			// G/L Acct Name
 	private String	type;			// Type of G/L Acct
-	private String	acctGrp;		// Balance Sheet or Income Statement acct grp to which G/L acct.belongs
+	private String	acctGrp;		// BalSh or IncSt acct grp to which G/L acct.belongs
 	
-	private int		quantity;		// Quantity flag - indicates if quantitative accounting is necessary
+	private int		quantity;		// Quantity flag - indicates if quantitative accnting is necessary
 	private int		frgnCrcy;		// Foreign Crcy Flag - indicates if posting amounts in frgn crcy is necessary
 	private int		contraAcct;		// Contra Acct flag
 	

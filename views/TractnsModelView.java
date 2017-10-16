@@ -55,15 +55,15 @@ public class TractnsModelView extends NodeView implements Utilities
 	private static double 	 CELL_WIDTH,  			// Cell width
 							 CELL_HEIGHT; 			// Cell height
 	
-	private static TractnsModel		transactionsModel;	// To store transactions Model entity object
-	private static Vector<TrActn>		transactions;		// To store all transactions
+	private static TractnsModel				tractnsModel;		// To store transactions Model entity object
+	private static Vector<TrActn>			tractns;			// To store all transactions
 	private static Vector<TAcct>			accts;				// To store T-accts
 	private LglEntity						legalEntity;		// Legal entity of Transactions Model
 	
 	private static ArrayList<TAcct>			toAddTAccts;		// T-Accts to add
 	private static ArrayList<TAcct>			toDelTAccts;		// T-Accts to delete
-	private static ArrayList<TrActn>	toAddTransactions;	// Transactions to add
-	private static ArrayList<TrActn>	toDelTransactions;	// Transactions to delete
+	private static ArrayList<TrActn>		toAddTractns;		// Transactions to add
+	private static ArrayList<TrActn>		toDelTractns;		// Transactions to delete
 	
 	private ArrayList<TAcct>				selectedTAccts;		// To store selected T-accts
 	private AssociativeList					output;				// Results of input to pass
@@ -114,37 +114,37 @@ public class TractnsModelView extends NodeView implements Utilities
 		// Invoke initialization
 		init();
 	
-		setTransactionsModel();
+		setTractnsModel();
 		
-		if ( transactionsModel == null )
+		if ( tractnsModel == null )
 			return;
 		
-		setAccountsAndTransactions();
+		setAccountsAndTractns();
 		
 		// Restore grid and Model's Transactions
-		restoreGridAndTransactions();
+		restoreGridAndTractns();
 	}
 	
 	/**
 	 * Sets Transactions Model for the view
 	 */
-	private void setTransactionsModel()
+	private void setTractnsModel()
 	{
 		// Get Transactions Model
-		transactionsModel = fields.get( "transactionsModel" );
+		tractnsModel = fields.get( "transactionsModel" );
 		
-		if ( transactionsModel == null )
+		if ( tractnsModel == null )
 			return;
 		
 		// Get name of Transactions Model
-		String titleTxt = transactionsModel.getName();
+		String titleTxt = tractnsModel.getName();
 		
 		// Set title of the model on dialog form
 		if ( titleTxt != null && !titleTxt.isEmpty() )
 			title.setText( titleTxt );
 		
 		// Set Transactions Model as field for output
-		output.set( "transactionsModel", transactionsModel );
+		output.set( "transactionsModel", tractnsModel );
 	}
 	
 	/**
@@ -176,19 +176,19 @@ public class TractnsModelView extends NodeView implements Utilities
 	/**
 	 * Gets T-Accts and Transactions for Transactions Model 
 	 */
-	private void setAccountsAndTransactions()
+	private void setAccountsAndTractns()
 	{
-		if ( transactionsModel == null )
+		if ( tractnsModel == null )
 			return;
 				
 		// Get transactions of Transactions Model
-		Vector<TrActn> trs = transactionsModel.getTransactions();
+		Vector<TrActn> trs = tractnsModel.getTransactions();
 				
 		if ( trs != null )
-			transactions = trs;
+			tractns = trs;
 		
 		// Get T-accts of Transactions Model
-		Vector<TAcct> accts = transactionsModel.getTAccs();
+		Vector<TAcct> accts = tractnsModel.getTAccs();
 				
 		if ( accts != null )
 			this.accts = accts;
@@ -237,7 +237,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	private void createArrays()
 	{
 		// Create ArrayList for transactions
-		transactions = new Vector<>();
+		tractns = new Vector<>();
 		
 		// Create ArrayList for T-Accts
 		accts = new Vector<>();
@@ -247,8 +247,8 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		toAddTAccts = new ArrayList<>();
 		toDelTAccts = new ArrayList<>();
-		toAddTransactions = new ArrayList<>();
-		toDelTransactions = new ArrayList<>();
+		toAddTractns = new ArrayList<>();
+		toDelTractns = new ArrayList<>();
 		
 		output = new AssociativeList();
 	}
@@ -256,13 +256,13 @@ public class TractnsModelView extends NodeView implements Utilities
 	/**
 	 * Restores grid and Model Transactions
 	 */
-	private void restoreGridAndTransactions()
+	private void restoreGridAndTractns()
 	{
 		// Create ArrayList for model T-accts
 		ArrayList<TAcct> acctList = new ArrayList<>();
 		
 		// Loop for each model transaction
-		for ( TrActn tr : transactions )
+		for ( TrActn tr : tractns )
 		{
 			TAcct trDx = tr.getDx();
 			TAcct trCx = tr.getCx();
@@ -270,7 +270,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			// If Dx and Cx accts are specified
 			if ( trCx != null && trDx != null )
 			{
-				tr.drawTransaction();
+				tr.drawTractn();
 				
 				// Add accts to list of model T-accts
 				acctList.add( trCx );
@@ -315,19 +315,19 @@ public class TractnsModelView extends NodeView implements Utilities
 	/**
 	 * Returns dialog's TrActn Model
 	 */
-	public static TractnsModel getTransactionsModel()
+	public static TractnsModel getTractnsModel()
 	{
-		return transactionsModel;
+		return tractnsModel;
 	}
 	
 	/**
 	 * Returns TrActn Model's transactions 
 	 */
-	public static Vector<TrActn> getTransactions()
+	public static Vector<TrActn> getTractns()
 	{
-		Vector<TrActn> trList = new Vector( transactions );
-		trList.addAll( toAddTransactions );
-		trList.removeAll( toDelTransactions );
+		Vector<TrActn> trList = new Vector( tractns );
+		trList.addAll( toAddTractns );
+		trList.removeAll( toDelTractns );
 		
 		return trList;
 	}
@@ -337,9 +337,9 @@ public class TractnsModelView extends NodeView implements Utilities
 	 * @param chartNum ChOfAccs' index
 	 * @return List of transactions for specified ChOfAccs
 	 */
-	public static Vector<TrActn> getTransactions( int chartNum )
+	public static Vector<TrActn> getTractns( int chartNum )
 	{
-		Vector<TrActn> trList = getTransactions();
+		Vector<TrActn> trList = getTractns();
 		
 		Iterator<TrActn> it = trList.iterator();
 		
@@ -656,36 +656,36 @@ public class TractnsModelView extends NodeView implements Utilities
 	 * Adds transaction to the list of transactions to add
 	 * @param t TrActn to add
 	 */
-	public static void addToAddTransactions( TrActn t )
+	public static void addToAddTractns( TrActn t )
 	{
-		toAddTransactions.add( t );
+		toAddTractns.add( t );
 	}
 	
 	/**
 	 * Adds transaction to the list of transactions to delete
 	 * @param t TrActn to add
 	 */
-	public static void addToDelTransactions( TrActn t )
+	public static void addToDelTractns( TrActn t )
 	{
-		toDelTransactions.add( t );
+		toDelTractns.add( t );
 	}
 	
 	/**
 	 * Gets list of Transactions to add
 	 * @return List of transactions
 	 */
-	public static ArrayList<TrActn> getToAddTransactions()
+	public static ArrayList<TrActn> getToAddTractns()
 	{
-		return toAddTransactions;
+		return toAddTractns;
 	}
 	
 	/**
 	 * Gets list of Transactions to delete
 	 * @return List of transactions
 	 */
-	public static ArrayList<TrActn> getToDelTransactions()
+	public static ArrayList<TrActn> getToDelTractns()
 	{
-		return toDelTransactions;
+		return toDelTractns;
 	}
 	
 	/**
@@ -708,14 +708,14 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		else
 			// Loop through list of all transactions
-			for ( TrActn t : getTransactions() )
+			for ( TrActn t : getTractns() )
 				// If in current row there is transaction
 				if ( t.getRow() == row )
 					// If current column belongs to transaction
 					if ( col > t.getCx().getColumn() && col < t.getDx().getColumn() )
 					{
 						// Delete transaction in current row
-						t.deleteTransaction();
+						t.deleteTractn();
 						break;
 					}
 		
@@ -813,7 +813,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			// If there are 2 T-accts selected
 			if ( selectedTAccts.size() > 1 )
 				// Draw transaction with selected T-accts
-				drawTransaction();
+				drawTractn();
 				
 			else
 			{
@@ -832,7 +832,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	/**
 	 * Draws transaction for selected accts
 	 */
-	private void drawTransaction()
+	private void drawTractn()
 	{
 		TAcct acct1, acct2;
 		
@@ -841,7 +841,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			acct1 = selectedTAccts.get(0);
 			acct2 = selectedTAccts.get(1);
 			
-			drawTransaction( acct1, acct2 );
+			drawTractn( acct1, acct2 );
 			
 			selectedTAccts.clear();
 		}
@@ -852,7 +852,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	 * @param acct1 First T-acct
 	 * @param acct2 Second T-acct
 	 */
-	private void drawTransaction( TAcct acct1, TAcct acct2 )
+	private void drawTractn( TAcct acct1, TAcct acct2 )
 	{
 		int acct1Col = acct1.getColumn();
 		int acct2Col = acct2.getColumn();
@@ -870,7 +870,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		TrActn tr = new TrActn( acct2, acct1 );
 		
 		// Add transaction to the list of transactions
-		toAddTransactions.add( tr );
+		toAddTractns.add( tr );
 	}
 	
 	/**
@@ -1013,29 +1013,29 @@ public class TractnsModelView extends NodeView implements Utilities
      */
     private void btnOkEventHandler( Event e )
     {
-    	for ( TrActn tr : toDelTransactions )
-    		transactions.remove( tr );
+    	for ( TrActn tr : toDelTractns )
+    		tractns.remove( tr );
     	
     	for ( TAcct tAcc : toDelTAccts )
     		accts.remove( tAcc );
     	
-    	Database.removeFromDB( toDelTransactions );
+    	Database.removeFromDB( toDelTractns );
     	Database.removeFromDB( toDelTAccts );
     	
-    	toDelTransactions.clear();
+    	toDelTractns.clear();
     	toDelTAccts.clear();
     	
-    	transactions.addAll( toAddTransactions );
+    	tractns.addAll( toAddTractns );
     	accts.addAll( toAddTAccts );
     	
     	String titleTxt = title.getText();
             
-        if ( transactionsModel == null )
-    		transactionsModel = new TractnsModel( titleTxt, accts, transactions, legalEntity );
+        if ( tractnsModel == null )
+    		tractnsModel = new TractnsModel( titleTxt, accts, tractns, legalEntity );
         else
-        	transactionsModel.setName( titleTxt );
+        	tractnsModel.setName( titleTxt );
     	
-    	output.set( "transactionsModel", transactionsModel );
+    	output.set( "transactionsModel", tractnsModel );
     	output.set( "title" , titleTxt );
     	output.set( "legalEntity", legalEntity );
     
@@ -1048,9 +1048,9 @@ public class TractnsModelView extends NodeView implements Utilities
      */
     private void btnCancelEventHandler( Event e )
     {
-    	checkSavedTransactions();
+    	checkSavedTractns();
     	
-    	checkNewTransactions();
+    	checkNewTractns();
     	
     	output = null;
         
@@ -1060,14 +1060,14 @@ public class TractnsModelView extends NodeView implements Utilities
     /**
      * Checks saved transactions if button Cancel is pressed
      */
-    private void checkSavedTransactions()
+    private void checkSavedTractns()
     {
     	TAcct dx, cx;
     	int row;
     	List<Integer> corrAcc;
     	
     	// Loop through all saved transactions
-    	for ( TrActn tr : transactions )
+    	for ( TrActn tr : tractns )
     	{
     		dx = tr.getDx();
     		cx = tr.getCx();
@@ -1088,14 +1088,14 @@ public class TractnsModelView extends NodeView implements Utilities
     /**
      * Checks new transactions if button Cancel is pressed
      */
-    private void checkNewTransactions()
+    private void checkNewTractns()
     {
     	TAcct dx, cx;
     	int row;
     	List<Integer> corrAcc;
     	
     	// Loop through created new transactions to add
-    	for ( TrActn tr : toAddTransactions )
+    	for ( TrActn tr : toAddTractns )
     	{
     		dx = tr.getDx();
     		cx = tr.getCx();

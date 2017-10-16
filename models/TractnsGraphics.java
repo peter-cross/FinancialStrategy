@@ -222,7 +222,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row Row number
 	 * @param col Column number
 	 */
-	public void drawHorizontalTransactionLine( int row, int col )
+	public void drawHorizontalTractnLine( int row, int col )
 	{
 		// Draw horizontal line for transaction
 		gc.moveTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
@@ -325,7 +325,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
-	public void drawTransactionLeftTAcct( int row, int col )
+	public void drawTractnLeftTAcct( int row, int col )
 	{
 		clearCellContent( row, col );
 		
@@ -350,7 +350,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row2 Row where to finish
 	 * @param col Column
 	 */
-	public void drawTransactionLeftPart( int row1, int row2, int col )
+	public void drawTractnLeftPart( int row1, int row2, int col )
 	{
 		if ( row1 > row2 )
 			return;
@@ -379,7 +379,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
-	public void drawTransactionRightTAcct( int row, int col )
+	public void drawTractnRightTAcct( int row, int col )
 	{
 		clearCellContent( row, col );
 		
@@ -403,7 +403,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
-	public void drawTransactionTAcct( int row, int col )
+	public void drawTractnTAcct( int row, int col )
 	{
 		clearCellContent( row, col );
 		
@@ -432,7 +432,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row2 Row where to finish
 	 * @param col Column
 	 */
-	public void drawTransactionRightPart( int row1, int row2, int col )
+	public void drawTractnRightPart( int row1, int row2, int col )
 	{
 		if ( row1 > row2 )
 			return;
@@ -462,7 +462,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row2 Row where to finish
 	 * @param col Column
 	 */
-	public void drawTransactionTwoWayPart( int row1, int row2, int col )
+	public void drawTractnTwoWayPart( int row1, int row2, int col )
 	{
 		if ( row1 > row2 )
 			return;
@@ -498,7 +498,7 @@ public class TractnsGraphics extends Canvas
 	 * @param col1 Column where to start
 	 * @param col2 Column where to finish
 	 */
-	public void drawTransactionMiddlePart( int row, int col1, int col2 )
+	public void drawTractnMiddlePart( int row, int col1, int col2 )
 	{
 		setTAcctDrawingSettings();
 		        
@@ -515,7 +515,7 @@ public class TractnsGraphics extends Canvas
 	 * @param row Cell row
 	 * @param col Cell column
 	 */
-	private void drawTransactionDescription( String description, int row, int col )
+	private void drawTractnDescription( String description, int row, int col )
 	{
 		drawText( description, row, col, 0.6 );
 	}
@@ -524,7 +524,7 @@ public class TractnsGraphics extends Canvas
 	 * Draws transit transaction for specified row and T-acct
 	 * @param row Row of transit transaction
 	 */
-	public void drawTransitTransaction( int row, int col, Vector<TrActn> transactions )
+	public void drawTransitTractn( int row, int col, Vector<TrActn> transactions )
 	{
 		setTAcctDrawingSettings();
 		
@@ -539,7 +539,7 @@ public class TractnsGraphics extends Canvas
 			if ( trRow == row && (col > trCx.getColumn() && col < trDx.getColumn()) )
 			{
 				// In specified row and column draw transaction horizontal line
-				drawHorizontalTransactionLine( row, col );
+				drawHorizontalTractnLine( row, col );
 				break;
 			}
 		}

@@ -38,11 +38,11 @@ public class TAcct
 	
 	@ElementCollection( fetch=FetchType.EAGER )
 	@Column( name="VALUE" )
-	private List<Integer> corrDx; 	// List of rows for transactions with corresponding Dx accts
+	private List<Integer> corrDx; 	// List of rows for tractns with corresponding Dx accts
 	
 	@ElementCollection( fetch=FetchType.EAGER )
 	@Column( name="VALUE" )
-	private List<Integer> corrCx; 	// List of rows for transactions with corresponding Cx accts
+	private List<Integer> corrCx; 	// List of rows for tractns with corresponding Cx accts
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private COA coa;	  			// ChOfAccs to which T-acct belongs
@@ -50,7 +50,7 @@ public class TAcct
 	@ManyToOne( fetch=FetchType.EAGER )
 	private GL gl;				  	// G/L Acct of T-acct
 	
-	private static TractnsGraphics[] tg;	  // Transactions graphics canvas
+	private static TractnsGraphics[] tg;	  // Tractns graphics canvas
 	private static String[]				  charts; // ChOfAccs for Legal Entity
 	
 	/**
@@ -95,7 +95,7 @@ public class TAcct
 	
 	/**
 	 * Sets graphics context for class objects
-	 * @param trGraph Transactions Graphics object
+	 * @param trGraph Tractns Graphics object
 	 */
 	public static void setGraphics( TractnsGraphics[] trGraph )
 	{
@@ -178,7 +178,7 @@ public class TAcct
 	}
 	
 	/**
-	 * Gets max row number at which there is some transaction
+	 * Gets max row number at which there is some tractn
 	 * @return Max row number
 	 */
 	public int getMaxRow()
@@ -256,51 +256,51 @@ public class TAcct
 			int idx1 = corrDx.indexOf(r),
 				idx2 = corrCx.indexOf(r);
 			
-			// If there is corresponding debix acct
+			// If there is corresponding dx acct
 			if ( idx1 >=0 && idx2 < 0 )
-				drawLeftPartOfTransaction(r);
+				drawLeftPartOfTractn(r);
 			
-			// If there is corresponding credix acct
+			// If there is corresponding cx acct
 			else if ( idx2 >=0 && idx1 < 0 )
-				drawRightPartOfTransaction(r);
+				drawRightPartOfTractn(r);
 			
-			// If there is corresponding debix and credix accts
+			// If there is corresponding dx and cx accts
 			else if ( idx1 >=0 && idx2 >= 0 )
-				drawBothPartsOfTransaction(r);
+				drawBothPartsOfTractn(r);
 			
 			// There is no transaction at this row
 			else if ( idx1 < 0 && idx2 < 0 )
-				drawTAcctWithoutTransaction(r);
+				drawTAcctWithoutTractn(r);
 		}
 	}
 	
 	/**
-	 * Draws left part of T-acct transaction
+	 * Draws left part of T-acct tractn
 	 * @param acctRow Row to draw 
 	 */
-	private void drawLeftPartOfTransaction( int acctRow )
+	private void drawLeftPartOfTractn( int acctRow )
 	{
 		int idx = chartIndex();
 		
 		// If it's the most upper row of T-acct
 		if ( row == acctRow )
 		{
-			// Draw T-acct with transaction left part
-			tg[idx].drawTransactionLeftTAcct( row, col );
+			// Draw T-acct with tractn left part
+			tg[idx].drawTractnLeftTAcct( row, col );
 		
 			// Draw T-acct name
 			drawAcctName();
 		}
 		else
-			// Draw straight vertical line with left part of transaction
-			tg[idx].drawTransactionLeftPart( acctRow, acctRow, col );
+			// Draw straight vertical line with left part of tractn
+			tg[idx].drawTractnLeftPart( acctRow, acctRow, col );
 	}
 	
 	/**
-	 * Draws right part of T-acct transaction
+	 * Draws right part of T-acct tractn
 	 * @param acctRow Row to draw 
 	 */
-	private void drawRightPartOfTransaction( int acctRow )
+	private void drawRightPartOfTractn( int acctRow )
 	{
 		int idx = chartIndex();
 		
@@ -308,21 +308,21 @@ public class TAcct
 		if ( row == acctRow )
 		{
 			// Draw T-acct with transaction right part
-			tg[idx].drawTransactionRightTAcct( row, col );
+			tg[idx].drawTractnRightTAcct( row, col );
 			
 			// Draw T-acct name
 			drawAcctName();
 		}
 		else
 			// Draw straight vertical line with right part of transaction
-			tg[idx].drawTransactionRightPart( acctRow, acctRow, col );
+			tg[idx].drawTractnRightPart( acctRow, acctRow, col );
 	}
 	
 	/**
 	 * Draws left and right parts of T-acct transaction
 	 * @param acctRow Row to draw 
 	 */
-	private void drawBothPartsOfTransaction( int acctRow )
+	private void drawBothPartsOfTractn( int acctRow )
 	{
 		int idx = chartIndex();
 		
@@ -330,21 +330,21 @@ public class TAcct
 		if ( row == acctRow )
 		{
 			// Draw T-acct with transaction right and left parts
-			tg[idx].drawTransactionTAcct( row, col );
+			tg[idx].drawTractnTAcct( row, col );
 			
 			// Draw T-acct name
 			drawAcctName();
 		}
 		else
 			// Draw straight vertical line with right and left part of transaction
-			tg[idx].drawTransactionTwoWayPart( acctRow, acctRow, col );
+			tg[idx].drawTractnTwoWayPart( acctRow, acctRow, col );
 	}
 	
 	/**
 	 * Draws part of T-acct without transaction
 	 * @param acctRow Row to draw 
 	 */
-	private void drawTAcctWithoutTransaction( int acctRow )
+	private void drawTAcctWithoutTractn( int acctRow )
 	{
 		int idx = chartIndex();
 		
@@ -364,20 +364,20 @@ public class TAcct
 			tg[idx].drawAcctVerticalLine( acctRow, col );
 			
 			// Create copy of TrActn Model transactions
-			Vector<TrActn> transactions = new Vector( TractnsModelView.getTransactions() );
+			Vector<TrActn> transactions = new Vector( TractnsModelView.getTractns() );
 			
 			// Get list of transactions that have to be deleted from DB
-			List<TrActn> toDel = TractnsModelView.getToDelTransactions();
+			List<TrActn> toDel = TractnsModelView.getToDelTractns();
 			// Remove these transactions from copy of existing TrActn Model transactions
 			transactions.removeAll( toDel );
 			
 			// Get list of transactions that have to be added to DB
-			List<TrActn> toAdd = TractnsModelView.getToAddTransactions();
+			List<TrActn> toAdd = TractnsModelView.getToAddTractns();
 			// Add these transactions to the copy of existing TrActn Model transactions
 			transactions.addAll( toAdd );
 			
 			// Draw transaction that goes though specified row and column
-			tg[idx].drawTransitTransaction( acctRow, col, transactions );
+			tg[idx].drawTransitTractn( acctRow, col, transactions );
 		}
 	}
 	
@@ -429,12 +429,12 @@ public class TAcct
 		int idx = chartIndex();
 		
 		// Get all transactions in TractnsModelView form for specified ChOfAccs
-		Vector<TrActn> transactions = TractnsModelView.getTransactions( idx );
+		Vector<TrActn> transactions = TractnsModelView.getTractns( idx );
 		
 		// Loop for each row starting with T-acct's row till specified row
 		for ( int r = row; r <= accRow; r++ )
 			// Draw transit transaction for current row and specified column
-			tg[idx].drawTransitTransaction( r, col, transactions );
+			tg[idx].drawTransitTractn( r, col, transactions );
 	}
 	
 	/**
@@ -455,12 +455,12 @@ public class TAcct
 		int idx = chartIndex();
 		
 		// Get all transactions in TractnsModelView form for specified ChOfAccs
-		Vector<TrActn> transactions = TractnsModelView.getTransactions( idx );
+		Vector<TrActn> transactions = TractnsModelView.getTractns( idx );
 				
 		// Loop for each row starting with T-acct's row till specified row
 		for ( int r = row; r <= accRow; r++ )
 			// Draw transit transaction for current row and specified column
-			tg[idx].drawTransitTransaction( r, col, transactions );
+			tg[idx].drawTransitTractn( r, col, transactions );
 	}
 	
 	/**
@@ -474,7 +474,7 @@ public class TAcct
 		int idx = chartIndex();
 		
 		// Get all transactions in TractnsModelView form for specified ChOfAccs
-		Vector<TrActn> transactions = TractnsModelView.getTransactions( idx );
+		Vector<TrActn> transactions = TractnsModelView.getTractns( idx );
 		
 		// Loop through list of all transactions
 		for ( TrActn t : transactions )
@@ -486,7 +486,7 @@ public class TAcct
 		// Loop for each transaction of T-acct
 		for ( TrActn t : transList )
 			// Delete current transaction of T-acct
-			t.deleteTransaction();
+			t.deleteTractn();
 		
 		// Clear T-Acct cells and cells around it's 1st cell
 		clearTAcctCellsAndArountdIt( idx );
@@ -494,7 +494,7 @@ public class TAcct
 		// Loop for each row starting with T-acct's row till the bottom of the grid
 		for ( int r = row; r < TractnsModelView.ROWS; r++ )
 			// Redraw transit transaction line if there is one
-			tg[idx].drawTransitTransaction( r, col, transactions );
+			tg[idx].drawTransitTractn( r, col, transactions );
 		
 		// Add this T-acct to the list of T-accts that have to be deleted from DB
 		TractnsModelView.addToDelTAccts( this );

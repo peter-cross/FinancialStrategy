@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import foundation.Cipher;
 
 /**
- * Class TractnsDscr - database entity for Transactions description
+ * Class TractnsDscr - database entity for Tractns description
  * @author Peter Cross
  *
  */
@@ -17,10 +17,10 @@ public class TractnsDscr
 {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO )
-	private int tractnsDscrId;	// Transaction description ID for DB
+	private int tractnsDscrId;	// Tractn description ID for DB
 	
-	private String code;		// Transaction description code
-	private String description;	// Transaction description
+	private String code;		// Tractn description code
+	private String description;	// Tractn description
 	
 	/**
 	 * Mandatory constructor
@@ -32,8 +32,8 @@ public class TractnsDscr
 	
 	/**
 	 * Primary class constructor
-	 * @param code Code of Transaction Description
-	 * @param description The description of transaction
+	 * @param code Code of Tractn Description
+	 * @param description The description of tractn
 	 */
 	public TractnsDscr( String code, String description )
 	{
@@ -42,8 +42,8 @@ public class TractnsDscr
 	
 	/**
 	 * Updates class object attributes
-	 * @param code Code of Transaction Description
-	 * @param description The description of transaction
+	 * @param code Code of Tractn Description
+	 * @param description The description of tractn
 	 */
 	public void update( String code, String description )
 	{
@@ -52,7 +52,7 @@ public class TractnsDscr
 	}
 	
 	/**
-	 * Returns code of Transaction description
+	 * Returns code of Tractn description
 	 */
 	public String getCode()
 	{
@@ -60,7 +60,7 @@ public class TractnsDscr
 	}
 	
 	/**
-	 * Returns description of transaction description object
+	 * Returns description of tractn description object
 	 */
 	public String getDescription()
 	{
@@ -68,7 +68,7 @@ public class TractnsDscr
 	}
 	
 	/**
-	 * Returns string representation of transaction description object
+	 * Returns string representation of tractn description object
 	 */
 	public String toString()
 	{

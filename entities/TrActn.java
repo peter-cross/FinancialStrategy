@@ -65,7 +65,7 @@ public class TrActn
 		this.cx = cx;
 		this.description = Cipher.crypt(description);
 		
-		row = getTransactionRow( cx, dx );
+		row = getTractnRow( cx, dx );
 		
 		cx.addCorrDxAcct( row );
 		dx.addCorrCxAcct( row );
@@ -82,7 +82,7 @@ public class TrActn
 	{
 		this( dx, cx, "", dx.getChOfAccs() );
 		
-		createTransaction();
+		createTractn();
 	}
 	
 	/**
@@ -170,7 +170,7 @@ public class TrActn
 	 * @param acct2 Second T-acct
 	 * @return Row number
 	 */
-	private int getTransactionRow( TAcct acct1, TAcct acct2 )
+	private int getTractnRow( TAcct acct1, TAcct acct2 )
 	{
 		// Get max row in which accts are placed on grid
 		int row = Math.max( acct1.getRow(), acct2.getRow() );
@@ -191,33 +191,33 @@ public class TrActn
 	/**
 	 * Draws transaction without description on Canvas
 	 */
-	public void drawTransaction()
+	public void drawTractn()
 	{
 		// Draw Cx and Dx T-accts
 		cx.drawTAcct();
 		dx.drawTAcct();
 		
 		// Draw middle part of transaction
-		drawTransactionMiddlePart();
+		drawTractnMiddlePart();
 		
 		// Draw transaction description
-		drawTransactionDescription();
+		drawTractnDescription();
 	}
 	
 	/**
 	 * Draws transaction middle part on Canvas
 	 */
-	private void drawTransactionMiddlePart()
+	private void drawTractnMiddlePart()
 	{
 		int idx = chartIndex();
 		
-		tg[idx].drawTransactionMiddlePart( row, cx.getColumn()+1, dx.getColumn()-1 );
+		tg[idx].drawTractnMiddlePart( row, cx.getColumn()+1, dx.getColumn()-1 );
 	}
 	
 	/**
 	 * Draws transaction description on Canvas
 	 */
-	private void drawTransactionDescription()
+	private void drawTractnDescription()
 	{
 		int idx = chartIndex();
 		
@@ -227,13 +227,13 @@ public class TrActn
 	/**
 	 * Draws complete transaction
 	 */
-	private void createTransaction()
+	private void createTractn()
 	{
 		cx.drawTAcct();
 		dx.drawTAcct();
 		
 		// Draw middle part of transaction
-		drawTransactionMiddlePart();
+		drawTractnMiddlePart();
 		
 		int idx = chartIndex();
 		
@@ -246,13 +246,13 @@ public class TrActn
 		setDescription( descr );
 		
 		// Draw transaction description on canvas
-		drawTransactionDescription();
+		drawTractnDescription();
 	}
 	
 	/**
 	 * Deletes transaction and redraws the grid content affected
 	 */
-	public void deleteTransaction()
+	public void deleteTractn()
 	{
 		int idx = chartIndex();
 		
@@ -269,7 +269,7 @@ public class TrActn
 		dx.redrawDxAcct(row);
 		
 		// Add current transaction to the list of transactions that have to be deleted from DB
-		TractnsModelView.addToDelTransactions( this );
+		TractnsModelView.addToDelTractns( this );
 		
 		// Redraw transit T-accts
 		for ( TAcct acc : accList )
@@ -285,7 +285,7 @@ public class TrActn
 		ArrayList<TAcct> accList = new ArrayList<>();
 		
 		// Loop for each transaction of Transactions Model
-		for ( TrActn tr : TractnsModelView.getTransactions() )
+		for ( TrActn tr : TractnsModelView.getTractns() )
 		{
 			TAcct trDx = tr.getDx();
 			TAcct trCx = tr.getCx();
