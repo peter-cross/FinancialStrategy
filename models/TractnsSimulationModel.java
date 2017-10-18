@@ -36,6 +36,8 @@ public class TractnsSimulationModel extends RegistryItemModel
 	
 	private static final String transModelStr = "Transactions Model";
 	
+	private static String tractnsModelField = "tractnsModel";
+		
 	/**
 	 * Class default constructor
 	 */
@@ -72,7 +74,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 		super( transModelStr, entityName );
 		
 		fields.set( "title", tm.getName() );
-		fields.set( "transactionsModel", tm );
+		fields.set( tractnsModelField, tm );
 		
 		setTab( entityName );
 	}
@@ -312,10 +314,10 @@ public class TractnsSimulationModel extends RegistryItemModel
 	protected void saveToDB()
 	{
 		// Get Transactions Model object
-		TractnsModel transactionsModel = fields.get( "transactionsModel" );
+		TractnsModel tractnsModel = fields.get( tractnsModelField );
 		
 		// If Legal Entity of TractnsModel is not specified
-		if ( transactionsModel.getLglEntity() == null )
+		if ( tractnsModel.getLglEntity() == null )
 		{
 			// Try to get Legal Entity instance from fields 
 			LglEntity legalEntity = fields.get( "legalEntity" );
@@ -323,21 +325,21 @@ public class TractnsSimulationModel extends RegistryItemModel
 			// If Legal Entity is specified 
 			if ( legalEntity != null )
 				// Set Legal Entity for TractnsModel object
-				transactionsModel.setLegalEntity( legalEntity );
+				tractnsModel.setLegalEntity( legalEntity );
 		}
 		
 		// Get T-Accts of Transactions Model
-		Vector<TAcct>  accts = transactionsModel.getTAccs();
+		Vector<TAcct>  accts = tractnsModel.getTAccs();
 		
 		// Get transactions of Transactions Model
-		Vector<TrActn> trs = transactionsModel.getTransactions();
+		Vector<TrActn> trs = tractnsModel.getTransactions();
 		
 		// If output is empty - remove object from the list
 		if ( (trs == null || trs.size() == 0) && (accts == null || accts.size() == 0) )
 			list[tabNum].remove(this);
 		
 		// Persist changes to Database
-		persistToDB( accts, trs, transactionsModel );
+		persistToDB( accts, trs, tractnsModel );
 	}
 	
 	/**
@@ -388,7 +390,7 @@ public class TractnsSimulationModel extends RegistryItemModel
     @Override
     public void removeFromDB()
     {
-    	TractnsModel tm  = fields.get( "transactionsModel" );
+    	TractnsModel tm  = fields.get( tractnsModelField );
     	
     	// If EntityManager object is created and TractnsSimulationModel argument is specified
         if ( tm != null  )

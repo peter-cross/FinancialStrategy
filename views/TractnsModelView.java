@@ -40,7 +40,7 @@ import interfaces.Utilities;
 import static interfaces.Utilities.enterTAcctInfo;
 
 /**
- * Class TractnsSimulationModel - Modeling accting transactions
+ * Class TractnsSimulationModel - Modeling accting tractns
  * @author Peter Cross
  *
  */
@@ -55,15 +55,15 @@ public class TractnsModelView extends NodeView implements Utilities
 	private static double 	 CELL_WIDTH,  			// Cell width
 							 CELL_HEIGHT; 			// Cell height
 	
-	private static TractnsModel				tractnsModel;		// To store transactions Model entity object
-	private static Vector<TrActn>			tractns;			// To store all transactions
+	private static TractnsModel				tractnsModel;		// To store tractns Model entity object
+	private static Vector<TrActn>			tractns;			// To store all tractns
 	private static Vector<TAcct>			accts;				// To store T-accts
-	private LglEntity						legalEntity;		// Legal entity of Transactions Model
+	private LglEntity						legalEntity;		// Legal entity of Tractns Model
 	
 	private static ArrayList<TAcct>			toAddTAccts;		// T-Accts to add
 	private static ArrayList<TAcct>			toDelTAccts;		// T-Accts to delete
-	private static ArrayList<TrActn>		toAddTractns;		// Transactions to add
-	private static ArrayList<TrActn>		toDelTractns;		// Transactions to delete
+	private static ArrayList<TrActn>		toAddTractns;		// Tractns to add
+	private static ArrayList<TrActn>		toDelTractns;		// Tractns to delete
 	
 	private ArrayList<TAcct>				selectedTAccts;		// To store selected T-accts
 	private AssociativeList					output;				// Results of input to pass
@@ -80,7 +80,9 @@ public class TractnsModelView extends NodeView implements Utilities
 	private AssociativeList fields;
 	
 	private ArrayList<ArrayList<TAcct>>[] grid; 	// To store cell accts as a grid
-	private TractnsGraphics[]			 tg;	// Graphics object for displaying transactions
+	private TractnsGraphics[]			  tg;		// Graphics object for displaying tractns
+	
+	private static String tractnsModelField = "tractnsModel";
 	
 	/**
 	 * Class default constructor
@@ -131,7 +133,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	private void setTractnsModel()
 	{
 		// Get Transactions Model
-		tractnsModel = fields.get( "transactionsModel" );
+		tractnsModel = fields.get( tractnsModelField );
 		
 		if ( tractnsModel == null )
 			return;
@@ -144,7 +146,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			title.setText( titleTxt );
 		
 		// Set Transactions Model as field for output
-		output.set( "transactionsModel", tractnsModel );
+		output.set( tractnsModelField, tractnsModel );
 	}
 	
 	/**
@@ -653,7 +655,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Adds transaction to the list of transactions to add
+	 * Adds tractn to the list of tractns to add
 	 * @param t TrActn to add
 	 */
 	public static void addToAddTractns( TrActn t )
@@ -662,7 +664,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Adds transaction to the list of transactions to delete
+	 * Adds tractn to the list of tractns to delete
 	 * @param t TrActn to add
 	 */
 	public static void addToDelTractns( TrActn t )
@@ -671,8 +673,8 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Gets list of Transactions to add
-	 * @return List of transactions
+	 * Gets list of Tractns to add
+	 * @return List of tractns
 	 */
 	public static ArrayList<TrActn> getToAddTractns()
 	{
@@ -680,8 +682,8 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Gets list of Transactions to delete
-	 * @return List of transactions
+	 * Gets list of Tractns to delete
+	 * @return List of tractns
 	 */
 	public static ArrayList<TrActn> getToDelTractns()
 	{
@@ -1035,7 +1037,7 @@ public class TractnsModelView extends NodeView implements Utilities
         else
         	tractnsModel.setName( titleTxt );
     	
-    	output.set( "transactionsModel", tractnsModel );
+    	output.set( tractnsModelField, tractnsModel );
     	output.set( "title" , titleTxt );
     	output.set( "legalEntity", legalEntity );
     

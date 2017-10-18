@@ -98,11 +98,13 @@ public interface Utilities extends Encapsulation
 		// Set lambda expression that will be executed on change of field value
 		glAcct.onChange = onGLAcctChange( chartIndex );
 		
+		String acctNameStr = "Account Name";
+		
 		// Create dialog element for dialog field
-		DialogElement acctName = new DialogElement( "Account Name" );
+		DialogElement acctName = new DialogElement( acctNameStr );
 		
 		// Invoke OneColumnDialog window and return entered information
-		String[][] result = new OneColumnView( owner, "Enter Account Name", new DialogElement[]{ glAcct, acctName } ).result();
+		String[][] result = new OneColumnView( owner, "Enter " + acctNameStr, new DialogElement[]{ glAcct, acctName } ).result();
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0] : new String[] {null, null};
@@ -121,9 +123,11 @@ public interface Utilities extends Encapsulation
 		tractnCode.list = TractnsDscrModel.getItemsList();
 		tractnCode.onChange = onTractnChange();
 		
-		DialogElement tractnDscr = new DialogElement( "Description" );
+		String tractnDescr = "Description";
 		
-		String[][] result = new OneColumnView( owner, "Enter Transaction Description", new DialogElement[]{ tractnCode, tractnDscr } ).result();
+		DialogElement tractnDscr = new DialogElement( tractnDescr );
+		
+		String[][] result = new OneColumnView( owner, "Enter " + tractnStr + " " + tractnDescr, new DialogElement[]{ tractnCode, tractnDscr } ).result();
 		
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0] : new String[] {null, null};
