@@ -55,7 +55,7 @@ public class LglEntity
 	 * @param contact Contact person
 	 * @param address Address of Lgl Entity
 	 */
-	public LglEntity( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs ) 
+	public LglEntity( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChOfAccs> chOfAccs ) 
 	{
 		update( iD, name, lglName, phone, contact, address, chartNames, chOfAccs );
 	}
@@ -69,7 +69,7 @@ public class LglEntity
 	 * @param contact Contact person
 	 * @param address Address of Lgl Entity
 	 */
-	public void update( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<COA> chOfAccs )
+	public void update( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChOfAccs> chOfAccs )
 	{
 		// Save provided info and crypt sensitive info
 		this.iD = iD;

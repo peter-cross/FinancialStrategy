@@ -25,14 +25,14 @@ import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.getListIndex;
 
 /**
- * Class TractnsSimulationModel - Stores data for displaying Transactions Model
+ * Class TractnsSimulationModel - Stores data for displaying Tractns Model
  * @author Peter Cross
  */
 public class TractnsSimulationModel extends RegistryItemModel 
 {
-	private static	LinkedHashSet[] list;       			// List of TrActn Simulation Models for each Legal Entity
+	private static	LinkedHashSet[] list;       			// List of TrActn Simulation Models for each Lgl Entity
     
-	private static	ArrayList<LglEntityModel> entities;	// List of Legal Entities
+	private static	ArrayList<LglEntityModel> entities;	// List of Lgl Entities
 	
 	private static final String transModelStr = "Transactions Model";
 	
@@ -48,7 +48,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 	
 	/**
 	 * Class constructor
-	 * @param entityName Legal entity name for Transactions Model
+	 * @param entityName Lgl entity name for Tractns Model
 	 */
 	public TractnsSimulationModel( String entityName )
 	{
@@ -66,7 +66,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 	}
 	
 	/**
-	 * Class constructor with specified Transactions Model
+	 * Class constructor with specified Tractns Model
 	 * @param tm TractnsSimulationModel object
 	 */
 	public TractnsSimulationModel( TractnsModel tm, String entityName )
@@ -81,30 +81,30 @@ public class TractnsSimulationModel extends RegistryItemModel
 	
 	/**
 	 * Sets tab name and according parameters for selected Registry View tab
-	 * @param entityName Legal Entity name on selected tab
+	 * @param entityName Lgl Entity name on selected tab
 	 */
 	@Override
 	protected void setTab( String entityName )
 	{
 		tabName = entityName;
 		
-		// Get Legal Entity Model by entity name
+		// Get Lgl Entity Model by entity name
 		LglEntityModel lglEntityModel = LglEntityModel.getByName( entityName );
 		
-		// Find index of legal Entity Model and assign it as Tab number
+		// Find index of Lgl Entity Model and assign it as Tab number
 		tabNum = Math.max( 0, getListIndex( LglEntityModel.getItemsList(), lglEntityModel ) );
 		
-		LglEntity legalEntity = null;
+		LglEntity lglEntity = null;
 		
-		// If Legal Entity Model was found
+		// If Lgl Entity Model was found
 		if ( lglEntityModel != null )
-			// Get Legal Entity from Legal Entity Model
-			legalEntity = lglEntityModel.getLegalEntity();
+			// Get Lgl Entity from Lgl Entity Model
+			lglEntity = lglEntityModel.getLglEntity();
 		
-		// If Legal Entity is specified
-		if ( legalEntity != null )
-			// Set Legal Entity in fields attribute
-			fields.set( "legalEntity", legalEntity );
+		// If Lgl Entity is specified
+		if ( lglEntity != null )
+			// Set Lgl Entity in fields attribute
+			fields.set( "lglEntity", lglEntity );
 	}
 	
 	/**
@@ -135,7 +135,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 	@Override
     public TableOutput getOutput() throws IllegalStateException, SecurityException, SystemException
     {
-		// Create Transactions Model dialog and get results of input
+		// Create Tractns Model dialog and get results of input
 		AssociativeList output = TractnsModelView.getInstance( fields ).result();
 		
 		// If there is input or changes
@@ -147,12 +147,12 @@ public class TractnsSimulationModel extends RegistryItemModel
 			// Save entered data to database
 			saveToDB();
 			
-			// If list for current tab does not contain current Transactions Simulation Model
+			// If list for current tab does not contain current Tractns Simulation Model
 			if ( !list[tabNum].contains( this ) )
 				// Add it to list for current tab
 				list[tabNum].add( this );
 		}
-		// If there are no input or changes, but list for current tab contains current Transactions Model
+		// If there are no input or changes, but list for current tab contains current Tractns Model
 		else if ( !list[tabNum].contains( this ) )
 			// Assign null to fields attribute
 			fields = null;
@@ -190,21 +190,21 @@ public class TractnsSimulationModel extends RegistryItemModel
 
 		try
         {
-            // Get list of Legal Entities
+            // Get list of Lgl Entities
             entities = new ArrayList( ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0] );
 
             int numEntities = Math.max( entities.size(), 1 );
 
-            // Create arrays for Legal Entities list with size equal to number of Legal Entities
+            // Create arrays for Lgl Entities list with size equal to number of Lgl Entities
             list = new LinkedHashSet[ numEntities ];
         }
         catch ( Exception e )
         {
-            // Create arrays for one Legal Entity
+            // Create arrays for one Lgl Entity
             list = new LinkedHashSet[1];
         }
         
-        // Create ArrayList for list of Legal Entities for each Legal Entity
+        // Create ArrayList for list of Lgl Entities for each Lgl Entity
         for ( int i = 0; i < list.length; i++ )
             list[i] = new LinkedHashSet<>();
 
@@ -217,18 +217,18 @@ public class TractnsSimulationModel extends RegistryItemModel
 	 */
 	private static void createNewList()
 	{
-		// Get instance of Legal Entity Model Class
+		// Get instance of Lgl Entity Model Class
 		Class c = createModelClass( "LglEntityModel" );
 
 		// Min number of entities is one
 		int numEntities = 1;
 		
-		// Array List to store new list of Legal Entities
+		// Array List to store new list of Lgl Entities
     	ArrayList<LglEntityModel>  newEntities = null;
     	
     	try
         {
-            // Get new list of Legal Entities from class static method createList
+            // Get new list of Lgl Entities from class static method createList
     		newEntities = new ArrayList( ((LinkedHashSet[]) c.getMethod( "createList" ).invoke( null ))[0] );
 
             // If list is empty - make number of entities one
@@ -236,22 +236,22 @@ public class TractnsSimulationModel extends RegistryItemModel
         }
         catch ( Exception e ) { }
     	
-    	// Linked HashSet for new list of Legal Entities
+    	// Linked HashSet for new list of Lgl Entities
     	LinkedHashSet[] newList = new LinkedHashSet[numEntities];
 		
-		// Loop for each current legal entity
+		// Loop for each current Lgl entity
     	for ( int i = 0; i < numEntities; i++ )
     	{
 			int idx = -1;
 			
-			// If there is non-empty list of new Legal Entities
+			// If there is non-empty list of new Lgl Entities
 			if ( newEntities.size() > 0 )
-				// Try to get in list of existing Legal Entities index of new Legal Entity with index i
+				// Try to get in list of existing Lgl Entities index of new Legal Entity with index i
 				idx = entities.indexOf( newEntities.get(i) );
         		
     		// If entity was found
 			if ( idx >= 0 )
-				// Assign reference to found Legal Entity for new list
+				// Assign reference to found Lgl Entity for new list
     			newList[i] = list[idx];
 			
 			//Otherwise
@@ -274,33 +274,33 @@ public class TractnsSimulationModel extends RegistryItemModel
 
         // If list is not empty
         if ( dbTrModels != null && dbTrModels.size() > 0 )
-            // Loop for each Transactions Model
+            // Loop for each Tractns Model
             for ( TractnsModel tm : dbTrModels )
             {
-                // Create TractnsSimulationModel object based on provided Transactions Model
+                // Create TractnsSimulationModel object based on provided Tractns Model
                 LglEntity lglEntity = tm.getLglEntity();
 
                 int entityNum = 0;
 
-                // If Legal Entity is assigned
+                // If Lgl Entity is assigned
                 if ( lglEntity != null )
                 {
-                    // Get Legal Entity Model by Legal Entity instance
+                    // Get Lgl Entity Model by Lgl Entity instance
                 	LglEntityModel  lglEntityModel = LglEntityModel.getByEntity( lglEntity );
 
-                    // If Legal Entity Model is found
+                    // If Lgl Entity Model is found
                 	if ( lglEntityModel != null )
-                		// Get entity index by Legal Entity Model
+                		// Get entity index by Lgl Entity Model
                     	entityNum = getListIndex( LglEntityModel.getItemsList(), lglEntityModel );
                 }
 
-                // Create new instance of class based on provided TractnsModel and legal Entity name
+                // Create new instance of class based on provided TractnsModel and Lgl Entity name
                 list[entityNum].add( new TractnsSimulationModel( tm, lglEntity.getName() ) );
             }
 	}
 	
     /**
-	 * Gets Transactions Models from database
+	 * Gets Tractns Models from database
 	 * @return List of TractnsSimulationModel objects
 	 */
 	protected static List<TractnsModel> getFromDB()
@@ -313,26 +313,26 @@ public class TractnsSimulationModel extends RegistryItemModel
 	 */
 	protected void saveToDB()
 	{
-		// Get Transactions Model object
+		// Get Tractns Model object
 		TractnsModel tractnsModel = fields.get( tractnsModelField );
 		
-		// If Legal Entity of TractnsModel is not specified
+		// If Lgl Entity of TractnsModel is not specified
 		if ( tractnsModel.getLglEntity() == null )
 		{
-			// Try to get Legal Entity instance from fields 
-			LglEntity legalEntity = fields.get( "legalEntity" );
+			// Try to get Lgl Entity instance from fields 
+			LglEntity lglEntity = fields.get( "lglEntity" );
 			
-			// If Legal Entity is specified 
-			if ( legalEntity != null )
-				// Set Legal Entity for TractnsModel object
-				tractnsModel.setLegalEntity( legalEntity );
+			// If Lgl Entity is specified 
+			if ( lglEntity != null )
+				// Set Lgl Entity for TractnsModel object
+				tractnsModel.setLegalEntity( lglEntity );
 		}
 		
-		// Get T-Accts of Transactions Model
+		// Get T-Accts of Tractns Model
 		Vector<TAcct>  accts = tractnsModel.getTAccs();
 		
-		// Get transactions of Transactions Model
-		Vector<TrActn> trs = tractnsModel.getTransactions();
+		// Get tractns of Tractns Model
+		Vector<TrActn> trs = tractnsModel.getTractns();
 		
 		// If output is empty - remove object from the list
 		if ( (trs == null || trs.size() == 0) && (accts == null || accts.size() == 0) )
@@ -345,8 +345,8 @@ public class TractnsSimulationModel extends RegistryItemModel
 	/**
 	 * Persists changes to Database
 	 * @param accts List of T-Accts
-	 * @param trs	List of Transactions
-	 * @param tm	Transactions Model
+	 * @param trs	List of Tractns
+	 * @param tm	Tractns Model
 	 */
 	private void persistToDB( Vector<TAcct>  accts, Vector<TrActn> trs, TractnsModel tm )
 	{
@@ -359,18 +359,18 @@ public class TractnsSimulationModel extends RegistryItemModel
 			
 			et = em.getTransaction();
 			
-			// Start transaction
+			// Start tractn
 			et.begin();
 			
-			// Persist T-accts of Transactions Model
+			// Persist T-accts of Tractns Model
 			for ( TAcct acct : accts )
 				em.persist( acct );
 			
-			// Persist transactions of Transactions Model
+			// Persist tractns of Tractns Model
 			for ( TrActn tr : trs )
 				em.persist( tr );
 			
-			// Transactions Model
+			// Tractns Model
 			em.persist( tm );
 			
 			// Commit changes
@@ -401,13 +401,13 @@ public class TractnsSimulationModel extends RegistryItemModel
         	// If LglEntity is specified
         	if ( lglEntity != null )
         	{
-        		// Get Legal Entity Model by Legal Entity
+        		// Get Lgl Entity Model by Lgl Entity
         		LglEntityModel lglEntityModel = LglEntityModel.getByEntity( lglEntity );
         		
-        		// Try to find Legal Entity Model in current list of entities
+        		// Try to find Lgl Entity Model in current list of entities
         		int idx = entities.indexOf( lglEntityModel );
         		
-        		// If Legal Entity Model is found
+        		// If Lgl Entity Model is found
             	if ( idx >= 0 )
             		// Remove it from current tab list
             		list[idx].remove( this );

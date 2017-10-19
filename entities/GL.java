@@ -29,7 +29,7 @@ public class GL
 	private int		contraAcct;		// Contra Acct flag
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private COA coa;
+	private ChOfAccs coa;
 	
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.PERSIST )
 	private Vector<GLAnalytics> analytics;
@@ -55,7 +55,7 @@ public class GL
 	 * @param analyticsType List of types for Analytics Controls
 	 * @param chOfAccs ChOfAccs to which G/L acct belongs
 	 */
-	public GL( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, COA chOfAccs )
+	public GL( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, ChOfAccs chOfAccs )
 	{
 		update( glNumber, name, type, acctGrp, quantity, frgnCrcy, contraAcct, analyticsControl, analyticsType, chOfAccs );
 	}
@@ -73,7 +73,7 @@ public class GL
 	 * @param analyticsType List of types for Analytics Controls
 	 * @param chOfAccs ChOfAccs to which G/L acct belongs
 	 */
-	public void update( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, COA chOfAccs )
+	public void update( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, ChOfAccs chOfAccs )
 	{
 		this.coa = chOfAccs;
 		
@@ -170,7 +170,7 @@ public class GL
 	}
 		
 	// Returns ChOfAccs to which G/L acct belongs
-	public COA getChOfAccs()
+	public ChOfAccs getChOfAccs()
 	{
 		return coa;
 	}

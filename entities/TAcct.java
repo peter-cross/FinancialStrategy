@@ -45,7 +45,7 @@ public class TAcct
 	private List<Integer> corrCx; 	// List of rows for tractns with corresponding Cx accts
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private COA coa;	  			// ChOfAccs to which T-acct belongs
+	private ChOfAccs coa;	  			// ChOfAccs to which T-acct belongs
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private GL gl;				  	// G/L Acct of T-acct
@@ -67,7 +67,7 @@ public class TAcct
 	 * @param e Mouse event
 	 * @param chart ChOfAccs to which T-Acct belongs
 	 */
-	public TAcct( String acctName, MouseEvent e, COA chart )
+	public TAcct( String acctName, MouseEvent e, ChOfAccs chart )
 	{
 		name = Cipher.crypt( acctName );
 		col = TractnsModelView.getColumn( e );
@@ -86,7 +86,7 @@ public class TAcct
 	 * @param chart ChOfAccs to which T-Acct belongs
 	 * @param glAcc G/L acct for created T-Acct
 	 */
-	public TAcct( String acctName, MouseEvent e, COA chart, GL glAcc )
+	public TAcct( String acctName, MouseEvent e, ChOfAccs chart, GL glAcc )
 	{
 		this( acctName, e, chart );
 	
@@ -163,7 +163,7 @@ public class TAcct
 	 * Gets ChOfAccs to which T-acct belongs
 	 * @return
 	 */
-	public COA getChOfAccs()
+	public ChOfAccs getChOfAccs()
 	{
 		return coa;
 	}

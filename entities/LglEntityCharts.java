@@ -20,7 +20,7 @@ public class LglEntityCharts
 	private String chartName;	// ChOfAccs's name specific to Lgl entity
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private COA coa; // ChOfAccs 
+	private ChOfAccs coa; // ChOfAccs 
 	
 	/**
 	 * Class mandatory constructor
@@ -36,7 +36,7 @@ public class LglEntityCharts
 	 * @param chartName ChOfAccs' name specific to Legal entity
 	 * @param chOfAccs ChOfAccs
 	 */
-	public LglEntityCharts( int lineNum, String chartName, COA chOfAccs )
+	public LglEntityCharts( int lineNum, String chartName, ChOfAccs chOfAccs )
 	{
 		this.lineNum = lineNum;
 		this.chartName = Cipher.crypt( chartName );

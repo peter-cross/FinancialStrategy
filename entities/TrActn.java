@@ -39,7 +39,7 @@ public class TrActn
 	private TAcct cx;					// Cx acct for transaction
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private COA coa;	  				// ChOfAccs to which transaction belongs
+	private ChOfAccs coa;	  				// ChOfAccs to which transaction belongs
 	
 	private static TractnsGraphics[] tg; 	  // Transactions Graphics canvas
 	private static String[]			 charts;  // ChOfAccs for Legal Entity
@@ -59,7 +59,7 @@ public class TrActn
 	 * @param description TrActn description
 	 * @param chart ChOfAccs to which transaction belongs
 	 */
-	public TrActn( TAcct dx, TAcct cx, String description, COA chart )
+	public TrActn( TAcct dx, TAcct cx, String description, ChOfAccs chart )
 	{
 		this.dx = dx;
 		this.cx = cx;
@@ -142,7 +142,7 @@ public class TrActn
 	/**
 	 * Returns ChOfAccs to which transaction belongs
 	 */
-	public COA getChOfAccs()
+	public ChOfAccs getChOfAccs()
 	{
 		return coa;
 	}

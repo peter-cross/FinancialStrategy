@@ -14,7 +14,7 @@ import static interfaces.Constants.HEIGHT;
 import static interfaces.Constants.WIDTH;
 
 /**
- * Class TractnsGraphics - graphic tools for drawing T-accts and transactions
+ * Class TractnsGraphics - graphic tools for drawing T-accts and tractns
  * @author Peter Cross
  *
  */
@@ -218,13 +218,13 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws Horizontal transaction line
+	 * Draws Horizontal tractn line
 	 * @param row Row number
 	 * @param col Column number
 	 */
 	public void drawHorizontalTractnLine( int row, int col )
 	{
-		// Draw horizontal line for transaction
+		// Draw horizontal line for tractn
 		gc.moveTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + 2*STROKE + (col+1)*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 	}
@@ -321,7 +321,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-acct with transaction left part
+	 * Draws T-acct with tractn left part
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
@@ -337,7 +337,7 @@ public class TractnsGraphics extends Canvas
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
-		// Draw horizontal line for transaction
+		// Draw horizontal line for tractn
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.6, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + 2*STROKE + (col+1)*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -345,7 +345,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction left part without T-acct
+	 * Draws tractn left part w/o T-acct
 	 * @param row1 Row where to start
 	 * @param row2 Row where to finish
 	 * @param col Column
@@ -367,7 +367,7 @@ public class TractnsGraphics extends Canvas
     		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (r+1)*CELL_HEIGHT ) ;
     	}
         
-		// Draw horizontal line for transaction
+		// Draw horizontal line for tractn
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.6, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + 2*STROKE + (col+1)*CELL_WIDTH, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -375,7 +375,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-acct with transaction right part
+	 * Draws T-acct with tractn right part
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
@@ -391,7 +391,7 @@ public class TractnsGraphics extends Canvas
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
-		// Draw horizontal line for transaction
+		// Draw horizontal line for tractn
 		gc.moveTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.4, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -399,7 +399,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws T-acct with right and left parts of transaction
+	 * Draws T-acct with right and left parts of tractn
 	 * @param row Row where to draw
 	 * @param col Column where to draw
 	 */
@@ -415,11 +415,11 @@ public class TractnsGraphics extends Canvas
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
-		// Draw horizontal line for Left transaction
+		// Draw horizontal line for Left tractn
 		gc.moveTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH + CELL_WIDTH*0.4, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
-		// Draw horizontal line for Right transaction
+		// Draw horizontal line for Right tractn
 		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.6, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + 2*STROKE + (col+1)*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -427,7 +427,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction right part without T-acct
+	 * Draws tractn right part w/o T-acct
 	 * @param row1 Row where to start
 	 * @param row2 Row where to finish
 	 * @param col Column
@@ -449,7 +449,7 @@ public class TractnsGraphics extends Canvas
     		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (r+1)*CELL_HEIGHT ) ;
     	}
         
-		// Draw horizontal line for transaction
+		// Draw horizontal line for tractn
 		gc.moveTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.4, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -457,7 +457,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction right and left parts without T-acct
+	 * Draws tractn right and left parts w/o T-acct
 	 * @param row1 Row where to start
 	 * @param row2 Row where to finish
 	 * @param col Column
@@ -481,11 +481,11 @@ public class TractnsGraphics extends Canvas
     		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (r+1)*CELL_HEIGHT ) ;
     	}
         
-        // Draw horizontal line for Left transaction
+        // Draw horizontal line for Left tractn
         gc.moveTo( SHIFT_X + col*CELL_WIDTH, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.4, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
-		// Draw horizontal line for Right transaction
+		// Draw horizontal line for Right tractn
 		gc.moveTo( SHIFT_X - 2*STROKE + col*CELL_WIDTH + CELL_WIDTH*0.6, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + (col+1)*CELL_WIDTH, SHIFT_Y + row2*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -493,7 +493,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws middle part of transaction
+	 * Draws middle part of tractn
 	 * @param row Row where to draw
 	 * @param col1 Column where to start
 	 * @param col2 Column where to finish
@@ -502,7 +502,7 @@ public class TractnsGraphics extends Canvas
 	{
 		setTAcctDrawingSettings();
 		        
-        // Draw horizontal line for transaction
+        // Draw horizontal line for tractn
 		gc.moveTo( SHIFT_X + col1*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		gc.lineTo( SHIFT_X + (col2+1)*CELL_WIDTH, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.8 ) ;
 		
@@ -510,7 +510,7 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transaction description on canvas
+	 * Draws tractn description on canvas
 	 * @param Description TrActn description
 	 * @param row Cell row
 	 * @param col Cell column
@@ -521,24 +521,24 @@ public class TractnsGraphics extends Canvas
 	}
 	
 	/**
-	 * Draws transit transaction for specified row and T-acct
-	 * @param row Row of transit transaction
+	 * Draws transit tractn for specified row and T-acct
+	 * @param row Row of transit tractn
 	 */
-	public void drawTransitTractn( int row, int col, Vector<TrActn> transactions )
+	public void drawTransitTractn( int row, int col, Vector<TrActn> tractns )
 	{
 		setTAcctDrawingSettings();
 		
-		// Loop for each transaction from the list 
-		for ( TrActn t : transactions  )
+		// Loop for each tractn from the list 
+		for ( TrActn t : tractns  )
 		{
 			int trRow = t.getRow();
 			TAcct trCx = t.getCx();
 			TAcct trDx = t.getDx();
 					
-			// if transaction is in specified row and specified column is between transactions Cx and Dx columns
+			// if tractn is in specified row and specified column is between tractns Cx and Dx columns
 			if ( trRow == row && (col > trCx.getColumn() && col < trDx.getColumn()) )
 			{
-				// In specified row and column draw transaction horizontal line
+				// In specified row and column draw tractn horizontal line
 				drawHorizontalTractnLine( row, col );
 				break;
 			}

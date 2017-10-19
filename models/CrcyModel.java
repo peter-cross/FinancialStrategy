@@ -135,7 +135,7 @@ public class CrcyModel extends RegistryItemModel
     }
     
     /**
-	 * Gets Currencies from database
+	 * Gets Curcy's from database
 	 * @return List of Crcy objects
 	 */
     public static List<Crcy> getFromDB()
@@ -157,19 +157,19 @@ public class CrcyModel extends RegistryItemModel
     	// If Crcy object is not created yet
     	if ( crcy == null  )
         {
-            // Create instance of Legal Entity
+            // Create instance of Crcy 
     		crcy = new Crcy( code, name );
             fields.set( "crcy", crcy );
         }
             
     	// Otherwise
     	else
-            // Update Legal Entity information
+            // Update Crcy information
     		crcy.update( code, name );
     	
     	try
     	{
-    		// Persist Legal Entity data to database
+    		// Persist Crcy data to database
     		Database.persistToDB( crcy );
     	}
     	catch ( Exception e ) 

@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.COA;
+import entities.ChOfAccs;
 import entities.GL;
 import views.OneColumnTableView;
 import forms.DialogElement;
@@ -29,7 +29,7 @@ public class GLAcctModel extends RegistryItemModel
 {
     /*          Properties   	                                                                                      */
     /******************************************************************************************************************/  
-    private static  LinkedHashSet[] list;  // List of G/L accounts for each ChOfAccs
+    private static  LinkedHashSet[] list;  // List of G/L accts for each ChOfAccs
     
     private static	ArrayList<COAModel> charts;	// List of ChOfAccs
     
@@ -91,7 +91,7 @@ public class GLAcctModel extends RegistryItemModel
 		COAModel chartsModel = COAModel.getByName( tabName );
 		tabNum = getListIndex( COAModel.getItemsList() , chartsModel );
 		
-		COA chOfAccs = null;
+		ChOfAccs chOfAccs = null;
 		
 		if ( chartsModel != null )
 			chOfAccs = chartsModel.getChOfAccs();
@@ -288,13 +288,13 @@ public class GLAcctModel extends RegistryItemModel
 
             // If acct type is specified
             if ( !accType.isEmpty() )
-                // If acct type is Balance Sheet
+                // If acct type is BalSht
                 if ( accType == "Balance Sheet" )
-                    // Create Balance Sheet Tree object and pass it to the form
+                    // Create BalSht Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new BSTree( st ) );
-                // If acct type is Income Statement
+                // If acct type is IncStt
                 else if ( accType == "Income Statement" )
-                    // Create Income Statement Tree object and pass it to the form
+                    // Create IncStt Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new ISTree( st ) );
         };
     }
@@ -476,7 +476,7 @@ public class GLAcctModel extends RegistryItemModel
 
             int numCharts = Math.max( charts.size(), 1 );
 
-            // Create arrays for Legal Entities list with size equal to number of Legal Entities
+            // Create arrays for ChOfAccs list with size equal to number of ChOfAccs
             list = new LinkedHashSet[ numCharts ];
         }
         catch ( Exception e )
@@ -544,7 +544,7 @@ public class GLAcctModel extends RegistryItemModel
             for ( GL gl : dbGLAccts )
             {
                 // Create ChOfAccs object from G/L Acct
-                COA chart = gl.getChOfAccs();
+                ChOfAccs chart = gl.getChOfAccs();
 
                 int chartNum = 0;
 
@@ -578,13 +578,13 @@ public class GLAcctModel extends RegistryItemModel
     	String	glNumber = fields.get( "glNumber" ),	// G/L Acct number
                 name = fields.get( "name" ),			// G/L Acct name
                 type = fields.get( "type" ),			// G/L Acct type
-                acctGrp = fields.get( "acctGrp" );		// Acct Group in Balance Sheet or Income Statement
+                acctGrp = fields.get( "acctGrp" );		// Acct Group in BalSht or IncStt
                 
     	int 	quantity = Integer.parseInt( fieldTextValue( "quantity" ) ),			// Quantity flag
-    			frgnCrcy = Integer.parseInt( fieldTextValue( "frgnCrcy" ) ),			// Foreign Crcy flag
-    			contraAcct = Integer.parseInt( fieldTextValue( "contraAcct" ) );		// Contra account flag
+    			frgnCrcy = Integer.parseInt( fieldTextValue( "frgnCrcy" ) ),			// Frgn Crcy flag
+    			contraAcct = Integer.parseInt( fieldTextValue( "contraAcct" ) );		// Contra acct flag
     	
-    	COA chOfAccs = fields.get( "chOfAccs" );
+    	ChOfAccs chOfAccs = fields.get( "chOfAccs" );
     	
     	List<String> analyticsControl = new ArrayList<String>();
     	
@@ -634,7 +634,7 @@ public class GLAcctModel extends RegistryItemModel
     	// If EntityManager object is created and TractnsSimulationModel argument is specified
         if ( glAcct != null  )
         {
-        	COA chart = glAcct.getChOfAccs();
+        	ChOfAccs chart = glAcct.getChOfAccs();
         	
         	if ( chart != null )
         	{

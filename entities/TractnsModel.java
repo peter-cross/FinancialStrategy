@@ -117,7 +117,7 @@ public class TractnsModel
 	/**
 	 * Returns list of Transactions Model transactions
 	 */
-	public Vector<TrActn> getTransactions()
+	public Vector<TrActn> getTractns()
 	{
 		return tractns;
 	}

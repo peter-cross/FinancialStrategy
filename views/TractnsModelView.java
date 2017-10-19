@@ -22,7 +22,7 @@ import java.util.List;
 
 import application.Database;
 import application.Main;
-import entities.COA;
+import entities.ChOfAccs;
 import entities.GL;
 import entities.LglEntity;
 import entities.TAcct;
@@ -58,7 +58,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	private static TractnsModel				tractnsModel;		// To store tractns Model entity object
 	private static Vector<TrActn>			tractns;			// To store all tractns
 	private static Vector<TAcct>			accts;				// To store T-accts
-	private LglEntity						legalEntity;		// Legal entity of Tractns Model
+	private LglEntity						lglEntity;			// Legal entity of Tractns Model
 	
 	private static ArrayList<TAcct>			toAddTAccts;		// T-Accts to add
 	private static ArrayList<TAcct>			toDelTAccts;		// T-Accts to delete
@@ -108,7 +108,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		this.fields = fields;
 		
-		setLegalEntity();
+		setLglEntity();
 		
 		// Set dialog graphics
 		setGraphics();
@@ -123,45 +123,45 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		setAccountsAndTractns();
 		
-		// Restore grid and Model's Transactions
+		// Restore grid and Model's Tractns
 		restoreGridAndTractns();
 	}
 	
 	/**
-	 * Sets Transactions Model for the view
+	 * Sets Tractns Model for the view
 	 */
 	private void setTractnsModel()
 	{
-		// Get Transactions Model
+		// Get Tractns Model
 		tractnsModel = fields.get( tractnsModelField );
 		
 		if ( tractnsModel == null )
 			return;
 		
-		// Get name of Transactions Model
+		// Get name of Tractns Model
 		String titleTxt = tractnsModel.getName();
 		
 		// Set title of the model on dialog form
 		if ( titleTxt != null && !titleTxt.isEmpty() )
 			title.setText( titleTxt );
 		
-		// Set Transactions Model as field for output
+		// Set Tractns Model as field for output
 		output.set( tractnsModelField, tractnsModel );
 	}
 	
 	/**
 	 * Sets Legal Entity for model and Tabs for Legal Entity ChOfAccs
 	 */
-	private void setLegalEntity()
+	private void setLglEntity()
 	{
 		// Try to get Legal Entity database entity object from specified associative list
-		legalEntity = fields.get( "legalEntity" );
+		lglEntity = fields.get( "lglEntity" );
 		
 		// If Legal Entity database entity object is specified
-		if ( legalEntity != null )
+		if ( lglEntity != null )
 		{
 			// Get Legal Entity Model by Legal Entity database entity object
-			LglEntityModel entityModel = LglEntityModel.getByEntity( legalEntity );
+			LglEntityModel entityModel = LglEntityModel.getByEntity( lglEntity );
 			
 			// If Legal Entity Model is specified
 			if ( entityModel != null )
@@ -169,27 +169,27 @@ public class TractnsModelView extends NodeView implements Utilities
 				tabs = entityModel.getChartNames();
 			else
 				// Get ChOfAccs names  from Legal Entity database entity object
-				tabs = legalEntity.getChOfAccs();
+				tabs = lglEntity.getChOfAccs();
 	    }
 		else
         	tabs = new String[] {};
 	}
 	
 	/**
-	 * Gets T-Accts and Transactions for Transactions Model 
+	 * Gets T-Accts and Tractns for Tractns Model 
 	 */
 	private void setAccountsAndTractns()
 	{
 		if ( tractnsModel == null )
 			return;
 				
-		// Get transactions of Transactions Model
-		Vector<TrActn> trs = tractnsModel.getTransactions();
+		// Get tractns of Tractns Model
+		Vector<TrActn> trs = tractnsModel.getTractns();
 				
 		if ( trs != null )
 			tractns = trs;
 		
-		// Get T-accts of Transactions Model
+		// Get T-accts of Tractns Model
 		Vector<TAcct> accts = tractnsModel.getTAccs();
 				
 		if ( accts != null )
@@ -197,7 +197,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Sets Graphics context for Transactions Model
+	 * Sets Graphics context for Tractns Model
 	 */
 	private void setGraphics()
 	{
@@ -207,7 +207,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		for ( int i = 0; i < tgSize; i++ )
         {
-            // Create Transactions Graphics object
+            // Create Tractns Graphics object
             tg[i] = new TractnsGraphics(this);
                 
             // Add event handler for Mouse Click event
@@ -225,9 +225,9 @@ public class TractnsModelView extends NodeView implements Utilities
 		String[] charts = {};
 		
 		// If Legal Entity database entity is specified
-		if ( legalEntity != null )
+		if ( lglEntity != null )
 			// Get names of ChOfAccs from Legal Entity database entity object
-			charts = legalEntity.getChOfAccs();
+			charts = lglEntity.getChOfAccs();
 		
 		TAcct.setChOfAccs( charts );
 		TrActn.setChOfAccs( charts );
@@ -238,7 +238,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	 */
 	private void createArrays()
 	{
-		// Create ArrayList for transactions
+		// Create ArrayList for tractns
 		tractns = new Vector<>();
 		
 		// Create ArrayList for T-Accts
@@ -256,14 +256,14 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Restores grid and Model Transactions
+	 * Restores grid and Model Tractns
 	 */
 	private void restoreGridAndTractns()
 	{
 		// Create ArrayList for model T-accts
 		ArrayList<TAcct> acctList = new ArrayList<>();
 		
-		// Loop for each model transaction
+		// Loop for each model tractn
 		for ( TrActn tr : tractns )
 		{
 			TAcct trDx = tr.getDx();
@@ -323,7 +323,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Returns TrActn Model's transactions 
+	 * Returns TrActn Model's tractns 
 	 */
 	public static Vector<TrActn> getTractns()
 	{
@@ -335,9 +335,9 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Returns transactions list for specified ChOfAccs
+	 * Returns tractns list for specified ChOfAccs
 	 * @param chartNum ChOfAccs' index
-	 * @return List of transactions for specified ChOfAccs
+	 * @return List of tractns for specified ChOfAccs
 	 */
 	public static Vector<TrActn> getTractns( int chartNum )
 	{
@@ -709,14 +709,14 @@ public class TractnsModelView extends NodeView implements Utilities
 			tAcc.deleteTAcct();
 		
 		else
-			// Loop through list of all transactions
+			// Loop through list of all tractns
 			for ( TrActn t : getTractns() )
-				// If in current row there is transaction
+				// If in current row there is tractn
 				if ( t.getRow() == row )
-					// If current column belongs to transaction
+					// If current column belongs to tractn
 					if ( col > t.getCx().getColumn() && col < t.getDx().getColumn() )
 					{
-						// Delete transaction in current row
+						// Delete tractn in current row
 						t.deleteTractn();
 						break;
 					}
@@ -739,7 +739,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		// Draw T-acct
 		drawTAcct( e );
   	  	
-		COA chart = selectedChOfAccs();
+		ChOfAccs chart = selectedChOfAccs();
 		int chartIndex = 0;
 		
 		if ( chart != null )
@@ -814,7 +814,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			
 			// If there are 2 T-accts selected
 			if ( selectedTAccts.size() > 1 )
-				// Draw transaction with selected T-accts
+				// Draw tractn with selected T-accts
 				drawTractn();
 				
 			else
@@ -832,7 +832,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Draws transaction for selected accts
+	 * Draws tractn for selected accts
 	 */
 	private void drawTractn()
 	{
@@ -850,7 +850,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	}
 	
 	/**
-	 * Draws transaction for specified T-accts 
+	 * Draws tractn for specified T-accts 
 	 * @param acct1 First T-acct
 	 * @param acct2 Second T-acct
 	 */
@@ -859,7 +859,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		int acct1Col = acct1.getColumn();
 		int acct2Col = acct2.getColumn();
 		
-		// Check if 1st acct is what should be credit acct of transaction
+		// Check if 1st acct is what should be credit acct of tractn
 		if ( acct1Col > acct2Col )
 		{
 			// Swap T-accts
@@ -868,10 +868,10 @@ public class TractnsModelView extends NodeView implements Utilities
 			acct2 = tmp;
 		}
 		
-		// Create transaction with provided T-accts
+		// Create tractn with provided T-accts
 		TrActn tr = new TrActn( acct2, acct1 );
 		
-		// Add transaction to the list of transactions
+		// Add tractn to the list of tractns
 		toAddTractns.add( tr );
 	}
 	
@@ -896,7 +896,7 @@ public class TractnsModelView extends NodeView implements Utilities
             	// Create Tab with Gridpane and add tab to TabPane object
             	tabPane.getTabs().add( createTabPane(i) );
             
-            // Add Transactions graphics and buttons to the content box
+            // Add Tractns graphics and buttons to the content box
             box.getChildren().addAll( tabPane, formButtons() );
         }
         else
@@ -904,7 +904,7 @@ public class TractnsModelView extends NodeView implements Utilities
         	GridPane gridPane = createGridPane();
         	gridPane.getChildren().add( tg[0] );
         	
-        	// Add Transactions graphics and buttons to the content box
+        	// Add Tractns graphics and buttons to the content box
             box.getChildren().addAll( gridPane, formButtons() );
         }
         
@@ -1033,13 +1033,13 @@ public class TractnsModelView extends NodeView implements Utilities
     	String titleTxt = title.getText();
             
         if ( tractnsModel == null )
-    		tractnsModel = new TractnsModel( titleTxt, accts, tractns, legalEntity );
+    		tractnsModel = new TractnsModel( titleTxt, accts, tractns, lglEntity );
         else
         	tractnsModel.setName( titleTxt );
     	
     	output.set( tractnsModelField, tractnsModel );
     	output.set( "title" , titleTxt );
-    	output.set( "legalEntity", legalEntity );
+    	output.set( "lglEntity", lglEntity );
     
     	close();
     }
@@ -1060,7 +1060,7 @@ public class TractnsModelView extends NodeView implements Utilities
     }
     
     /**
-     * Checks saved transactions if button Cancel is pressed
+     * Checks saved tractns if button Cancel is pressed
      */
     private void checkSavedTractns()
     {
@@ -1068,7 +1068,7 @@ public class TractnsModelView extends NodeView implements Utilities
     	int row;
     	List<Integer> corrAcc;
     	
-    	// Loop through all saved transactions
+    	// Loop through all saved Tractns
     	for ( TrActn tr : tractns )
     	{
     		dx = tr.getDx();
@@ -1088,7 +1088,7 @@ public class TractnsModelView extends NodeView implements Utilities
     }
     
     /**
-     * Checks new transactions if button Cancel is pressed
+     * Checks new tractns if button Cancel is pressed
      */
     private void checkNewTractns()
     {
@@ -1096,7 +1096,7 @@ public class TractnsModelView extends NodeView implements Utilities
     	int row;
     	List<Integer> corrAcc;
     	
-    	// Loop through created new transactions to add
+    	// Loop through created new tractns to add
     	for ( TrActn tr : toAddTractns )
     	{
     		dx = tr.getDx();
@@ -1131,7 +1131,7 @@ public class TractnsModelView extends NodeView implements Utilities
     }
     
     /**
-     * Displays the Transactions Model form
+     * Displays the Tractns Model form
      * @return Result of input
      */
     public <T> T result()
@@ -1207,7 +1207,7 @@ public class TractnsModelView extends NodeView implements Utilities
      * Gets selected ChOfAccs
      * @return Selected ChOfAccs object
      */
-    private COA selectedChOfAccs()
+    private ChOfAccs selectedChOfAccs()
     {
         int tabNum = selectedTabNumber();
         
@@ -1215,7 +1215,7 @@ public class TractnsModelView extends NodeView implements Utilities
             return null;
         
         // Get names of ChOfAccs from Legal Entity database entity object
-        String[] charts = legalEntity.getChOfAccs();
+        String[] charts = lglEntity.getChOfAccs();
 		
         // Get ChOfAccs Model by name of ChOfAccs
         COAModel chartModel = COAModel.getByName( charts[tabNum] );

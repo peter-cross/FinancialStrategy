@@ -9,7 +9,7 @@ import java.util.List;
 import forms.DialogElement;
 import foundation.AssociativeList;
 import application.Database;
-import entities.COA;
+import entities.ChOfAccs;
 import entities.Crcy;
 
 import static interfaces.Utilities.getListElementBy;
@@ -27,7 +27,7 @@ public class COAModel extends RegistryItemModel
     /**
      * Gets ChOfAcc by its name
      * @param name Name of a ChOfAcc
-     * @return COA Model object
+     * @return ChOfAccs Model object
      */
     public static COAModel getByName( String name )
     {
@@ -38,7 +38,7 @@ public class COAModel extends RegistryItemModel
     /**
      * Gets ChOfAcc by its code
      * @param code Code of a ChOfAccs
-     * @return COA Model object
+     * @return ChOfAccs Model object
      */
     public static COAModel getByCode( String code )
     {
@@ -47,11 +47,11 @@ public class COAModel extends RegistryItemModel
     } // End of method ** getByCode **
     
     /**
-     * Gets COA Model by COA object
-     * @param chOfAcc COA object
-     * @return COA Model
+     * Gets ChOfAccs Model by ChOfAccs object
+     * @param chOfAcc ChOfAccs object
+     * @return ChOfAccs Model
      */
-    public static COAModel getByChOfAccs( COA chOfAcc )
+    public static COAModel getByChOfAccs( ChOfAccs chOfAcc )
     {
     	return (COAModel) getListElementBy( list, "chOfAcc", chOfAcc );
     }
@@ -166,7 +166,7 @@ public class COAModel extends RegistryItemModel
     /**
      * Returns ChOfAcc's database entity object for current model
      */
-    public COA getChOfAccs()
+    public ChOfAccs getChOfAccs()
     {
     	return fields.get( "chOfAcc" );
     }
@@ -231,14 +231,14 @@ public class COAModel extends RegistryItemModel
                  name 	  = fields.get( "name" );	// Common name
         Crcy crcy = fields.get( "crcy" );
        
-    	// Get COA object from the fields of current model
-    	COA chOfAcc = fields.get( "chOfAcc" );
+    	// Get ChOfAccs object from the fields of current model
+    	ChOfAccs chOfAcc = fields.get( "chOfAcc" );
     	
     	// If Crcy object is not created yet
     	if ( chOfAcc == null  )
         {
             // Create instance of Legal Entity
-    		chOfAcc = new COA( code, name, crcy );
+    		chOfAcc = new ChOfAccs( code, name, crcy );
             fields.set( "chOfAcc", chOfAcc );
         }
         // Otherwise
@@ -264,28 +264,28 @@ public class COAModel extends RegistryItemModel
     @Override
     public void removeFromDB() throws Exception
     { 
-    	removeFromDB( "COA" );
+    	removeFromDB( "ChOfAccs" );
     	
     	list.remove( this );
     }
     
     /**
 	 * Gets ChOfAccs from database
-	 * @return List of COA objects
+	 * @return List of ChOfAccs objects
 	 */
-    public static List<COA> getFromDB()
+    public static List<ChOfAccs> getFromDB()
     {
-    	return getFromDB( "COA" );
+    	return getFromDB( "ChOfAccs" );
     }
     
     /**
      * Gets instance of created COAModel
-     * @param chOfAcc COA entity object
+     * @param chOfAcc ChOfAccs entity object
      * @return
      */
     public static COAModel getInstance( Object chOfAcc )
     {
-    	return new COAModel( (COA) chOfAcc );
+    	return new COAModel( (ChOfAccs) chOfAcc );
     }
     
     /**
@@ -315,7 +315,7 @@ public class COAModel extends RegistryItemModel
      * Class constructor
      * @param chart ChOfAccs entity object 
      */
-    public COAModel( COA chart )
+    public COAModel( ChOfAccs chart )
     {
     	super( chOfAccsStr );
         

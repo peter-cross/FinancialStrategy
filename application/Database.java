@@ -131,7 +131,7 @@ public class Database
 					em.remove( acct );
 				
 				// Remove Model's Transactions from DB
-				for ( TrActn tr : tm.getTransactions() )
+				for ( TrActn tr : tm.getTractns() )
 					em.remove( tr );
 				
 				// Remove Transactions Model from DB

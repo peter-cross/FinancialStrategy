@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.COA;
+import entities.ChOfAccs;
 import entities.LglEntity;
 import entities.TractnsModel;
 import views.OneColumnTableView;
@@ -31,8 +31,8 @@ public class LglEntityModel extends RegistryItemModel
     private static final String lglEntityStr = "Legal Entity";
     
     /**
-     * Get LglEntityModel object by Legal Entity name
-     * @param name Legal Entity name
+     * Get LglEntityModel object by Lgl Entity name
+     * @param name Lgl Entity name
      * @return LglEntityModel object
      */
     public static LglEntityModel getByName( String name )
@@ -42,18 +42,18 @@ public class LglEntityModel extends RegistryItemModel
     } // End of method ** getByName **
     
     /**
-     * Gets Legal Entity Model by database entity object
-     * @param entity Legal Entity database entity object
-     * @return Legal Entity Model object
+     * Gets Lgl Entity Model by database entity object
+     * @param entity Lgl Entity database entity object
+     * @return Lgl Entity Model object
      */
     public static LglEntityModel getByEntity( LglEntity entity )
     {
-    	return (LglEntityModel) getListElementBy( list, "legalEntity", entity );
+    	return (LglEntityModel) getListElementBy( list, "lglEntity", entity );
     }
     
     /**
-     * Get LglEntityModel object by Legal Entity ID
-     * @param ID Legal Entity ID
+     * Get LglEntityModel object by Lgl Entity ID
+     * @param ID Lgl Entity ID
      * @return LglEntityModel object
      */
     public static LglEntityModel getByID( String ID )
@@ -222,15 +222,15 @@ public class LglEntityModel extends RegistryItemModel
     } // End of method ** getOutput **
     
     /**
-     * Returns Legal Entity database entity object for current model
+     * Returns Lgl Entity database entity object for current model
      */
-    public LglEntity getLegalEntity()
+    public LglEntity getLglEntity()
     {
-    	return fields.get( "legalEntity" );
+    	return fields.get( "lglEntity" );
     }
     
     /**
-     * Gets string array of Legal Entity ChOfAccs
+     * Gets string array of Lgl Entity ChOfAccs
      * @return String array
      */
     public String[] getChartOfAccounts()
@@ -239,7 +239,7 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-     * Gets names for legal entity ChOfAccs
+     * Gets names for Lgl entity ChOfAccs
      * @return
      */
     public String[] getChartNames()
@@ -248,11 +248,11 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-     * Saves Legal Entity data to Database
+     * Saves Lgl Entity data to Database
      */
     protected void saveToDB()
     {
-    	String	iD = fields.get( "iD" ),						// Legal Entity ID in the system
+    	String	iD = fields.get( "iD" ),						// Lgl Entity ID in the system
                 name = fields.get( "name" ),					// Common name
                 legalName = fields.get( "legalName" ),			// Official legal name
                 phone = fields.get( "phone" ),					// Phone number
@@ -263,7 +263,7 @@ public class LglEntityModel extends RegistryItemModel
     	for ( String chName : (String[]) fields.get( "chartName" ) )
     		chartNames.add( chName );
     	
-    	ArrayList<COA> chOfAccs = new ArrayList<>();
+    	ArrayList<ChOfAccs> chOfAccs = new ArrayList<>();
     	for ( String chart : (String[]) fields.get( "chOfAccs" ) )
     	{
     		COAModel chModel = COAModel.getByName( chart );
@@ -272,26 +272,26 @@ public class LglEntityModel extends RegistryItemModel
     			chOfAccs.add( chModel.getChOfAccs() );
     	}	
     	
-    	// Get Legal Entity object from the fields of current model
-    	LglEntity legalEntity = fields.get( "legalEntity" );
+    	// Get Lgl Entity object from the fields of current model
+    	LglEntity lglEntity = fields.get( "lglEntity" );
     	
-    	// If Legal Entity object is not created yet
-    	if ( legalEntity == null  )
+    	// If Lgl Entity object is not created yet
+    	if ( lglEntity == null  )
         {
-            // Create instance of Legal Entity
-            legalEntity = new LglEntity( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
-            fields.set( "legalEntity", legalEntity );
+            // Create instance of Lgl Entity
+            lglEntity = new LglEntity( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
+            fields.set( "lglEntity", lglEntity );
         }
             
     	// Otherwise
     	else
-            // Update Legal Entity information
-            legalEntity.update( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
+            // Update Lgl Entity information
+            lglEntity.update( iD, name, legalName, phone, contact, address, chartNames, chOfAccs );
     	
     	try
     	{
-    		// Persist Legal Entity data to database
-    		Database.persistToDB( legalEntity );
+    		// Persist Lgl Entity data to database
+    		Database.persistToDB( lglEntity );
     	}
     	catch ( Exception e ) 
     	{
@@ -300,7 +300,7 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-	 * Gets Legal Entities from database
+	 * Gets Lgl Entities from database
 	 * @return List of LglEntity objects
 	 */
     public static List<LglEntity> getFromDB()
@@ -309,7 +309,7 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-     * Removes Legal Entity data from database
+     * Removes Lgl Entity data from database
      * @throws Exception 
      */
     @Override
@@ -318,11 +318,11 @@ public class LglEntityModel extends RegistryItemModel
     	// Get Entity Manager
     	EntityManager em = Database.getEntityManager();
     	
-    	// Get Legal Entity from the fields
-    	LglEntity legalEntity = fields.get( "legalEntity" );
+    	// Get Lgl Entity from the fields
+    	LglEntity lglEntity = fields.get( "lglEntity" );
     	
-    	// If Legal Entity is created as an object
-    	if ( legalEntity != null )
+    	// If Lgl Entity is created as an object
+    	if ( lglEntity != null )
     	{
     		List<TractnsModel> tms = null;
     		
@@ -330,7 +330,7 @@ public class LglEntityModel extends RegistryItemModel
         	{
         		// Do query for TractnsSimulationModel entity in DB and return results of query
     			tms = (List<TractnsModel>) em.createQuery( "SELECT t FROM TractnsModel AS t WHERE t.lglEntity = :lglEntity" )
-    				    .setParameter( "lglEntity", legalEntity )
+    				    .setParameter( "lglEntity", lglEntity )
     				    .getResultList();
             }
         	catch ( Exception e ) { }
@@ -344,8 +344,8 @@ public class LglEntityModel extends RegistryItemModel
     				for ( TractnsModel tm : tms  )
         				Database.removeFromDB( tm );
         			
-        			// Remove Legal Entity data from database
-    	            Database.removeFromDB( legalEntity ) ;
+        			// Remove Lgl Entity data from database
+    	            Database.removeFromDB( lglEntity ) ;
     	            list.remove( this );
     			}
     			else
@@ -353,8 +353,8 @@ public class LglEntityModel extends RegistryItemModel
     		}
     		else
     		{
-    			// Remove Legal Entity data from database
-	            Database.removeFromDB( legalEntity );
+    			// Remove Lgl Entity data from database
+	            Database.removeFromDB( lglEntity );
 	            list.remove( this );
     		}
 	    }
@@ -384,7 +384,7 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-     * Creates new list of Legal Entity models
+     * Creates new list of Lgl Entity models
      */
     public static void createNewList()
     {
@@ -404,7 +404,7 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-     * Class constructor for displaying Legal Entity on the stage 
+     * Class constructor for displaying Lgl Entity on the stage 
      * @param stage Stage where to display
      * @throws Exception
      */
@@ -427,13 +427,13 @@ public class LglEntityModel extends RegistryItemModel
     }
     
     /**
-     * Class constructor for recreating Legal Entity from database data
-     * @param le Legal Entity database entity object
+     * Class constructor for recreating Lgl Entity from database data
+     * @param le Lgl Entity database entity object
      */
     public LglEntityModel( LglEntity le )
     {
     	super( lglEntityStr );
-    	fields.set( "legalEntity", le );
+    	fields.set( "lglEntity", le );
     	
     	fields.set( "iD", le.getId() );
         fields.set( "name", le.getName() );
