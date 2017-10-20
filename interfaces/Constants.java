@@ -36,7 +36,7 @@ public interface Constants
         HEIGHT 	= windowSize.height - taskBarHeight; //550; //
     
     /**
-     * Creates a list of Analytical Dimensions for G/L accounts
+     * Creates a list of Analytical Dimensions for G/L accts
      * @return Associative list of Analytical Dimensions
      */
     static AssociativeList setAnalyticalDimensions()

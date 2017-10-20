@@ -137,7 +137,7 @@ public class LglEntityModel extends RegistryItemModel
         tblEl.editable = false;
         tblEl.textValue = (String[]) fields.get( "chOfAccs" );
         tblEl.valueType = "List";
-        tblEl.list = COAModel.getItemsList();
+        tblEl.list = ChOfAccsModel.getItemsList();
         table[0][1] = tblEl;
         
         return table;
@@ -266,7 +266,7 @@ public class LglEntityModel extends RegistryItemModel
     	ArrayList<ChOfAccs> chOfAccs = new ArrayList<>();
     	for ( String chart : (String[]) fields.get( "chOfAccs" ) )
     	{
-    		COAModel chModel = COAModel.getByName( chart );
+    		ChOfAccsModel chModel = ChOfAccsModel.getByName( chart );
     		
     		if ( chModel != null )
     			chOfAccs.add( chModel.getChOfAccs() );

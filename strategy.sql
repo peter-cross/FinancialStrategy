@@ -81,14 +81,14 @@ CREATE TABLE `gl` (
   `NAME` varchar(255) DEFAULT NULL,
   `QUANTITY` int(11) DEFAULT NULL,
   `TYPE` varchar(255) DEFAULT NULL,
-  `COA_CHOFACCSID` bigint(20) DEFAULT NULL
+  `CHOFACCS_CHOFACCSID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gl`
 --
 
-INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FRGNCRCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `COA_CHOFACCSID`) VALUES
+INSERT INTO `gl` (`GLID`, `ACCTGRP`, `CONTRAACCT`, `FRGNCRCY`, `GLNUMBER`, `NAME`, `QUANTITY`, `TYPE`, `CHOFACCS_CHOFACCSID`) VALUES
 (6451, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '6555', 'Hfxm Ts Mfsi', 0, 'Gfqfshj Xmjjy', 6151),
 (6501, 'Xmtwy-Yjwr Nsajxyrjsyx', 0, 1, '6505', 'Rfwpjyfgqj Xjhzwnynjx', 1, 'Gfqfshj Xmjjy', 6151),
 (6551, 'Hfxm fsi Hfxm Jvznafqjsyx', 0, 1, '655', 'Hfxm ts Mfsi', 0, 'Gfqfshj Xmjjy', 6201),
@@ -227,14 +227,14 @@ CREATE TABLE `lglentitycharts` (
   `LGLENTITYCHARTSID` bigint(20) NOT NULL,
   `CHARTNAME` varchar(255) DEFAULT NULL,
   `LINENUM` int(11) DEFAULT NULL,
-  `COA_CHOFACCSID` bigint(20) DEFAULT NULL
+  `CHOFACCS_CHOFACCSID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lglentitycharts`
 --
 
-INSERT INTO `lglentitycharts` (`LGLENTITYCHARTSID`, `CHARTNAME`, `LINENUM`, `COA_CHOFACCSID`) VALUES
+INSERT INTO `lglentitycharts` (`LGLENTITYCHARTSID`, `CHARTNAME`, `LINENUM`, `CHOFACCS_CHOFACCSID`) VALUES
 (8301, 'Knsfshnfq', 0, 6151),
 (8302, 'Rfsfljrjsy', 1, 6301),
 (8303, 'Knsfshnfq', 0, 6201),
@@ -296,7 +296,7 @@ CREATE TABLE `tacct` (
   `COL` int(11) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
   `ROW` int(11) DEFAULT NULL,
-  `COA_CHOFACCSID` bigint(20) DEFAULT NULL,
+  `CHOFACCS_CHOFACCSID` bigint(20) DEFAULT NULL,
   `GL_GLID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -304,7 +304,7 @@ CREATE TABLE `tacct` (
 -- Dumping data for table `tacct`
 --
 
-INSERT INTO `tacct` (`TACCTID`, `COL`, `NAME`, `ROW`, `COA_CHOFACCSID`, `GL_GLID`) VALUES
+INSERT INTO `tacct` (`TACCTID`, `COL`, `NAME`, `ROW`, `CHOFACCS_CHOFACCSID`, `GL_GLID`) VALUES
 (3955, 0, 'F/U', 1, 0, NULL),
 (3956, 5, 'Rfyjwnfqx', 3, 0, NULL),
 (8851, 0, 'F/U', 1, 6151, NULL),
@@ -455,14 +455,14 @@ CREATE TABLE `tractn` (
   `ROW` int(11) DEFAULT NULL,
   `CX_TACCTID` bigint(20) DEFAULT NULL,
   `DX_TACCTID` bigint(20) DEFAULT NULL,
-  `COA_CHOFACCSID` bigint(20) DEFAULT NULL
+  `CHOFACCS_CHOFACCSID` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tractn`
 --
 
-INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTID`, `COA_CHOFACCSID`) VALUES
+INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTID`, `CHOFACCS_CHOFACCSID`) VALUES
 (3957, 'Rfyjwnfqx uzwhmfxj', 3, 3955, 3956, NULL),
 (8859, 'Nsajsytwd uzwhmfxj', 1, 8851, 8852, 6151),
 (8860, 'Rffyjwnfqx uzwhmfxj', 4, 8851, 8853, 6151),
@@ -670,7 +670,7 @@ INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACT
 --
 ALTER TABLE `chOfAccs`
   ADD PRIMARY KEY (`CHOFACCSID`),
-  ADD KEY `FK_COA_CRCY_CRCYID` (`CRCY_CRCYID`);
+  ADD KEY `FK_CHOFACCS_CRCY_CRCYID` (`CRCY_CRCYID`);
 
 --
 -- Indexes for table `crcy`
@@ -683,7 +683,7 @@ ALTER TABLE `crcy`
 --
 ALTER TABLE `gl`
   ADD PRIMARY KEY (`GLID`),
-  ADD KEY `FK_GL_COA_CHOFACCSID` (`COA_CHOFACCSID`);
+  ADD KEY `FK_GL_CHOFACCS_CHOFACCSID` (`CHOFACCS_CHOFACCSID`);
 
 --
 -- Indexes for table `glanalytics`
@@ -708,7 +708,7 @@ ALTER TABLE `lglentity`
 -- Indexes for table `lglentitycharts`
 --
 ALTER TABLE `lglentitycharts`
-  ADD KEY `FK_LGLENTITYCHARTS_COA_CHOFACCSID` (`COA_CHOFACCSID`);
+  ADD KEY `FK_LGLENTITYCHARTS_CHOFACCS_CHOFACCSID` (`CHOFACCS_CHOFACCSID`);
 
 --
 -- Indexes for table `lglentity_lglentitycharts`
@@ -775,16 +775,16 @@ ALTER TABLE `tractnsmodel_tractn`
 --
 
 --
--- Constraints for table `coa`
+-- Constraints for table `chOfAccs`
 --
 ALTER TABLE `chOfAccs`
-  ADD CONSTRAINT `FK_COA_CRCY_CRCYID` FOREIGN KEY (`CRCY_CRCYID`) REFERENCES `crcy` (`CRCYID`);
+  ADD CONSTRAINT `FK_CHOFACCS_CRCY_CRCYID` FOREIGN KEY (`CRCY_CRCYID`) REFERENCES `crcy` (`CRCYID`);
 
 --
 -- Constraints for table `gl`
 --
 ALTER TABLE `gl`
-  ADD CONSTRAINT `FK_GL_COA_CHOFACCSID` FOREIGN KEY (`COA_CHOFACCSID`) REFERENCES `chOfAccs` (`CHOFACCSID`);
+  ADD CONSTRAINT `FK_GL_CHOFACCS_CHOFACCSID` FOREIGN KEY (`CHOFACCS_CHOFACCSID`) REFERENCES `chOfAccs` (`CHOFACCSID`);
 
 --
 -- Constraints for table `gl_glanalytics`
@@ -799,7 +799,7 @@ ALTER TABLE `gl_glanalytics`
 -- Constraints for table `lglentitycharts`
 --
 ALTER TABLE `lglentitycharts`
-  ADD CONSTRAINT `FK_LGLENTITYCHARTS_COA_CHOFACCSID` FOREIGN KEY (`COA_CHOFACCSID`) REFERENCES `chOfAccs` (`CHOFACCSID`);
+  ADD CONSTRAINT `FK_LGLENTITYCHARTS_CHOFACCS_CHOFACCSID` FOREIGN KEY (`CHOFACCS_CHOFACCSID`) REFERENCES `chOfAccs` (`CHOFACCSID`);
 
 --
 -- Constraints for table `lglentity_lglentitycharts`

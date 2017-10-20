@@ -36,7 +36,6 @@ public interface Lambda
     // Interface to invoke on element change
     public interface OnElementChange
     {
-    	//void run( Object element, AssociativeList elementsList );
     	void run( AssociativeList elementsList );
     }
     

@@ -31,7 +31,7 @@ public class GLAcctModel extends RegistryItemModel
     /******************************************************************************************************************/  
     private static  LinkedHashSet[] list;  // List of G/L accts for each ChOfAccs
     
-    private static	ArrayList<COAModel> charts;	// List of ChOfAccs
+    private static	ArrayList<ChOfAccsModel> charts;	// List of ChOfAccs
     
     private final static String glAcctStr = "G/L Account";
 	
@@ -88,8 +88,8 @@ public class GLAcctModel extends RegistryItemModel
 	{
 		this.tabName = tabName;
 		
-		COAModel chartsModel = COAModel.getByName( tabName );
-		tabNum = getListIndex( COAModel.getItemsList() , chartsModel );
+		ChOfAccsModel chartsModel = ChOfAccsModel.getByName( tabName );
+		tabNum = getListIndex( ChOfAccsModel.getItemsList() , chartsModel );
 		
 		ChOfAccs chOfAccs = null;
 		
@@ -120,7 +120,7 @@ public class GLAcctModel extends RegistryItemModel
      */
     public static GLAcctModel getByCode( String code, String chart )
     {
-        int chartIndex = COAModel.getIndexByName( chart );
+        int chartIndex = ChOfAccsModel.getIndexByName( chart );
         
         return getByCode( code, chartIndex );
         
@@ -467,7 +467,7 @@ public class GLAcctModel extends RegistryItemModel
 	 */
 	private static void initEmptyList()
 	{
-		Class c = createModelClass( "COAModel" );
+		Class c = createModelClass( "ChOfAccsModel" );
 
 		try
         {
@@ -497,10 +497,10 @@ public class GLAcctModel extends RegistryItemModel
 	 */
 	private static void createNewList()
 	{
-		Class c = createModelClass( "COAModel" );
+		Class c = createModelClass( "ChOfAccsModel" );
 
 		int numCharts = 1;
-    	ArrayList<COAModel>  newCharts = null;
+    	ArrayList<ChOfAccsModel>  newCharts = null;
     	
     	try
         {
@@ -550,10 +550,10 @@ public class GLAcctModel extends RegistryItemModel
 
                 if ( chart != null )
                 {
-                	COAModel  chartModel = COAModel.getByChOfAccs( chart );
+                	ChOfAccsModel  chartModel = ChOfAccsModel.getByChOfAccs( chart );
 
                     if ( chartModel != null )
-                    	chartNum = getListIndex( COAModel.getItemsList(), chartModel );
+                    	chartNum = getListIndex( ChOfAccsModel.getItemsList(), chartModel );
                 }
 
                 list[chartNum].add( new GLAcctModel( gl, chart.getName() ) );
@@ -638,7 +638,7 @@ public class GLAcctModel extends RegistryItemModel
         	
         	if ( chart != null )
         	{
-        		COAModel chartModel = COAModel.getByChOfAccs( chart );
+        		ChOfAccsModel chartModel = ChOfAccsModel.getByChOfAccs( chart );
         		
         		int idx = charts.indexOf( chartModel );
             	if ( idx >= 0 )

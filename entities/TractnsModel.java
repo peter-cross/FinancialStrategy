@@ -25,18 +25,18 @@ public class TractnsModel
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long tractnsModelId;
 	
-	// Name of Transactions Model
+	// Name of Tractns Model
 	private String name;
 	
-	// T-accts included in Transactions Model
+	// T-accts included in Tractns Model
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
 	private Vector<TAcct> taccts;
 	
-	// Transactions of Transactions Model
+	// Tractns of Tractns Model
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.REMOVE )
 	private Vector<TrActn> tractns;
 	
-	// Legal Entity to which Transactions Model belongs
+	// Lgl Entity to which Tractns Model belongs
 	@ManyToOne( fetch=FetchType.EAGER )
 	private LglEntity lglEntity;
 	

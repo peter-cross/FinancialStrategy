@@ -29,7 +29,7 @@ public class GL
 	private int		contraAcct;		// Contra Acct flag
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChOfAccs coa;
+	private ChOfAccs chOfAccs;
 	
 	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.PERSIST )
 	private Vector<GLAnalytics> analytics;
@@ -75,7 +75,7 @@ public class GL
 	 */
 	public void update( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, ChOfAccs chOfAccs )
 	{
-		this.coa = chOfAccs;
+		this.chOfAccs = chOfAccs;
 		
 		this.glNumber = Cipher.crypt( glNumber );
 		this.name = Cipher.crypt( name );
@@ -172,6 +172,6 @@ public class GL
 	// Returns ChOfAccs to which G/L acct belongs
 	public ChOfAccs getChOfAccs()
 	{
-		return coa;
+		return chOfAccs;
 	}
 }

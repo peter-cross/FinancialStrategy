@@ -118,7 +118,7 @@ public interface Utilities extends Encapsulation
 	public static String[] enterTractnInfo( NodeView owner )
 	{
 		DialogElement tractnCode = new DialogElement( tractnStr );
-		tractnCode.width = 50;
+		tractnCode.width = 100;
 		tractnCode.editable = false;
 		tractnCode.list = TractnsDscrModel.getItemsList();
 		tractnCode.onChange = onTractnChange();

@@ -28,7 +28,7 @@ import entities.LglEntity;
 import entities.TAcct;
 import entities.TrActn;
 import entities.TractnsModel;
-import models.COAModel;
+import models.ChOfAccsModel;
 import models.GLAcctModel;
 import models.LglEntityModel;
 import models.TractnsGraphics;
@@ -743,7 +743,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		int chartIndex = 0;
 		
 		if ( chart != null )
-			chartIndex = COAModel.getIndexByName( chart.getName() );
+			chartIndex = ChOfAccsModel.getIndexByName( chart.getName() );
 		
 		// Enter T-acct info through the dialog window
         String[] tAccInfo = enterTAcctInfo( this, chartIndex, fields );
@@ -1218,7 +1218,7 @@ public class TractnsModelView extends NodeView implements Utilities
         String[] charts = lglEntity.getChOfAccs();
 		
         // Get ChOfAccs Model by name of ChOfAccs
-        COAModel chartModel = COAModel.getByName( charts[tabNum] );
+        ChOfAccsModel chartModel = ChOfAccsModel.getByName( charts[tabNum] );
         
         // If ChOfAccs Model is specified
         if ( chartModel != null )

@@ -20,7 +20,7 @@ public class LglEntityCharts
 	private String chartName;	// ChOfAccs's name specific to Lgl entity
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChOfAccs coa; // ChOfAccs 
+	private ChOfAccs chOfAccs; // ChOfAccs 
 	
 	/**
 	 * Class mandatory constructor
@@ -40,7 +40,7 @@ public class LglEntityCharts
 	{
 		this.lineNum = lineNum;
 		this.chartName = Cipher.crypt( chartName );
-		this.coa = chOfAccs;
+		this.chOfAccs = chOfAccs;
 	}
 	
 	// Returns Line number in screen form
@@ -58,6 +58,6 @@ public class LglEntityCharts
 	// Returns ChOfAccs' name
 	public String getChOfAccs()
 	{
-		return coa.getName();
+		return chOfAccs.getName();
 	}
 }

@@ -45,13 +45,13 @@ public class TAcct
 	private List<Integer> corrCx; 	// List of rows for tractns with corresponding Cx accts
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChOfAccs coa;	  			// ChOfAccs to which T-acct belongs
+	private ChOfAccs chOfAccs;	  	// ChOfAccs to which T-acct belongs
 	
 	@ManyToOne( fetch=FetchType.EAGER )
 	private GL gl;				  	// G/L Acct of T-acct
 	
 	private static TractnsGraphics[] tg;	  // Tractns graphics canvas
-	private static String[]				  charts; // ChOfAccs for Legal Entity
+	private static String[]			 charts;  // ChOfAccs for Lgl Entity
 	
 	/**
 	 * Class mandatory constructor
@@ -76,7 +76,7 @@ public class TAcct
 		corrDx = new ArrayList<>(); 
 		corrCx = new ArrayList<>();
                 
-        coa = chart;
+		chOfAccs = chart;
 	}
 	
 	/**
@@ -117,8 +117,8 @@ public class TAcct
 	 */
 	public int chartIndex()
 	{
-		if ( charts != null && charts.length > 0 && coa != null )
-			return Math.max( 0, Utilities.indexOf( charts, coa.getName() ) );
+		if ( charts != null && charts.length > 0 && chOfAccs != null )
+			return Math.max( 0, Utilities.indexOf( charts, chOfAccs.getName() ) );
 		else
 			return 0;
 	}
@@ -165,7 +165,7 @@ public class TAcct
 	 */
 	public ChOfAccs getChOfAccs()
 	{
-		return coa;
+		return chOfAccs;
 	}
 	
 	/**

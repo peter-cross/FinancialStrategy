@@ -39,7 +39,7 @@ public class TrActn
 	private TAcct cx;					// Cx acct for transaction
 	
 	@ManyToOne( fetch=FetchType.EAGER )
-	private ChOfAccs coa;	  				// ChOfAccs to which transaction belongs
+	private ChOfAccs chOfAccs;	  			  // ChOfAccs to which transaction belongs
 	
 	private static TractnsGraphics[] tg; 	  // Transactions Graphics canvas
 	private static String[]			 charts;  // ChOfAccs for Legal Entity
@@ -70,7 +70,7 @@ public class TrActn
 		cx.addCorrDxAcct( row );
 		dx.addCorrCxAcct( row );
                 
-		coa = chart;
+		chOfAccs = chart;
 	}
 	
 	/**
@@ -109,8 +109,8 @@ public class TrActn
 	 */
 	public int chartIndex()
 	{
-		if ( charts != null && charts.length > 0 && coa != null )
-			return Math.max( 0, Utilities.indexOf( charts, coa.getName() ) );
+		if ( charts != null && charts.length > 0 && chOfAccs != null )
+			return Math.max( 0, Utilities.indexOf( charts, chOfAccs.getName() ) );
 		else
 			return 0;
 	}
@@ -144,7 +144,7 @@ public class TrActn
 	 */
 	public ChOfAccs getChOfAccs()
 	{
-		return coa;
+		return chOfAccs;
 	}
 	
 	/**
