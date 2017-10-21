@@ -1,24 +1,26 @@
 package models;
 
 import javafx.stage.Stage;
-
+import entities.Dictionary;
 import forms.TreeDialog;
-import interfaces.AccountingGroups;
+import interfaces.AcctingGrps;
 
 /**
- * Class ISTree - Creates Income Statement Tree object
+ * Class ISTree - Creates IncStt Tree object
  * @author Peter Cross
  */
-public class ISTree extends TreeDialog implements AccountingGroups
+public class ISTree extends TreeDialog implements AcctingGrps
 {
-    public ISTree( Stage stage  )
+	private static String incSttStr = Dictionary.getByKey( "IncStt" );
+	
+	public ISTree( Stage stage  )
     {
-        super( stage, "Income Statement Groups", incomeStatement );
+        super( stage, incSttStr + " Groups", incStt );
     }
 
     public ISTree( Stage stage, int width )
     {
-        super( stage, "Income Statement Groups", incomeStatement, width );
+        super( stage, incSttStr + " Groups", incStt, width );
     }
 	
-} // End of class ** IncomeStatementGroups **
+} // End of class ** ISTree **

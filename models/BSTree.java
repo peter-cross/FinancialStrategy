@@ -1,24 +1,26 @@
 package models;
 
 import javafx.stage.Stage;
-
+import entities.Dictionary;
 import forms.TreeDialog;
-import interfaces.AccountingGroups;
+import interfaces.AcctingGrps;
 
 /**
- * Class BSTree - creates Balance Sheet Tree object
+ * Class BSTree - creates BalSht Tree object
  * @author Peter Cross
  */
-public class BSTree extends TreeDialog implements AccountingGroups
+public class BSTree extends TreeDialog implements AcctingGrps
 {
+	private static String balShtStr = Dictionary.getByKey( "BalSht" );
+	
     public BSTree( Stage stage )
     {
-        super( stage, "Balance Sheet Groups", balanceSheet );
+        super( stage, balShtStr + " Groups", balSht );
     }
 
     public BSTree( Stage stage, int width )
     {
-        super( stage, "Balance Sheet Groups", balanceSheet, width );
+        super( stage, balShtStr + " Groups", balSht, width );
     }
 	
-} // End of class ** BalanceSheetGroups **
+} // End of class ** BSGroups **

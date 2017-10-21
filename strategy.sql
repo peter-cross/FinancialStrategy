@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2017 at 02:37 PM
+-- Generation Time: Oct 20, 2017 at 03:14 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -25,10 +25,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chOfAccs`
+-- Table structure for table `chofaccs`
 --
 
-CREATE TABLE `chOfAccs` (
+CREATE TABLE `chofaccs` (
   `CHOFACCSID` bigint(20) NOT NULL,
   `CODE` varchar(255) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -36,10 +36,10 @@ CREATE TABLE `chOfAccs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `chOfAccs`
+-- Dumping data for table `chofaccs`
 --
 
-INSERT INTO `chOfAccs` (`CHOFACCSID`, `CODE`, `NAME`, `CRCY_CRCYID`) VALUES
+INSERT INTO `chofaccs` (`CHOFACCSID`, `CODE`, `NAME`, `CRCY_CRCYID`) VALUES
 (6151, 'NFX', 'Knsfshnfq (NFX)', 6053),
 (6201, 'FXUJ', 'Knsfshnfq (FXUJ)', 6051),
 (6301, 'RLR', 'Rfsfljrjsy', 6052);
@@ -65,6 +65,94 @@ INSERT INTO `crcy` (`CRCYID`, `CODE`, `NAME`) VALUES
 (6052, 'ZXI', 'Z.X. itqqfw'),
 (6053, 'JZW', 'Jzwt'),
 (6351, 'OUD', 'Ofufsjxj Djs');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dictionary`
+--
+
+CREATE TABLE `dictionary` (
+  `dictionaryId` bigint(20) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dictionary`
+--
+
+INSERT INTO `dictionary` (`dictionaryId`, `code`, `value`) VALUES
+(11141, 'PSDIV', 'Uwjkjwwji Xmfwjx Inanijsix'),
+(11112, 'TXR', 'Yfcjx Wjhjnafgqj'),
+(11121, 'LTI', 'Qtsl-Yjwr Nsajxyrjsyx'),
+(11169, 'CSS', 'Hzxytrjw Xjwanhj'),
+(11132, 'CPLTD', 'Hzwwjsy utwynts tk Qtsl-Yjwr Ijgy'),
+(11152, 'OPE', 'Tujwfynsl Jcujsxjx'),
+(11130, 'AOE', 'Fhhwzji Tujwfynsl Jcujsxjx'),
+(11137, 'INTX', 'Nshtrj Yfcjx'),
+(11135, 'FPITX', 'Knsjx, Ujsfqynjx, Nsyjwjxy ts Yfcjx'),
+(11154, 'FEXL', 'Ktwjnls Jchmfslj Qtxxjx'),
+(11115, 'MRZ', 'Rjwhmfsinej'),
+(11138, 'SLTX', 'Xfqjx Yfcjx'),
+(11167, 'MKT', 'Rfwpjynsl'),
+(11116, 'DM', 'Inwjhy Rfyjwnfqx'),
+(11157, 'IBIT', 'Nshtrj Gjktwj Nsyjwjxy Fsi Yfcjx'),
+(11129, 'TXP', 'Yfcjx Ufdfgqj'),
+(11128, 'PP', 'Ujsxnts Ufdfgqj'),
+(11165, 'PCH', 'Uzwhmfxnsl'),
+(11153, 'DPR', 'Ijuwjhnfynts'),
+(11159, 'INCTX', 'Nshtrj Yfcjx'),
+(11108, 'AR', 'Fhhtzsyx Wjhjnafgqj'),
+(11123, 'FAD', 'Kncji Fxxjyx Ijuwjhnfynts'),
+(11164, 'DSN', 'Ijxnls'),
+(11162, 'CSSL', 'Hfxm Xfqjx'),
+(11168, 'DST', 'Inxywngzynts'),
+(11133, 'NP', 'Styjx Ufdfgqj'),
+(11170, 'ADM', 'Firnsnxywfynts'),
+(11142, 'CSDIV', 'Htrrts Xmfwjx Inanijsix'),
+(11110, 'PE', 'Uwjufni Jcujsxjx'),
+(11126, 'CCP', 'Hwjiny Hfwix Ufdfgqj'),
+(11158, 'INTE', 'Nsyjwjxy Jcujsxj'),
+(11143, 'CRL', 'Hwjiny Qtfsx'),
+(11109, 'INV', 'Nsajsytwd'),
+(11161, 'CRSL', 'Hwjiny Xfqjx'),
+(11136, 'DIVP', 'Inanijsix Ufdfgqj'),
+(11102, 'LTA', 'Qtsl-Yjwr Fxxjyx'),
+(11163, 'RD', 'W & I'),
+(11146, 'RE', 'Wjyfnsji Jfwsnslx'),
+(11105, 'SHE', 'Xmfwjmtqijw\'x Jvznyd'),
+(11147, 'SLR', 'Xfqjx Wjajszj'),
+(11125, 'SVP', 'Xzuuqnjwx fsi Ajsitwx Ufdfgqj'),
+(11134, 'BP', 'Gtsix Ufdfgqj'),
+(11113, 'NR', 'Styjx Wjhjnafgqj'),
+(11166, 'PRD', 'Uwtizhynts'),
+(11103, 'CL', 'Hzwwjsy Qnfgnqnynjx'),
+(11127, 'SR', 'Xfqfwnjx Ufdfgqj'),
+(11148, 'INTI', 'Nsyjwjxy Nshtrj'),
+(11106, 'CCE', 'Hfxm fsi Hfxm Jvznafqjsyx'),
+(11144, 'WL', 'Bfwwfsyd Qnfgnqnynjx'),
+(11151, 'COGS', 'Htxy Tk Lttix Xtqi'),
+(11119, 'FA', 'Kncji Fxxjyx'),
+(11155, 'OPRI', 'Tujwfynsl Nshtrj'),
+(11150, 'FEG', 'Ktwjnls Jchmfslj Lfnsx'),
+(11114, 'DR', 'Inanijsix Wjhjnafgqj'),
+(11118, 'FG', 'Knsnxmji Lttix'),
+(11107, 'STI', 'Xmtwy-Yjwr Nsajxyrjsyx'),
+(11145, 'CST', 'Htrrts Xythp'),
+(11131, 'IP', 'Nsyjwjxy Ufdfgqj'),
+(11101, 'CA', 'Hzwwjsy Fxxjyx'),
+(11156, 'INVL', 'Nsajxyrjsy Qtxxjx'),
+(11117, 'WIP', 'Btwp-Ns-Uwtlwjxx'),
+(11149, 'INVI', 'Nsajxyrjsy Nshtrj'),
+(11139, 'PRTX', 'Ufdwtqq Yfcjx'),
+(11160, 'NI', 'Sjy Nshtrj'),
+(11111, 'CR', 'Hzxytrjwx Wjhjnafgqj'),
+(11120, 'NTA', 'Sts-Yfslngqj Fxxjyx'),
+(11122, 'DPR', 'Ijuwjhnfynts'),
+(11104, 'LTL', 'Qtsl-Yjwr Qnfgnqnynjx'),
+(11140, 'OTTX', 'Tymjw Yfcjx'),
+(11124, 'NTAD', 'Sts-Yfslngqj Fxxjyx Frtwynefynts');
 
 -- --------------------------------------------------------
 
@@ -283,7 +371,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '10700');
+('SEQ_GEN', '11200');
 
 -- --------------------------------------------------------
 
@@ -337,7 +425,9 @@ INSERT INTO `tacct` (`TACCTID`, `COL`, `NAME`, `ROW`, `CHOFACCS_CHOFACCSID`, `GL
 (10151, 23, 'Hwjiny Hfwix', 6, 6151, NULL),
 (10251, 4, 'UXY', 10, 6301, NULL),
 (10401, 0, 'Rfwpjyfgqj Xjhzwnynjx', 1, 6151, 6501),
-(10402, 5, 'Kncji Fxxjyx', 1, 6151, 8701);
+(10402, 5, 'Kncji Fxxjyx', 1, 6151, 8701),
+(10701, 0, 'Fhhtzsyx Wjhjnafgqj', 4, 6151, 6701),
+(10702, 5, 'Frtwynefynts tk Kncji Fxxjyx', 4, 6151, 8709);
 
 -- --------------------------------------------------------
 
@@ -389,7 +479,8 @@ INSERT INTO `tacct_corrcx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (9202, 6),
 (10151, 6),
 (10251, 10),
-(10402, 1);
+(10402, 1),
+(10702, 4);
 
 -- --------------------------------------------------------
 
@@ -441,7 +532,8 @@ INSERT INTO `tacct_corrdx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (9304, 6),
 (10151, 6),
 (9751, 10),
-(10401, 1);
+(10401, 1),
+(10701, 4);
 
 -- --------------------------------------------------------
 
@@ -497,7 +589,8 @@ INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTI
 (10152, 'Ufni gd hwjiny hfwi', 6, 9304, 10151, 6151),
 (10153, 'Hwjiny ufdrjsyx', 6, 10151, 9202, 6151),
 (10252, 'UXY ufni', 10, 9751, 10251, 6301),
-(10403, 'opmpqopopoo;pqpqp', 1, 10401, 10402, 6151);
+(10403, 'opmpqopopoo;pqpqp', 1, 10401, 10402, 6151),
+(10751, 'Xjwanhjx wjhjnaji', 4, 10701, 10702, 6151);
 
 -- --------------------------------------------------------
 
@@ -601,6 +694,8 @@ INSERT INTO `tractnsmodel_tacct` (`TractnsModel_TRACTNSMODELID`, `taccts_TACCTID
 (1108, 10251),
 (2204, 10401),
 (2204, 10402),
+(2204, 10701),
+(2204, 10702),
 (8865, 8851),
 (8865, 8852),
 (8865, 8853),
@@ -654,6 +749,7 @@ INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACT
 (1108, 10153),
 (1108, 10252),
 (2204, 10403),
+(2204, 10751),
 (8865, 8859),
 (8865, 8860),
 (8865, 8861),
@@ -666,9 +762,9 @@ INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACT
 --
 
 --
--- Indexes for table `chOfAccs`
+-- Indexes for table `chofaccs`
 --
-ALTER TABLE `chOfAccs`
+ALTER TABLE `chofaccs`
   ADD PRIMARY KEY (`CHOFACCSID`),
   ADD KEY `FK_CHOFACCS_CRCY_CRCYID` (`CRCY_CRCYID`);
 
@@ -775,16 +871,16 @@ ALTER TABLE `tractnsmodel_tractn`
 --
 
 --
--- Constraints for table `chOfAccs`
+-- Constraints for table `chofaccs`
 --
-ALTER TABLE `chOfAccs`
+ALTER TABLE `chofaccs`
   ADD CONSTRAINT `FK_CHOFACCS_CRCY_CRCYID` FOREIGN KEY (`CRCY_CRCYID`) REFERENCES `crcy` (`CRCYID`);
 
 --
 -- Constraints for table `gl`
 --
 ALTER TABLE `gl`
-  ADD CONSTRAINT `FK_GL_CHOFACCS_CHOFACCSID` FOREIGN KEY (`CHOFACCS_CHOFACCSID`) REFERENCES `chOfAccs` (`CHOFACCSID`);
+  ADD CONSTRAINT `FK_GL_CHOFACCS_CHOFACCSID` FOREIGN KEY (`CHOFACCS_CHOFACCSID`) REFERENCES `chofaccs` (`CHOFACCSID`);
 
 --
 -- Constraints for table `gl_glanalytics`
@@ -799,7 +895,7 @@ ALTER TABLE `gl_glanalytics`
 -- Constraints for table `lglentitycharts`
 --
 ALTER TABLE `lglentitycharts`
-  ADD CONSTRAINT `FK_LGLENTITYCHARTS_CHOFACCS_CHOFACCSID` FOREIGN KEY (`CHOFACCS_CHOFACCSID`) REFERENCES `chOfAccs` (`CHOFACCSID`);
+  ADD CONSTRAINT `FK_LGLENTITYCHARTS_CHOFACCS_CHOFACCSID` FOREIGN KEY (`CHOFACCS_CHOFACCSID`) REFERENCES `chofaccs` (`CHOFACCSID`);
 
 --
 -- Constraints for table `lglentity_lglentitycharts`

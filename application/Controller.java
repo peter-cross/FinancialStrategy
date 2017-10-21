@@ -13,6 +13,8 @@ import foundation.AssociativeList;
 
 import static interfaces.Buttons.newMenuButton;
 
+import entities.Dictionary;
+
 /**
  * Class Controller - GUI controller implementation
  * @author Peter Cross
