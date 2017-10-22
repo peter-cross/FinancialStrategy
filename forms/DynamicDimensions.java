@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import entities.Hash;
 import models.GLAcctModel;
 import views.NodeView;
 import foundation.AssociativeList;
@@ -184,6 +185,35 @@ public class DynamicDimensions extends NodeView  implements Constants
         grid.getChildren().add( lbl );
     }
     
+    private static String term( String key )
+    {
+    	return Hash.getByKey(key);
+    }
+    /**
+     * Creates a list of Analytical Dimensions for G/L accts
+     * @return Associative list of Analytical Dimensions
+     */
+    private static AssociativeList setAnalyticalDimensions()
+    {
+        AssociativeList d = new AssociativeList();
+        
+        d.set( term("A1str"), term("A1") );
+        d.set( term("A2str"), term("A2") );
+        d.set( term("A3str"), term("A3") );
+        d.set( term("A4str"), term("A4") );
+        d.set( term("A5str"), term("A5") );
+        d.set( term("A6str"), term("A6") );
+        d.set( term("A7str"), term("A7") );
+        d.set( term("A8str"), term("A8") );
+        d.set( term("A9str"), term("A9") );
+        d.set( term("A10str"), term("A10") );
+        d.set( term("A11str"), term("A11") );
+        d.set( term("A12str"), term("A12") );
+        d.set( term("A13str"), term("A13") );
+        d.set( term("A14str"), term("A14") );
+    
+        return d;
+    }
     /**
      * Creates ComboBox object for the dialogue
      * @param grid  Grid object
@@ -202,9 +232,11 @@ public class DynamicDimensions extends NodeView  implements Constants
         ComboBox<String> comboBox = null;
         String[] choices = new String[] {};
         
+        AssociativeList dimsn = setAnalyticalDimensions();
+    	
         try
         {
-            cls = createModelClass( dimension.get( analytics ) );   
+            cls = createModelClass( dimsn.get( analytics ) );   
         }
         catch ( Exception e ) {}
         

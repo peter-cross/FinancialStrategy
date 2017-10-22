@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2017 at 03:14 PM
+-- Generation Time: Oct 22, 2017 at 01:35 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -65,94 +65,6 @@ INSERT INTO `crcy` (`CRCYID`, `CODE`, `NAME`) VALUES
 (6052, 'ZXI', 'Z.X. itqqfw'),
 (6053, 'JZW', 'Jzwt'),
 (6351, 'OUD', 'Ofufsjxj Djs');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `dictionary`
---
-
-CREATE TABLE `dictionary` (
-  `dictionaryId` bigint(20) NOT NULL,
-  `code` varchar(255) DEFAULT NULL,
-  `value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `dictionary`
---
-
-INSERT INTO `dictionary` (`dictionaryId`, `code`, `value`) VALUES
-(11141, 'PSDIV', 'Uwjkjwwji Xmfwjx Inanijsix'),
-(11112, 'TXR', 'Yfcjx Wjhjnafgqj'),
-(11121, 'LTI', 'Qtsl-Yjwr Nsajxyrjsyx'),
-(11169, 'CSS', 'Hzxytrjw Xjwanhj'),
-(11132, 'CPLTD', 'Hzwwjsy utwynts tk Qtsl-Yjwr Ijgy'),
-(11152, 'OPE', 'Tujwfynsl Jcujsxjx'),
-(11130, 'AOE', 'Fhhwzji Tujwfynsl Jcujsxjx'),
-(11137, 'INTX', 'Nshtrj Yfcjx'),
-(11135, 'FPITX', 'Knsjx, Ujsfqynjx, Nsyjwjxy ts Yfcjx'),
-(11154, 'FEXL', 'Ktwjnls Jchmfslj Qtxxjx'),
-(11115, 'MRZ', 'Rjwhmfsinej'),
-(11138, 'SLTX', 'Xfqjx Yfcjx'),
-(11167, 'MKT', 'Rfwpjynsl'),
-(11116, 'DM', 'Inwjhy Rfyjwnfqx'),
-(11157, 'IBIT', 'Nshtrj Gjktwj Nsyjwjxy Fsi Yfcjx'),
-(11129, 'TXP', 'Yfcjx Ufdfgqj'),
-(11128, 'PP', 'Ujsxnts Ufdfgqj'),
-(11165, 'PCH', 'Uzwhmfxnsl'),
-(11153, 'DPR', 'Ijuwjhnfynts'),
-(11159, 'INCTX', 'Nshtrj Yfcjx'),
-(11108, 'AR', 'Fhhtzsyx Wjhjnafgqj'),
-(11123, 'FAD', 'Kncji Fxxjyx Ijuwjhnfynts'),
-(11164, 'DSN', 'Ijxnls'),
-(11162, 'CSSL', 'Hfxm Xfqjx'),
-(11168, 'DST', 'Inxywngzynts'),
-(11133, 'NP', 'Styjx Ufdfgqj'),
-(11170, 'ADM', 'Firnsnxywfynts'),
-(11142, 'CSDIV', 'Htrrts Xmfwjx Inanijsix'),
-(11110, 'PE', 'Uwjufni Jcujsxjx'),
-(11126, 'CCP', 'Hwjiny Hfwix Ufdfgqj'),
-(11158, 'INTE', 'Nsyjwjxy Jcujsxj'),
-(11143, 'CRL', 'Hwjiny Qtfsx'),
-(11109, 'INV', 'Nsajsytwd'),
-(11161, 'CRSL', 'Hwjiny Xfqjx'),
-(11136, 'DIVP', 'Inanijsix Ufdfgqj'),
-(11102, 'LTA', 'Qtsl-Yjwr Fxxjyx'),
-(11163, 'RD', 'W & I'),
-(11146, 'RE', 'Wjyfnsji Jfwsnslx'),
-(11105, 'SHE', 'Xmfwjmtqijw\'x Jvznyd'),
-(11147, 'SLR', 'Xfqjx Wjajszj'),
-(11125, 'SVP', 'Xzuuqnjwx fsi Ajsitwx Ufdfgqj'),
-(11134, 'BP', 'Gtsix Ufdfgqj'),
-(11113, 'NR', 'Styjx Wjhjnafgqj'),
-(11166, 'PRD', 'Uwtizhynts'),
-(11103, 'CL', 'Hzwwjsy Qnfgnqnynjx'),
-(11127, 'SR', 'Xfqfwnjx Ufdfgqj'),
-(11148, 'INTI', 'Nsyjwjxy Nshtrj'),
-(11106, 'CCE', 'Hfxm fsi Hfxm Jvznafqjsyx'),
-(11144, 'WL', 'Bfwwfsyd Qnfgnqnynjx'),
-(11151, 'COGS', 'Htxy Tk Lttix Xtqi'),
-(11119, 'FA', 'Kncji Fxxjyx'),
-(11155, 'OPRI', 'Tujwfynsl Nshtrj'),
-(11150, 'FEG', 'Ktwjnls Jchmfslj Lfnsx'),
-(11114, 'DR', 'Inanijsix Wjhjnafgqj'),
-(11118, 'FG', 'Knsnxmji Lttix'),
-(11107, 'STI', 'Xmtwy-Yjwr Nsajxyrjsyx'),
-(11145, 'CST', 'Htrrts Xythp'),
-(11131, 'IP', 'Nsyjwjxy Ufdfgqj'),
-(11101, 'CA', 'Hzwwjsy Fxxjyx'),
-(11156, 'INVL', 'Nsajxyrjsy Qtxxjx'),
-(11117, 'WIP', 'Btwp-Ns-Uwtlwjxx'),
-(11149, 'INVI', 'Nsajxyrjsy Nshtrj'),
-(11139, 'PRTX', 'Ufdwtqq Yfcjx'),
-(11160, 'NI', 'Sjy Nshtrj'),
-(11111, 'CR', 'Hzxytrjwx Wjhjnafgqj'),
-(11120, 'NTA', 'Sts-Yfslngqj Fxxjyx'),
-(11122, 'DPR', 'Ijuwjhnfynts'),
-(11104, 'LTL', 'Qtsl-Yjwr Qnfgnqnynjx'),
-(11140, 'OTTX', 'Tymjw Yfcjx'),
-(11124, 'NTAD', 'Sts-Yfslngqj Fxxjyx Frtwynefynts');
 
 -- --------------------------------------------------------
 
@@ -283,6 +195,138 @@ INSERT INTO `gl_glanalytics` (`GL_GLID`, `analytics_GLANALYTICSID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `hash`
+--
+
+CREATE TABLE `hash` (
+  `hashId` bigint(20) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hash`
+--
+
+INSERT INTO `hash` (`hashId`, `code`, `value`) VALUES
+(11293, 'A4str', 'Jruqtdjjx'),
+(11202, 'LTA', 'Qtsl-Yjwr Fxxjyx'),
+(11248, 'INTI', 'Nsyjwjxy Nshtrj'),
+(11227, 'SR', 'Xfqfwnjx Ufdfgqj'),
+(11252, 'OPE', 'Tujwfynsl Jcujsxjx'),
+(11260, 'NI', 'Sjy Nshtrj'),
+(11211, 'CR', 'Hzxytrjwx Wjhjnafgqj'),
+(11263, 'RD', 'W & I'),
+(11299, 'A7str', 'Qjlfq Jsynynjx'),
+(11219, 'FA', 'Kncji Fxxjyx'),
+(11308, 'A11', 'Uwtizhy'),
+(11233, 'NP', 'Styjx Ufdfgqj'),
+(11305, 'A10str', 'Rfwpjyfgqj Xjhzwnynjx'),
+(11223, 'FAD', 'Kncji Fxxjyx Ijuwjhnfynts'),
+(11247, 'SLR', 'Xfqjx Wjajszj'),
+(11215, 'MRZ', 'Rjwhmfsinej'),
+(11257, 'IBIT', 'Nshtrj Gjktwj Nsyjwjxy Fsi Yfcjx'),
+(11206, 'CCE', 'Hfxm fsi Hfxm Jvznafqjsyx'),
+(11225, 'SVP', 'Xzuuqnjwx fsi Ajsitwx Ufdfgqj'),
+(11250, 'FEG', 'Ktwjnls Jchmfslj Lfnsx'),
+(11290, 'A2', 'GzxnsjxxUfwysjw'),
+(11214, 'DR', 'Inanijsix Wjhjnafgqj'),
+(11269, 'CSS', 'Hzxytrjw Xjwanhj'),
+(11276, 'GlAcct', 'L/Q Fhhtzsy'),
+(11278, 'AcctName', 'Fhhtzsy Sfrj'),
+(11284, 'LglName', 'Qjlfq Sfrj'),
+(11253, 'DPR', 'Ijuwjhnfynts'),
+(11303, 'A9str', 'Qtsl Yjwr Fxxjyx'),
+(11285, 'TractsDscr', 'Ywfsxfhynts Ijxhwnuynts'),
+(11313, 'A14str', 'Gzxnsjxx Qnsjx'),
+(11277, 'GlNumber', 'L/Q Szrgjw'),
+(11240, 'OTTX', 'Tymjw Yfcjx'),
+(11201, 'CA', 'Hzwwjsy Fxxjyx'),
+(11205, 'SHE', 'Xmfwjmtqijw\'x Jvznyd'),
+(11266, 'PRD', 'Uwtizhynts'),
+(11292, 'A3', 'Htsywfhy'),
+(11208, 'AR', 'Fhhtzsyx Wjhjnafgqj'),
+(11307, 'A11str', 'Uwtizhyx'),
+(11291, 'A3str', 'Htsywfhyx'),
+(11241, 'PSDIV', 'Uwjkjwwji Xmfwjx Inanijsix'),
+(11232, 'CPLTD', 'Hzwwjsy utwynts tk Qtsl-Yjwr Ijgy'),
+(11222, 'DPR', 'Ijuwjhnfynts'),
+(11275, 'GlAcc', 'L/Q Fhhy'),
+(11281, 'FrgnCrcy', 'Ktwjnls Hzwwjshd'),
+(11298, 'A6', 'Nsajsytwd'),
+(11210, 'PE', 'Uwjufni Jcujsxjx'),
+(11262, 'CSSL', 'Hfxm Xfqjx'),
+(11255, 'OPRI', 'Tujwfynsl Nshtrj'),
+(11296, 'A5', 'Jcujsxj'),
+(11212, 'TXR', 'Yfcjx Wjhjnafgqj'),
+(11279, 'AccType', 'Yduj tk Fhhtzsy'),
+(11265, 'PCH', 'Uzwhmfxnsl'),
+(11256, 'INVL', 'Nsajxyrjsy Qtxxjx'),
+(11272, 'IncStt', 'Nshtrj Xyfyjrjsy'),
+(11230, 'AOE', 'Fhhwzji Tujwfynsl Jcujsxjx'),
+(11304, 'A9', 'QtslYjwrFxxjy'),
+(11216, 'DM', 'Inwjhy Rfyjwnfqx'),
+(11243, 'CRL', 'Hwjiny Qtfsx'),
+(11271, 'BalSht', 'Gfqfshj Xmjjy'),
+(11236, 'DIVP', 'Inanijsix Ufdfgqj'),
+(11220, 'NTA', 'Sts-Yfslngqj Fxxjyx'),
+(11311, 'A13str', 'Bfwwfsynjx'),
+(11209, 'INV', 'Nsajsytwd'),
+(11289, 'A2str', 'Gzxnsjxx Ufwysjwx'),
+(11235, 'FPITX', 'Knsjx, Ujsfqynjx, Nsyjwjxy ts Yfcjx'),
+(11267, 'MKT', 'Rfwpjynsl'),
+(11239, 'PRTX', 'Ufdwtqq Yfcjx'),
+(11245, 'CST', 'Htrrts Xythp'),
+(11218, 'FG', 'Knsnxmji Lttix'),
+(11312, 'A13', 'Bfwwfsyd'),
+(11300, 'A7', 'QlqJsynyd'),
+(11261, 'CRSL', 'Hwjiny Xfqjx'),
+(11282, 'ContraAcct', 'Htsywf Fhhtzsy'),
+(11238, 'SLTX', 'Xfqjx Yfcjx'),
+(11268, 'DST', 'Inxywngzynts'),
+(11234, 'BP', 'Gtsix Ufdfgqj'),
+(11273, 'ChOfAccs', 'Hmfwy Tk Fhhtzsyx'),
+(11287, 'A1str', 'Gfsp Fhhtzsyx'),
+(11213, 'NR', 'Styjx Wjhjnafgqj'),
+(11309, 'A12str', 'Xmfwjmtqijwx'),
+(11302, 'A8', 'Qthfynts'),
+(11258, 'INTE', 'Nsyjwjxy Jcujsxj'),
+(11301, 'A8str', 'Qthfyntsx'),
+(11251, 'COGS', 'Htxy Tk Lttix Xtqi'),
+(11231, 'IP', 'Nsyjwjxy Ufdfgqj'),
+(11221, 'LTI', 'Qtsl-Yjwr Nsajxyrjsyx'),
+(11314, 'A14', 'GzxnsjxxQnsj'),
+(11297, 'A6str', 'Nsajsytwd'),
+(11286, 'TransModel', 'Ywfsxfhyntsx Rtijq'),
+(11242, 'CSDIV', 'Htrrts Xmfwjx Inanijsix'),
+(11244, 'WL', 'Bfwwfsyd Qnfgnqnynjx'),
+(11246, 'RE', 'Wjyfnsji Jfwsnslx'),
+(11280, 'AccGrp', 'Fhhtzsy Lwtzu'),
+(11295, 'A5str', 'Jcujsxjx'),
+(11203, 'CL', 'Hzwwjsy Qnfgnqnynjx'),
+(11217, 'WIP', 'Btwp-Ns-Uwtlwjxx'),
+(11274, 'Crcy', 'Hzwwjshd'),
+(11207, 'STI', 'Xmtwy-Yjwr Nsajxyrjsyx'),
+(11229, 'TXP', 'Yfcjx Ufdfgqj'),
+(11204, 'LTL', 'Qtsl-Yjwr Qnfgnqnynjx'),
+(11259, 'INCTX', 'Nshtrj Yfcjx'),
+(11264, 'DSN', 'Ijxnls'),
+(11237, 'INTX', 'Nshtrj Yfcjx'),
+(11249, 'INVI', 'Nsajxyrjsy Nshtrj'),
+(11226, 'CCP', 'Hwjiny Hfwix Ufdfgqj'),
+(11294, 'A4', 'Jruqtdjj'),
+(11254, 'FEXL', 'Ktwjnls Jchmfslj Qtxxjx'),
+(11306, 'A10', 'Xjhzwnynjx'),
+(11310, 'A12', 'Xmfwjmtqijw'),
+(11283, 'LglEntity', 'Qjlfq Jsynyd'),
+(11228, 'PP', 'Ujsxnts Ufdfgqj'),
+(11224, 'NTAD', 'Sts-Yfslngqj Fxxjyx Frtwynefynts'),
+(11270, 'ADM', 'Firnsnxywfynts'),
+(11288, 'A1', 'GfspFhhtzsy');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lglentity`
 --
 
@@ -371,7 +415,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '11200');
+('SEQ_GEN', '11350');
 
 -- --------------------------------------------------------
 

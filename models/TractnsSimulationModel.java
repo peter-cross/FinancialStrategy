@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 import application.Database;
-import entities.Dictionary;
+import entities.Hash;
 import entities.LglEntity;
 import entities.TAcct;
 import entities.TrActn;
@@ -35,7 +35,7 @@ public class TractnsSimulationModel extends RegistryItemModel
     
 	private static	ArrayList<LglEntityModel> entities;	// List of Lgl Entities
 	
-	private static final String transModelStr = Dictionary.getByKey("TransModel");
+	private static final String transModelStr = Hash.getByKey("TransModel");
 	
 	private static String tractnsModelField = "tractnsModel";
 		

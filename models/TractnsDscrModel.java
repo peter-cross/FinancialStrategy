@@ -8,7 +8,7 @@ import java.util.List;
 
 import application.Database;
 import entities.Crcy;
-import entities.Dictionary;
+import entities.Hash;
 import entities.TractnsDscr;
 import forms.DialogElement;
 import javafx.stage.Stage;

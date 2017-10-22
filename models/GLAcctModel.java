@@ -10,12 +10,13 @@ import java.util.List;
 
 import application.Database;
 import entities.ChOfAccs;
-import entities.Dictionary;
+import entities.Hash;
 import entities.GL;
 import views.OneColumnTableView;
 import forms.DialogElement;
 import forms.TableElement;
 import forms.TableOutput;
+import foundation.AssociativeList;
 import interfaces.Lambda.OnElementChange;
 
 import static interfaces.Utilities.createModelClass;
@@ -34,7 +35,7 @@ public class GLAcctModel extends RegistryItemModel
     
     private static	ArrayList<ChOfAccsModel> charts;	// List of ChOfAccs
     
-    private final static String glAcctStr = Dictionary.getByKey( "GlAcct" );
+    private final static String glAcctStr = Hash.getByKey( "GlAcct" );
 	
     /**
      * Class constructor
@@ -181,7 +182,7 @@ public class GLAcctModel extends RegistryItemModel
         DialogElement hdr;
         
         // 1st header element on 1st tab
-        hdr = new DialogElement( Dictionary.getByKey( "GlNumber" ) );
+        hdr = new DialogElement( Hash.getByKey( "GlNumber" ) );
         hdr.attributeName = "glNumber";
         hdr.width = 60;
         hdr.shortName = "G/L #";
@@ -190,7 +191,7 @@ public class GLAcctModel extends RegistryItemModel
         header[0][0] = hdr;
         
         // 2nd header element on 1st tab
-        hdr = new DialogElement( Dictionary.getByKey( "AcctName" ) );
+        hdr = new DialogElement( Hash.getByKey( "AcctName" ) );
         hdr.attributeName = "name";
         hdr.width = 255;
         // If field text value is specified - pass it to the form
@@ -199,11 +200,11 @@ public class GLAcctModel extends RegistryItemModel
         header[0][1] = hdr;
         
         // 3rd header element on 1st tab
-        hdr = new DialogElement( Dictionary.getByKey( "AccType" ) );
+        hdr = new DialogElement( Hash.getByKey( "AccType" ) );
         hdr.attributeName = "type";
         hdr.shortName = "Acct Type";
         // Possible text choices for the field
-        hdr.textChoices = new String[]{  Dictionary.getByKey( "BalSht" ), Dictionary.getByKey( "IncStt" ) };
+        hdr.textChoices = new String[]{  Hash.getByKey( "BalSht" ), Hash.getByKey( "IncStt" ) };
         hdr.editable = false;
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "type" );
@@ -213,7 +214,7 @@ public class GLAcctModel extends RegistryItemModel
         header[0][2] = hdr;
         
         // 4th header element on 1st tab
-        hdr = new DialogElement( Dictionary.getByKey( "AccGrp" ) );
+        hdr = new DialogElement( Hash.getByKey( "AccGrp" ) );
         hdr.attributeName = "acctGrp";
         hdr.valueType = "Tree";
         // If field text value is specified - pass it to the form
@@ -231,19 +232,19 @@ public class GLAcctModel extends RegistryItemModel
         header[0][4] = hdr;
         	
         // 6th header element on 1st tab
-        hdr = new DialogElement( Dictionary.getByKey( "FrgnCrcy" ) );
+        hdr = new DialogElement( Hash.getByKey( "FrgnCrcy" ) );
         hdr.attributeName = "frgnCrcy";
         hdr.shortName = "Curr";
-        hdr.checkBoxlabel = Dictionary.getByKey( "FrgnCrcy" ) + " Operations";
+        hdr.checkBoxlabel = Hash.getByKey( "FrgnCrcy" ) + " Operations";
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "frgnCrcy" );
         header[0][5] = hdr;
         
         // 7th header element on 1st tab
-        hdr = new DialogElement( Dictionary.getByKey( "ContraAcct" ) );
+        hdr = new DialogElement( Hash.getByKey( "ContraAcct" ) );
         hdr.attributeName = "contraAcct";
         hdr.shortName = "Cntr";
-        hdr.checkBoxlabel = Dictionary.getByKey( "ContraAcct" );
+        hdr.checkBoxlabel = Hash.getByKey( "ContraAcct" );
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "contraAcct" );
         header[0][6] = hdr;
@@ -260,7 +261,7 @@ public class GLAcctModel extends RegistryItemModel
     {
         return ( elementsList ) -> 
         {
-        	ComboBox acctTypeField = (ComboBox) elementsList.get( Dictionary.getByKey("AccType") );
+        	ComboBox acctTypeField = (ComboBox) elementsList.get( Hash.getByKey("AccType") );
         	
         	if ( acctTypeField == null )
         		return;
@@ -275,7 +276,7 @@ public class GLAcctModel extends RegistryItemModel
         		return;
 
         	// Field name that is effected by element change event
-            String fieldName = Dictionary.getByKey("AccGrp");
+            String fieldName = Hash.getByKey("AccGrp");
             
             // Get reference to element field on the form
             TextField field  = (TextField) elementsList.get( fieldName );
@@ -290,14 +291,44 @@ public class GLAcctModel extends RegistryItemModel
             // If acct type is specified
             if ( !accType.isEmpty() )
                 // If acct type is BalSht
-                if ( accType == Dictionary.getByKey("BalSht") )
+                if ( accType == Hash.getByKey("BalSht") )
                     // Create BalSht Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new BSTree( st ) );
                 // If acct type is IncStt
-                else if ( accType == Dictionary.getByKey("IncStt") )
+                else if ( accType == Hash.getByKey("IncStt") )
                     // Create IncStt Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new ISTree( st ) );
         };
+    }
+    
+    private static String term( String key )
+    {
+    	return Hash.getByKey(key);
+    }
+    /**
+     * Creates a list of Analytical Dimensions for G/L accts
+     * @return Associative list of Analytical Dimensions
+     */
+    private static AssociativeList setAnalyticalDimensions()
+    {
+        AssociativeList d = new AssociativeList();
+        
+        d.set( term("A1str"), term("A1") );
+        d.set( term("A2str"), term("A2") );
+        d.set( term("A3str"), term("A3") );
+        d.set( term("A4str"), term("A4") );
+        d.set( term("A5str"), term("A5") );
+        d.set( term("A6str"), term("A6") );
+        d.set( term("A7str"), term("A7") );
+        d.set( term("A8str"), term("A8") );
+        d.set( term("A9str"), term("A9") );
+        d.set( term("A10str"), term("A10") );
+        d.set( term("A11str"), term("A11") );
+        d.set( term("A12str"), term("A12") );
+        d.set( term("A13str"), term("A13") );
+        d.set( term("A14str"), term("A14") );
+    
+        return d;
     }
     
     /**
@@ -306,7 +337,9 @@ public class GLAcctModel extends RegistryItemModel
      */
     protected TableElement[][] createTable()
     {
-        // Array of table elements
+    	AssociativeList dimsn = setAnalyticalDimensions();
+    	
+    	// Array of table elements
         TableElement[][] table = new TableElement[1][3];
         // Helper object for creating new table elements
         TableElement tbl;
@@ -320,9 +353,9 @@ public class GLAcctModel extends RegistryItemModel
         tbl.textValue = (String[]) fields.get( "analyticsControl" );
         tbl.validation = validationCode( tbl.columnName );
         // Possible text choices of the column
-        tbl.textChoices = new String[dimension.size()];
-        for ( int i = 0; i < dimension.size(); i++ )
-            tbl.textChoices[i] = dimension.getKey(i);
+        tbl.textChoices = new String[dimsn.size()];
+        for ( int i = 0; i < dimsn.size(); i++ )
+            tbl.textChoices[i] = dimsn.getKey(i);
         table[0][0] = tbl;
         
         // 2nd column of the table on the 1st tab

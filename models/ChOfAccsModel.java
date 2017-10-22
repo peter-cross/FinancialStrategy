@@ -11,7 +11,7 @@ import foundation.AssociativeList;
 import application.Database;
 import entities.ChOfAccs;
 import entities.Crcy;
-import entities.Dictionary;
+import entities.Hash;
 
 import static interfaces.Utilities.getListElementBy;
 
@@ -23,7 +23,7 @@ public class ChOfAccsModel extends RegistryItemModel
 {
     protected static  LinkedHashSet list;       // List of Items
     
-    private static final String chOfAccsStr = Dictionary.getByKey( "ChOfAccs" );
+    private static final String chOfAccsStr = Hash.getByKey( "ChOfAccs" );
     
     /**
      * Gets ChOfAcc by its name
@@ -149,7 +149,7 @@ public class ChOfAccsModel extends RegistryItemModel
         hdr.validation = validationCode( hdr.labelName );
         header[0][1] = hdr;
         
-        hdr = new DialogElement( Dictionary.getByKey( "Crcy" ));
+        hdr = new DialogElement( Hash.getByKey( "Crcy" ));
         hdr.attributeName = "crcy";
         hdr.valueType = "List";
         hdr.list = CrcyModel.createList()[0];

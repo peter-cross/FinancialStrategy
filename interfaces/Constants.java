@@ -5,6 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
+import entities.Hash;
 import foundation.AssociativeList;
 
 /**
@@ -13,8 +14,6 @@ import foundation.AssociativeList;
  */
 public interface Constants 
 {
-    AssociativeList dimension = setAnalyticalDimensions();
-    
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     Rectangle windowSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
     
@@ -35,29 +34,4 @@ public interface Constants
         WIDTH 	= windowSize.width - taskBarWidth, 	 //800, //
         HEIGHT 	= windowSize.height - taskBarHeight; //550; //
     
-    /**
-     * Creates a list of Analytical Dimensions for G/L accts
-     * @return Associative list of Analytical Dimensions
-     */
-    static AssociativeList setAnalyticalDimensions()
-    {
-        AssociativeList d = new AssociativeList();
-        
-        d.set( "Bank Accounts", "BankAccount" );
-        d.set( "Business Partners", "BusinessPartner" );
-        d.set( "Contracts", "Contract" );
-        d.set( "Employees", "Employee" );
-        d.set( "Expenses", "Expense" );
-        d.set( "Inventory", "Inventory" );
-        d.set( "Legal Entities", "LglEntity" );
-        d.set( "Locations", "Location" );
-        d.set( "Long Term Assets", "LongTermAsset" );
-        d.set( "Marketable Securities", "Securities" );
-        d.set( "Products", "Product" );
-        d.set( "Shareholders", "Shareholder" );
-        d.set( "Warranties", "Warranty" );
-        d.set( "Business Lines", "BusinessLine" );
-    
-        return d;
-    }
 } // End of interface ** Constants **

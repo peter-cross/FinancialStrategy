@@ -1,7 +1,7 @@
 package models;
 
 import javafx.stage.Stage;
-import entities.Dictionary;
+import entities.Hash;
 import forms.TreeDialog;
 import interfaces.AcctingGrps;
 
@@ -11,7 +11,7 @@ import interfaces.AcctingGrps;
  */
 public class BSTree extends TreeDialog implements AcctingGrps
 {
-	private static String balShtStr = Dictionary.getByKey( "BalSht" );
+	private static String balShtStr = Hash.getByKey( "BalSht" );
 	
     public BSTree( Stage stage )
     {

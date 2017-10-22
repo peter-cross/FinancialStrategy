@@ -23,7 +23,7 @@ import java.util.List;
 import application.Database;
 import application.Main;
 import entities.ChOfAccs;
-import entities.Dictionary;
+import entities.Hash;
 import entities.GL;
 import entities.LglEntity;
 import entities.TAcct;
@@ -90,7 +90,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	 */
 	private TractnsModelView()
 	{
-		super( Dictionary.getByKey("TransModel") );
+		super( Hash.getByKey("TransModel") );
 		
 		createArrays();
 		

@@ -1,6 +1,6 @@
 package interfaces;
 
-import entities.Dictionary;
+import entities.Hash;
 import foundation.AssociativeList;
 
 /**
@@ -14,7 +14,7 @@ public interface AcctingGrps
     
     static String term( String key )
     {
-    	return Dictionary.getByKey(key);
+    	return Hash.getByKey(key);
     }
     
     /**
