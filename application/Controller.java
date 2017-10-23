@@ -13,7 +13,7 @@ import foundation.AssociativeList;
 
 import static interfaces.Buttons.newMenuButton;
 
-import entities.Hash;
+import entities.HashMap;
 
 /**
  * Class Controller - GUI controller implementation
@@ -144,7 +144,7 @@ public class Controller implements Constants, Utilities
     private void setRegistries()
     {
     	registries = new AssociativeList();
-		
+    	
     	registries.set( "Transactions Simulation Models", 	new RegistryView( stage, "Transactions Simulation Models", "TractnsSimulationModel", "LglEntityModel", btnReferences() ) );
     	registries.set( "Legal Entities",  	  				new RegistryView( stage, "Legal Entities", "LglEntityModel" ) );
     	registries.set( "List of Charts Of Accounts", 		new RegistryView( stage, "List of Charts Of Accounts", "ChOfAccsModel" ) );

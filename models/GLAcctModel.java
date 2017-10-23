@@ -10,7 +10,7 @@ import java.util.List;
 
 import application.Database;
 import entities.ChOfAccs;
-import entities.Hash;
+import entities.HashMap;
 import entities.GL;
 import views.OneColumnTableView;
 import forms.DialogElement;
@@ -35,7 +35,7 @@ public class GLAcctModel extends RegistryItemModel
     
     private static	ArrayList<ChOfAccsModel> charts;	// List of ChOfAccs
     
-    private final static String glAcctStr = Hash.getByKey( "GlAcct" );
+    private final static String glAcctStr = HashMap.getByKey( "GlAcct" );
 	
     /**
      * Class constructor
@@ -182,7 +182,7 @@ public class GLAcctModel extends RegistryItemModel
         DialogElement hdr;
         
         // 1st header element on 1st tab
-        hdr = new DialogElement( Hash.getByKey( "GlNumber" ) );
+        hdr = new DialogElement( HashMap.getByKey( "GlNumber" ) );
         hdr.attributeName = "glNumber";
         hdr.width = 60;
         hdr.shortName = "G/L #";
@@ -191,7 +191,7 @@ public class GLAcctModel extends RegistryItemModel
         header[0][0] = hdr;
         
         // 2nd header element on 1st tab
-        hdr = new DialogElement( Hash.getByKey( "AcctName" ) );
+        hdr = new DialogElement( HashMap.getByKey( "AcctName" ) );
         hdr.attributeName = "name";
         hdr.width = 255;
         // If field text value is specified - pass it to the form
@@ -200,11 +200,11 @@ public class GLAcctModel extends RegistryItemModel
         header[0][1] = hdr;
         
         // 3rd header element on 1st tab
-        hdr = new DialogElement( Hash.getByKey( "AccType" ) );
+        hdr = new DialogElement( HashMap.getByKey( "AccType" ) );
         hdr.attributeName = "type";
         hdr.shortName = "Acct Type";
         // Possible text choices for the field
-        hdr.textChoices = new String[]{  Hash.getByKey( "BalSht" ), Hash.getByKey( "IncStt" ) };
+        hdr.textChoices = new String[]{  HashMap.getByKey( "BalSht" ), HashMap.getByKey( "IncStt" ) };
         hdr.editable = false;
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "type" );
@@ -214,7 +214,7 @@ public class GLAcctModel extends RegistryItemModel
         header[0][2] = hdr;
         
         // 4th header element on 1st tab
-        hdr = new DialogElement( Hash.getByKey( "AccGrp" ) );
+        hdr = new DialogElement( HashMap.getByKey( "AccGrp" ) );
         hdr.attributeName = "acctGrp";
         hdr.valueType = "Tree";
         // If field text value is specified - pass it to the form
@@ -232,19 +232,19 @@ public class GLAcctModel extends RegistryItemModel
         header[0][4] = hdr;
         	
         // 6th header element on 1st tab
-        hdr = new DialogElement( Hash.getByKey( "FrgnCrcy" ) );
+        hdr = new DialogElement( HashMap.getByKey( "FrgnCrcy" ) );
         hdr.attributeName = "frgnCrcy";
         hdr.shortName = "Curr";
-        hdr.checkBoxlabel = Hash.getByKey( "FrgnCrcy" ) + " Operations";
+        hdr.checkBoxlabel = HashMap.getByKey( "FrgnCrcy" ) + " Operations";
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "frgnCrcy" );
         header[0][5] = hdr;
         
         // 7th header element on 1st tab
-        hdr = new DialogElement( Hash.getByKey( "ContraAcct" ) );
+        hdr = new DialogElement( HashMap.getByKey( "ContraAcct" ) );
         hdr.attributeName = "contraAcct";
         hdr.shortName = "Cntr";
-        hdr.checkBoxlabel = Hash.getByKey( "ContraAcct" );
+        hdr.checkBoxlabel = HashMap.getByKey( "ContraAcct" );
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "contraAcct" );
         header[0][6] = hdr;
@@ -261,7 +261,7 @@ public class GLAcctModel extends RegistryItemModel
     {
         return ( elementsList ) -> 
         {
-        	ComboBox acctTypeField = (ComboBox) elementsList.get( Hash.getByKey("AccType") );
+        	ComboBox acctTypeField = (ComboBox) elementsList.get( HashMap.getByKey("AccType") );
         	
         	if ( acctTypeField == null )
         		return;
@@ -276,7 +276,7 @@ public class GLAcctModel extends RegistryItemModel
         		return;
 
         	// Field name that is effected by element change event
-            String fieldName = Hash.getByKey("AccGrp");
+            String fieldName = HashMap.getByKey("AccGrp");
             
             // Get reference to element field on the form
             TextField field  = (TextField) elementsList.get( fieldName );
@@ -291,11 +291,11 @@ public class GLAcctModel extends RegistryItemModel
             // If acct type is specified
             if ( !accType.isEmpty() )
                 // If acct type is BalSht
-                if ( accType == Hash.getByKey("BalSht") )
+                if ( accType.equals( HashMap.getByKey("BalSht") ) )
                     // Create BalSht Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new BSTree( st ) );
                 // If acct type is IncStt
-                else if ( accType == Hash.getByKey("IncStt") )
+                else if ( accType.equals( HashMap.getByKey("IncStt") ) )
                     // Create IncStt Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new ISTree( st ) );
         };
@@ -303,7 +303,7 @@ public class GLAcctModel extends RegistryItemModel
     
     private static String term( String key )
     {
-    	return Hash.getByKey(key);
+    	return HashMap.getByKey(key);
     }
     /**
      * Creates a list of Analytical Dimensions for G/L accts

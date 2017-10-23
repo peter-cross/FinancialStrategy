@@ -1,6 +1,6 @@
 package interfaces;
 
-import entities.Hash;
+import entities.HashMap;
 import foundation.AssociativeList;
 
 /**
@@ -14,7 +14,7 @@ public interface AcctingGrps
     
     static String term( String key )
     {
-    	return Hash.getByKey(key);
+    	return HashMap.getByKey(key);
     }
     
     /**

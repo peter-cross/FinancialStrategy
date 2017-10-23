@@ -9,7 +9,7 @@ import java.util.List;
 
 import application.Database;
 import entities.ChOfAccs;
-import entities.Hash;
+import entities.HashMap;
 import entities.LglEntity;
 import entities.TractnsModel;
 import views.OneColumnTableView;
@@ -29,7 +29,7 @@ public class LglEntityModel extends RegistryItemModel
 {
     protected static  LinkedHashSet  list;       // List of Registry Items
     
-    private static final String lglEntityStr = Hash.getByKey( "LglEntity" );
+    private static final String lglEntityStr = HashMap.getByKey( "LglEntity" );
     
     /**
      * Get LglEntityModel object by Lgl Entity name
@@ -89,7 +89,7 @@ public class LglEntityModel extends RegistryItemModel
         hdr.validation = validationCode( hdr.labelName );
         header[0][1] = hdr;
         
-        hdr = new DialogElement( Hash.getByKey( "LglName" ) +  "   " );
+        hdr = new DialogElement( HashMap.getByKey( "LglName" ) +  "   " );
         hdr.valueType = "Text";
         hdr.width = 300;
         hdr.textValue = fieldTextValue( "legalName" );
@@ -126,14 +126,14 @@ public class LglEntityModel extends RegistryItemModel
         TableElement[][] table = new TableElement[1][2];
         TableElement tblEl;
         
-        tblEl = new TableElement( Hash.getByKey("ChOfAccs") + " Name" );
+        tblEl = new TableElement( HashMap.getByKey("ChOfAccs") + " Name" );
         tblEl.width = 200;
         tblEl.editable = false;
         tblEl.textValue = (String[]) fields.get( "chartName" );
         tblEl.valueType = "Text";
         table[0][0] = tblEl;
         
-        tblEl = new TableElement( Hash.getByKey("ChOfAccs") );
+        tblEl = new TableElement( HashMap.getByKey("ChOfAccs") );
         tblEl.width = 250;
         tblEl.editable = false;
         tblEl.textValue = (String[]) fields.get( "chOfAccs" );

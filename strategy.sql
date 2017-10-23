@@ -195,20 +195,20 @@ INSERT INTO `gl_glanalytics` (`GL_GLID`, `analytics_GLANALYTICSID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hash`
+-- Table structure for table `hashmap`
 --
 
-CREATE TABLE `hash` (
-  `hashId` bigint(20) NOT NULL,
-  `code` varchar(255) DEFAULT NULL,
+CREATE TABLE `hashmap` (
+  `hashmapId` bigint(20) NOT NULL,
+  `hashkey` varchar(255) DEFAULT NULL,
   `value` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `hash`
+-- Dumping data for table `hashmap`
 --
 
-INSERT INTO `hash` (`hashId`, `code`, `value`) VALUES
+INSERT INTO `hashmap` (`hashmapId`, `hashkey`, `value`) VALUES
 (11293, 'A4str', 'Jruqtdjjx'),
 (11202, 'LTA', 'Qtsl-Yjwr Fxxjyx'),
 (11248, 'INTI', 'Nsyjwjxy Nshtrj'),

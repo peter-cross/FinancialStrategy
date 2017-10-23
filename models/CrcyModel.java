@@ -7,7 +7,7 @@ import java.util.List;
 
 import application.Database;
 import entities.Crcy;
-import entities.Hash;
+import entities.HashMap;
 import forms.DialogElement;
 
 import static interfaces.Utilities.getListElementBy;
@@ -20,7 +20,7 @@ public class CrcyModel extends RegistryItemModel
 {
     private static  LinkedHashSet list;       // List of Items
     
-    private static final String crcyStr = Hash.getByKey( "Crcy" );
+    private static final String crcyStr = HashMap.getByKey( "Crcy" );
     
     /**
      * Gets string representation of class object

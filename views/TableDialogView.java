@@ -26,7 +26,7 @@ import javafx.collections.FXCollections;
 
 import java.util.List;
 
-import entities.Hash;
+import entities.HashMap;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -1598,7 +1598,7 @@ public class TableDialogView implements Buttons, Encapsulation
     	int index = cell.getTableRow().getIndex();
         
         ArrayList<String> dimsAttr = (ArrayList<String>) elList.get( column.getText() ); 
-        ArrayList<String> acctAttr = (ArrayList<String>) elList.get( Hash.getByKey("GlAcc") );
+        ArrayList<String> acctAttr = (ArrayList<String>) elList.get( HashMap.getByKey("GlAcc") );
         
         String initVal = "", accnt = "";
         GLAcctModel account;

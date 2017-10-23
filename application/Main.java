@@ -29,6 +29,7 @@ public final class Main extends Application
         launch( args );
     }
 	
+    
     /**
      * Creates Graphic User Interface to work with the program
      * @param st Stage object for main program window

@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
-import entities.Hash;
+import entities.HashMap;
 import models.GLAcctModel;
 import views.NodeView;
 import foundation.AssociativeList;
@@ -187,7 +187,7 @@ public class DynamicDimensions extends NodeView  implements Constants
     
     private static String term( String key )
     {
-    	return Hash.getByKey(key);
+    	return HashMap.getByKey(key);
     }
     /**
      * Creates a list of Analytical Dimensions for G/L accts

@@ -34,7 +34,7 @@ import java.text.DecimalFormat;
 import java.net.URL;
 
 import application.Main;
-import entities.Hash;
+import entities.HashMap;
 import models.RegistryItemModel;
 import forms.DialogElement;
 import foundation.AssociativeList;
@@ -1280,7 +1280,7 @@ public class RegistryView extends Stage implements Buttons, Encapsulation, Const
         
         Cipher.getInstance();
     	
-        Hash.createList();
+        HashMap.createList();
         
         try
         {

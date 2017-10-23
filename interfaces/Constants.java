@@ -5,7 +5,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
-import entities.Hash;
+import entities.HashMap;
 import foundation.AssociativeList;
 
 /**
