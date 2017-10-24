@@ -1,9 +1,9 @@
 package models;
 
 import javafx.stage.Stage;
-import entities.HashMap;
 import forms.TreeDialog;
 import interfaces.AcctingGrps;
+import static interfaces.Utilities.$;
 
 /**
  * Class ISTree - Creates IncStt Tree object
@@ -11,7 +11,7 @@ import interfaces.AcctingGrps;
  */
 public class ISTree extends TreeDialog implements AcctingGrps
 {
-	private static String incSttStr = HashMap.getByKey( "IncStt" );
+	private static String incSttStr = $( "IncStt" );
 	
 	public ISTree( Stage stage  )
     {

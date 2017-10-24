@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import application.Main;
+import entities.HashMap;
 import models.GLAcctModel;
 import models.RegistryItemModel;
 import models.TractnsDscrModel;
@@ -41,6 +42,11 @@ public interface Utilities extends Encapsulation
 	static final String glAcctStr = "G/L Account";
 	static final String tractnStr = "Transaction";
 	
+	public static String $( String key )
+    {
+    	return HashMap.getByKey(key);
+    }
+    
 	/**
      * Displays About box
      */

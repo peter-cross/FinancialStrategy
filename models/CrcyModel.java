@@ -7,10 +7,10 @@ import java.util.List;
 
 import application.Database;
 import entities.Crcy;
-import entities.HashMap;
 import forms.DialogElement;
 
 import static interfaces.Utilities.getListElementBy;
+import static interfaces.Utilities.$;
 
 /**
  * Class CrcyModel - to store a list of foreign crcies
@@ -20,7 +20,7 @@ public class CrcyModel extends RegistryItemModel
 {
     private static  LinkedHashSet list;       // List of Items
     
-    private static final String crcyStr = HashMap.getByKey( "Crcy" );
+    private static final String crcyStr = $( "Crcy" );
     
     /**
      * Gets string representation of class object

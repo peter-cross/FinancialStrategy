@@ -1,7 +1,7 @@
 package interfaces;
 
-import entities.HashMap;
 import foundation.AssociativeList;
+import static interfaces.Utilities.$;
 
 /**
  * Interface AcctingGrps - To create structures of Balance Sheet and Income Statement
@@ -12,11 +12,6 @@ public interface AcctingGrps
     AssociativeList balSht = balSht(),    // BalSht tree items
                     incStt = incStt();    // IncStt tree items
     
-    static String term( String key )
-    {
-    	return HashMap.getByKey(key);
-    }
-    
     /**
      * Creates tree items for BalSht
      * @return Created tree
@@ -26,72 +21,72 @@ public interface AcctingGrps
         AssociativeList groupsList  = new AssociativeList();
 
         groupsList.set( "root", new String[]
-				                { term( "CA" ), 
-				                  term( "LTA" ), 
-				                  term( "CL" ), 
-				                  term( "LTL" ),
-				                  term( "SHE" ) } );
+				                { $( "CA" ), 
+				                  $( "LTA" ), 
+				                  $( "CL" ), 
+				                  $( "LTL" ),
+				                  $( "SHE" ) } );
 
-        groupsList.set( term( "CA" ), new String[]
-                                  { term( "CCE" ),
-                                	term( "STI" ),
-                                	term( "AR" ),
-                                	term( "INV" ),
-                                	term( "PE" ) } );
+        groupsList.set( $( "CA" ), new String[]
+                                  { $( "CCE" ),
+                                	$( "STI" ),
+                                	$( "AR" ),
+                                	$( "INV" ),
+                                	$( "PE" ) } );
 
-        groupsList.set( term( "AR" ), new String[]
-                                   { term( "CR" ),
-                                	 term( "TXR" ),
-                                	 term( "NR" ),
-                                	 term( "DR" ) } );
+        groupsList.set( $( "AR" ), new String[]
+                                   { $( "CR" ),
+                                	 $( "TXR" ),
+                                	 $( "NR" ),
+                                	 $( "DR" ) } );
 
-        groupsList.set( term( "INV" ), new String[]
-                                     { term( "MRZ" ),
-                                       term( "DM" ),
-                                       term( "WIP" ),
-                                       term( "FG" ) } );
+        groupsList.set( $( "INV" ), new String[]
+                                     { $( "MRZ" ),
+                                       $( "DM" ),
+                                       $( "WIP" ),
+                                       $( "FG" ) } );
 		
-        groupsList.set( term( "LTA" ), new String[]
-                                    { term( "FA" ),
-                                      term( "NTA" ),
-                                      term( "LTI" ),
-                                      term( "DPR" ) } );
+        groupsList.set( $( "LTA" ), new String[]
+                                    { $( "FA" ),
+                                      $( "NTA" ),
+                                      $( "LTI" ),
+                                      $( "DPR" ) } );
 
-        groupsList.set( term( "DPR" ), new String[]
-                                    { term( "FAD" ),
-                                      term( "NTAD" ) } );
+        groupsList.set( $( "DPR" ), new String[]
+                                    { $( "FAD" ),
+                                      $( "NTAD" ) } );
 
-        groupsList.set( term( "CL" ), new String[]
-                                   { term( "SVP" ),
-                                	 term( "CCP" ),
-                                	 term( "SR" ),
-                                	 term( "PP" ),
-                                	 term( "TXP" ),
-                                	 term( "AOE" ),
-                                	 term( "IP" ),
-                                	 term( "CPLTD" ),
-                                	 term( "NP" ),
-                                	 term( "BP" ),
-                                	 term( "FPITX" ),
-                                	 term( "DIVP" ) } );
+        groupsList.set( $( "CL" ), new String[]
+                                   { $( "SVP" ),
+                                	 $( "CCP" ),
+                                	 $( "SR" ),
+                                	 $( "PP" ),
+                                	 $( "TXP" ),
+                                	 $( "AOE" ),
+                                	 $( "IP" ),
+                                	 $( "CPLTD" ),
+                                	 $( "NP" ),
+                                	 $( "BP" ),
+                                	 $( "FPITX" ),
+                                	 $( "DIVP" ) } );
 
-        groupsList.set( term( "TXP" ), new String[]
-                                     { term( "INTX" ),
-                                       term( "SLTX" ),
-                                       term( "PRTX" ),
-                                       term( "OTTX" ) } );
+        groupsList.set( $( "TXP" ), new String[]
+                                     { $( "INTX" ),
+                                       $( "SLTX" ),
+                                       $( "PRTX" ),
+                                       $( "OTTX" ) } );
 		
-        groupsList.set( term( "DIVP" ), new String[]
-                                     { term( "PSDIV" ),
-                                       term( "CSDIV" ) } );
+        groupsList.set( $( "DIVP" ), new String[]
+                                     { $( "PSDIV" ),
+                                       $( "CSDIV" ) } );
 
-        groupsList.set( term( "LTL" ), new String[]
-                                     { term( "CRL" ),
-                                       term( "WL" ) } );
+        groupsList.set( $( "LTL" ), new String[]
+                                     { $( "CRL" ),
+                                       $( "WL" ) } );
 
-        groupsList.set( term( "SHE" ), new String[]
-                                    { term( "CST" ),
-                                      term( "RE" ) } );
+        groupsList.set( $( "SHE" ), new String[]
+                                    { $( "CST" ),
+                                      $( "RE" ) } );
 
         return groupsList;
 	
@@ -106,34 +101,34 @@ public interface AcctingGrps
         AssociativeList groupsList = new AssociativeList();
 
         groupsList.set( "root", new String[]
-                                { term( "SLR" ),
-                                  term( "INTI" ),
-                                  term( "INVI" ),
-                                  term( "FEG" ),
-                                  term( "COGS" ),
-                                  term( "OPE" ),
-                                  term( "DPR" ),
-                                  term( "FEXL" ),
-                                  term( "OPRI" ),
-                                  term( "INVL" ),
-                                  term( "IBIT" ),
-                                  term( "INTE" ),
-                                  term( "INCTX" ),
-                                  term( "NI" ) } );
+                                { $( "SLR" ),
+                                  $( "INTI" ),
+                                  $( "INVI" ),
+                                  $( "FEG" ),
+                                  $( "COGS" ),
+                                  $( "OPE" ),
+                                  $( "DPR" ),
+                                  $( "FEXL" ),
+                                  $( "OPRI" ),
+                                  $( "INVL" ),
+                                  $( "IBIT" ),
+                                  $( "INTE" ),
+                                  $( "INCTX" ),
+                                  $( "NI" ) } );
 		
-        groupsList.set( term( "SLR" ), new String[]
-                                     { term( "CRSL" ),
-                                       term( "CSSL" ) } );
+        groupsList.set( $( "SLR" ), new String[]
+                                     { $( "CRSL" ),
+                                       $( "CSSL" ) } );
 		
-        groupsList.set( term( "OPRI" ), new String[]
-                                      { term( "RD" ),
-                                    	term( "DSN" ),
-                                    	term( "PCH" ),
-                                    	term( "PRD" ),
-                                    	term( "MKT" ),
-                                    	term( "DST" ),
-                                    	term( "CSS" ),
-                                    	term( "ADM" ) } );
+        groupsList.set( $( "OPRI" ), new String[]
+                                      { $( "RD" ),
+                                    	$( "DSN" ),
+                                    	$( "PCH" ),
+                                    	$( "PRD" ),
+                                    	$( "MKT" ),
+                                    	$( "DST" ),
+                                    	$( "CSS" ),
+                                    	$( "ADM" ) } );
         return groupsList;
 
     } // End of method ** incStt **

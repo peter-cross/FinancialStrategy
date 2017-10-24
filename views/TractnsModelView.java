@@ -39,6 +39,7 @@ import foundation.UserDialog;
 import interfaces.Utilities;
 
 import static interfaces.Utilities.enterTAcctInfo;
+import static interfaces.Utilities.$;
 
 /**
  * Class TractnsSimulationModel - Modeling accting tractns
@@ -90,7 +91,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	 */
 	private TractnsModelView()
 	{
-		super( HashMap.getByKey("TransModel") );
+		super( $("TransModel") );
 		
 		createArrays();
 		

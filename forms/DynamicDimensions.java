@@ -30,6 +30,7 @@ import interfaces.Constants;
 import static interfaces.Constants.HEIGHT;
 import static interfaces.Constants.WIDTH;
 import static interfaces.Utilities.createModelClass;
+import static interfaces.Utilities.$;
 
 /**
  * Class DynamicDimensions 
@@ -185,10 +186,6 @@ public class DynamicDimensions extends NodeView  implements Constants
         grid.getChildren().add( lbl );
     }
     
-    private static String term( String key )
-    {
-    	return HashMap.getByKey(key);
-    }
     /**
      * Creates a list of Analytical Dimensions for G/L accts
      * @return Associative list of Analytical Dimensions
@@ -197,20 +194,20 @@ public class DynamicDimensions extends NodeView  implements Constants
     {
         AssociativeList d = new AssociativeList();
         
-        d.set( term("A1str"), term("A1") );
-        d.set( term("A2str"), term("A2") );
-        d.set( term("A3str"), term("A3") );
-        d.set( term("A4str"), term("A4") );
-        d.set( term("A5str"), term("A5") );
-        d.set( term("A6str"), term("A6") );
-        d.set( term("A7str"), term("A7") );
-        d.set( term("A8str"), term("A8") );
-        d.set( term("A9str"), term("A9") );
-        d.set( term("A10str"), term("A10") );
-        d.set( term("A11str"), term("A11") );
-        d.set( term("A12str"), term("A12") );
-        d.set( term("A13str"), term("A13") );
-        d.set( term("A14str"), term("A14") );
+        d.set( $("A1str"), $("A1") );
+        d.set( $("A2str"), $("A2") );
+        d.set( $("A3str"), $("A3") );
+        d.set( $("A4str"), $("A4") );
+        d.set( $("A5str"), $("A5") );
+        d.set( $("A6str"), $("A6") );
+        d.set( $("A7str"), $("A7") );
+        d.set( $("A8str"), $("A8") );
+        d.set( $("A9str"), $("A9") );
+        d.set( $("A10str"), $("A10") );
+        d.set( $("A11str"), $("A11") );
+        d.set( $("A12str"), $("A12") );
+        d.set( $("A13str"), $("A13") );
+        d.set( $("A14str"), $("A14") );
     
         return d;
     }

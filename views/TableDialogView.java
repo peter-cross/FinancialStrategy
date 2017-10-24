@@ -56,6 +56,7 @@ import interfaces.Lambda.DialogAction;
 import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.arrayCount;
 import static interfaces.Buttons.newActionButton;
+import static interfaces.Utilities.$;
 
 /**
  *
@@ -1598,7 +1599,7 @@ public class TableDialogView implements Buttons, Encapsulation
     	int index = cell.getTableRow().getIndex();
         
         ArrayList<String> dimsAttr = (ArrayList<String>) elList.get( column.getText() ); 
-        ArrayList<String> acctAttr = (ArrayList<String>) elList.get( HashMap.getByKey("GlAcc") );
+        ArrayList<String> acctAttr = (ArrayList<String>) elList.get( $("GlAcc") );
         
         String initVal = "", accnt = "";
         GLAcctModel account;
