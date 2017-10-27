@@ -152,37 +152,28 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
     {
     	// Get class for new RegistryItemModel object
         Class<T> cls = createModelClass( modelClass );
+        // List of Objects from database
+        List<T> dbObjects = null;
         
-        Method getFromDB = null;
-        Method constructor = null;
-		
         try 
         {
-        	getFromDB = cls.getMethod( "getFromDB", null );
+        	Method getFromDB = cls.getMethod( "getFromDB", null );
+        	
+        	dbObjects = (List<T>) getFromDB.invoke(null);
+    		
 		} 
         catch ( Exception e ) { }
+		
+        Method constructor = null;
 		
         try 
         {
 			constructor = cls.getMethod( "getInstance", Object.class );
 		} 
-        catch ( Exception e ) 
-        { 
-        	return;
-        }
+        catch ( Exception e ) { }
 		
-    	// Get list of Objects from database
-        List<T> dbObjects = null;
-        
-        if ( getFromDB != null )
-			try 
-        	{
-				dbObjects = (List<T>) getFromDB.invoke(null);
-			} 
-        	catch ( Exception e ) {};
-
-        // If list is not empty
-        if ( dbObjects != null && dbObjects.size() > 0 )
+    	// If list is not empty
+        if ( dbObjects != null && dbObjects.size() > 0 && constructor != null )
             // Loop for each Object
             for ( T obj : dbObjects )
 				try 

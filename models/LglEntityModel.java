@@ -19,7 +19,7 @@ import forms.TableOutput;
 import interfaces.Utilities;
 
 import static interfaces.Utilities.getListElementBy;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Class LglEntityModel 
@@ -30,7 +30,7 @@ public class LglEntityModel extends RegistryItemModel
 {
     protected static  LinkedHashSet  list;       // List of Registry Items
     
-    private static final String lglEntityStr = $( "LglEntity" );
+    private static final String lglEntityStr = hash( "LglEntity" );
     
     /**
      * Get LglEntityModel object by Lgl Entity name
@@ -90,7 +90,7 @@ public class LglEntityModel extends RegistryItemModel
         hdr.validation = validationCode( hdr.labelName );
         header[0][1] = hdr;
         
-        hdr = new DialogElement( $( "LglName" ) +  "   " );
+        hdr = new DialogElement( hash( "LglName" ) +  "   " );
         hdr.valueType = "Text";
         hdr.width = 300;
         hdr.textValue = fieldTextValue( "legalName" );
@@ -127,14 +127,14 @@ public class LglEntityModel extends RegistryItemModel
         TableElement[][] table = new TableElement[1][2];
         TableElement tblEl;
         
-        tblEl = new TableElement( $("ChOfAccs") + " Name" );
+        tblEl = new TableElement( hash("ChOfAccs") + " Name" );
         tblEl.width = 200;
         tblEl.editable = false;
         tblEl.textValue = (String[]) fields.get( "chartName" );
         tblEl.valueType = "Text";
         table[0][0] = tblEl;
         
-        tblEl = new TableElement( $("ChOfAccs") );
+        tblEl = new TableElement( hash("ChOfAccs") );
         tblEl.width = 250;
         tblEl.editable = false;
         tblEl.textValue = (String[]) fields.get( "chOfAccs" );

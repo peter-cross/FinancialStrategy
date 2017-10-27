@@ -13,7 +13,7 @@ import entities.ChOfAccs;
 import entities.Crcy;
 import entities.HashMap;
 
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 import static interfaces.Utilities.getListElementBy;
 
 /**
@@ -24,7 +24,7 @@ public class ChOfAccsModel extends RegistryItemModel
 {
     protected static  LinkedHashSet list;       // List of Items
     
-    private static final String chOfAccsStr = $( "ChOfAccs" );
+    private static final String chOfAccsStr = hash( "ChOfAccs" );
     
     /**
      * Gets ChOfAcc by its name
@@ -150,7 +150,7 @@ public class ChOfAccsModel extends RegistryItemModel
         hdr.validation = validationCode( hdr.labelName );
         header[0][1] = hdr;
         
-        hdr = new DialogElement( $( "Crcy" ));
+        hdr = new DialogElement( hash( "Crcy" ));
         hdr.attributeName = "crcy";
         hdr.valueType = "List";
         hdr.list = CrcyModel.createList()[0];

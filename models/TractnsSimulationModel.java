@@ -24,7 +24,7 @@ import foundation.AssociativeList;
 
 import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.getListIndex;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Class TractnsSimulationModel - Stores data for displaying Tractns Model
@@ -36,7 +36,7 @@ public class TractnsSimulationModel extends RegistryItemModel
     
 	private static	ArrayList<LglEntityModel> entities;	// List of Lgl Entities
 	
-	private static final String transModelStr = $("TransModel");
+	private static final String transModelStr = hash("TransModel");
 	
 	private static String tractnsModelField = "tractnsModel";
 		

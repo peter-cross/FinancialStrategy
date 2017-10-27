@@ -30,7 +30,7 @@ import interfaces.Constants;
 import static interfaces.Constants.HEIGHT;
 import static interfaces.Constants.WIDTH;
 import static interfaces.Utilities.createModelClass;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Class DynamicDimensions 
@@ -194,20 +194,20 @@ public class DynamicDimensions extends NodeView  implements Constants
     {
         AssociativeList d = new AssociativeList();
         
-        d.set( $("A1str"), $("A1") );
-        d.set( $("A2str"), $("A2") );
-        d.set( $("A3str"), $("A3") );
-        d.set( $("A4str"), $("A4") );
-        d.set( $("A5str"), $("A5") );
-        d.set( $("A6str"), $("A6") );
-        d.set( $("A7str"), $("A7") );
-        d.set( $("A8str"), $("A8") );
-        d.set( $("A9str"), $("A9") );
-        d.set( $("A10str"), $("A10") );
-        d.set( $("A11str"), $("A11") );
-        d.set( $("A12str"), $("A12") );
-        d.set( $("A13str"), $("A13") );
-        d.set( $("A14str"), $("A14") );
+        d.set( hash("A1str"), hash("A1") );
+        d.set( hash("A2str"), hash("A2") );
+        d.set( hash("A3str"), hash("A3") );
+        d.set( hash("A4str"), hash("A4") );
+        d.set( hash("A5str"), hash("A5") );
+        d.set( hash("A6str"), hash("A6") );
+        d.set( hash("A7str"), hash("A7") );
+        d.set( hash("A8str"), hash("A8") );
+        d.set( hash("A9str"), hash("A9") );
+        d.set( hash("A10str"), hash("A10") );
+        d.set( hash("A11str"), hash("A11") );
+        d.set( hash("A12str"), hash("A12") );
+        d.set( hash("A13str"), hash("A13") );
+        d.set( hash("A14str"), hash("A14") );
     
         return d;
     }

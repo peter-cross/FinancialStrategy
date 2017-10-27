@@ -10,7 +10,7 @@ import entities.Crcy;
 import forms.DialogElement;
 
 import static interfaces.Utilities.getListElementBy;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Class CrcyModel - to store a list of foreign crcies
@@ -20,7 +20,7 @@ public class CrcyModel extends RegistryItemModel
 {
     private static  LinkedHashSet list;       // List of Items
     
-    private static final String crcyStr = $( "Crcy" );
+    private static final String crcyStr = hash( "Crcy" );
     
     /**
      * Gets string representation of class object

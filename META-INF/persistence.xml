@@ -2,10 +2,17 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="FinancialStrategy" transaction-type="RESOURCE_LOCAL">
 		<description>This program allows to strategically design financial transactions</description>
-		<class>entities.TAccount</class>
-		<class>entities.Transaction</class>
-		<class>entities.TransactionsModel</class>
-		<class>entities.LegalEntity</class>
+		<class>entities.TAcct</class>
+		<class>entities.TrActn</class>
+		<class>entities.TractnsModel</class>
+		<class>entities.TractnsDscr</class>
+		<class>entities.LglEntity</class>
+		<class>entities.LglEntityCharts</class>
+		<class>entities.Crcy</class>
+		<class>entities.ChOfAccs</class>
+		<class>entities.GL</class>
+		<class>entities.GLAnalytics</class>
+		<class>entities.HashMap</class>
 		<properties>
 		    <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/strategy"/>

@@ -3,7 +3,7 @@ package models;
 import javafx.stage.Stage;
 import forms.TreeDialog;
 import interfaces.AcctingGrps;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Class BSTree - creates BalSht Tree object
@@ -11,7 +11,7 @@ import static interfaces.Utilities.$;
  */
 public class BSTree extends TreeDialog implements AcctingGrps
 {
-	private static String balShtStr = $( "BalSht" );
+	private static String balShtStr = hash( "BalSht" );
 	
     public BSTree( Stage stage )
     {

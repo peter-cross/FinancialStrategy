@@ -21,7 +21,7 @@ import interfaces.Lambda.OnElementChange;
 import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.getListElementBy;
 import static interfaces.Utilities.getListIndex;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Class GLAcctModel - Creates G/L Acct object
@@ -35,7 +35,7 @@ public class GLAcctModel extends RegistryItemModel
     
     private static	ArrayList<ChOfAccsModel> charts;	// List of ChOfAccs
     
-    private final static String glAcctStr = $( "GlAcct" );
+    private final static String glAcctStr = hash( "GlAcct" );
 	
     /**
      * Class constructor
@@ -182,7 +182,7 @@ public class GLAcctModel extends RegistryItemModel
         DialogElement hdr;
         
         // 1st header element on 1st tab
-        hdr = new DialogElement( $( "GlNumber" ) );
+        hdr = new DialogElement( hash( "GlNumber" ) );
         hdr.attributeName = "glNumber";
         hdr.width = 60;
         hdr.shortName = "G/L #";
@@ -191,7 +191,7 @@ public class GLAcctModel extends RegistryItemModel
         header[0][0] = hdr;
         
         // 2nd header element on 1st tab
-        hdr = new DialogElement( $( "AcctName" ) );
+        hdr = new DialogElement( hash( "AcctName" ) );
         hdr.attributeName = "name";
         hdr.width = 255;
         // If field text value is specified - pass it to the form
@@ -200,11 +200,11 @@ public class GLAcctModel extends RegistryItemModel
         header[0][1] = hdr;
         
         // 3rd header element on 1st tab
-        hdr = new DialogElement( $( "AccType" ) );
+        hdr = new DialogElement( hash( "AccType" ) );
         hdr.attributeName = "type";
         hdr.shortName = "Acct Type";
         // Possible text choices for the field
-        hdr.textChoices = new String[]{  $( "BalSht" ), $( "IncStt" ) };
+        hdr.textChoices = new String[]{  hash( "BalSht" ), hash( "IncStt" ) };
         hdr.editable = false;
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "type" );
@@ -214,7 +214,7 @@ public class GLAcctModel extends RegistryItemModel
         header[0][2] = hdr;
         
         // 4th header element on 1st tab
-        hdr = new DialogElement( $( "AccGrp" ) );
+        hdr = new DialogElement( hash( "AccGrp" ) );
         hdr.attributeName = "acctGrp";
         hdr.valueType = "Tree";
         // If field text value is specified - pass it to the form
@@ -232,19 +232,19 @@ public class GLAcctModel extends RegistryItemModel
         header[0][4] = hdr;
         	
         // 6th header element on 1st tab
-        hdr = new DialogElement( $( "FrgnCrcy" ) );
+        hdr = new DialogElement( hash( "FrgnCrcy" ) );
         hdr.attributeName = "frgnCrcy";
         hdr.shortName = "Curr";
-        hdr.checkBoxlabel = $( "FrgnCrcy" ) + " Operations";
+        hdr.checkBoxlabel = hash( "FrgnCrcy" ) + " Operations";
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "frgnCrcy" );
         header[0][5] = hdr;
         
         // 7th header element on 1st tab
-        hdr = new DialogElement( $( "ContraAcct" ) );
+        hdr = new DialogElement( hash( "ContraAcct" ) );
         hdr.attributeName = "contraAcct";
         hdr.shortName = "Cntr";
-        hdr.checkBoxlabel = $( "ContraAcct" );
+        hdr.checkBoxlabel = hash( "ContraAcct" );
         // If field text value is specified - pass it to the form
         hdr.textValue = fieldTextValue( "contraAcct" );
         header[0][6] = hdr;
@@ -261,7 +261,7 @@ public class GLAcctModel extends RegistryItemModel
     {
         return ( elementsList ) -> 
         {
-        	ComboBox acctTypeField = (ComboBox) elementsList.get( $("AccType") );
+        	ComboBox acctTypeField = (ComboBox) elementsList.get( hash("AccType") );
         	
         	if ( acctTypeField == null )
         		return;
@@ -276,7 +276,7 @@ public class GLAcctModel extends RegistryItemModel
         		return;
 
         	// Field name that is effected by element change event
-            String fieldName = $("AccGrp");
+            String fieldName = hash("AccGrp");
             
             // Get reference to element field on the form
             TextField field  = (TextField) elementsList.get( fieldName );
@@ -291,11 +291,11 @@ public class GLAcctModel extends RegistryItemModel
             // If acct type is specified
             if ( !accType.isEmpty() )
                 // If acct type is BalSht
-                if ( accType.equals( $("BalSht") ) )
+                if ( accType.equals( hash("BalSht") ) )
                     // Create BalSht Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new BSTree( st ) );
                 // If acct type is IncStt
-                else if ( accType.equals( $("IncStt") ) )
+                else if ( accType.equals( hash("IncStt") ) )
                     // Create IncStt Tree object and pass it to the form
                     elementsList.set( fieldName + "Object", new ISTree( st ) );
         };
@@ -309,20 +309,20 @@ public class GLAcctModel extends RegistryItemModel
     {
         AssociativeList d = new AssociativeList();
         
-        d.set( $("A1str"), $("A1") );
-        d.set( $("A2str"), $("A2") );
-        d.set( $("A3str"), $("A3") );
-        d.set( $("A4str"), $("A4") );
-        d.set( $("A5str"), $("A5") );
-        d.set( $("A6str"), $("A6") );
-        d.set( $("A7str"), $("A7") );
-        d.set( $("A8str"), $("A8") );
-        d.set( $("A9str"), $("A9") );
-        d.set( $("A10str"), $("A10") );
-        d.set( $("A11str"), $("A11") );
-        d.set( $("A12str"), $("A12") );
-        d.set( $("A13str"), $("A13") );
-        d.set( $("A14str"), $("A14") );
+        d.set( hash("A1str"), hash("A1") );
+        d.set( hash("A2str"), hash("A2") );
+        d.set( hash("A3str"), hash("A3") );
+        d.set( hash("A4str"), hash("A4") );
+        d.set( hash("A5str"), hash("A5") );
+        d.set( hash("A6str"), hash("A6") );
+        d.set( hash("A7str"), hash("A7") );
+        d.set( hash("A8str"), hash("A8") );
+        d.set( hash("A9str"), hash("A9") );
+        d.set( hash("A10str"), hash("A10") );
+        d.set( hash("A11str"), hash("A11") );
+        d.set( hash("A12str"), hash("A12") );
+        d.set( hash("A13str"), hash("A13") );
+        d.set( hash("A14str"), hash("A14") );
     
         return d;
     }

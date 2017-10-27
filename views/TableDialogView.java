@@ -25,9 +25,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 
 import java.util.List;
-
-import entities.HashMap;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.File;
@@ -56,7 +53,7 @@ import interfaces.Lambda.DialogAction;
 import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.arrayCount;
 import static interfaces.Buttons.newActionButton;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  *
@@ -103,11 +100,20 @@ public class TableDialogView implements Buttons, Encapsulation
 
         int headElms = arrayCount( dialogElement[0] );  // Number of head elements
         
-        // Create array for row counters
+        return getTableItemsAndReturn( headElms );
+        
+    } // End of method ** result **
+    
+    /**
+     * Gets items in table part of the form and returns them
+     * @param headElms Number of head elements in the form
+     * @return Info in table part of the form
+     */
+    private <T> T getTableItemsAndReturn( int headElms )
+    {
+    	// Create array for row counters
         int[] rows = new int[tableElement.length];
-
         int maxRows = 0;
-	
         ObservableList items;
         
         // Loop to count the number of rows on each tab and find the max
@@ -137,9 +143,14 @@ public class TableDialogView implements Buttons, Encapsulation
 		
         // Return output object
         return (T)resultOutput( headElms, maxRows );
-
-    } // End of method ** result **
+    }
     
+    /**
+     * Returns input in Table part of form
+     * @param headElms Number of head elements
+     * @param maxRows Maximum number of rows
+     * @return Object containing info in table part of the form
+     */
     private TableOutput resultOutput( int headElms, int maxRows )
     {
     	// Create output object
@@ -1599,7 +1610,7 @@ public class TableDialogView implements Buttons, Encapsulation
     	int index = cell.getTableRow().getIndex();
         
         ArrayList<String> dimsAttr = (ArrayList<String>) elList.get( column.getText() ); 
-        ArrayList<String> acctAttr = (ArrayList<String>) elList.get( $("GlAcc") );
+        ArrayList<String> acctAttr = (ArrayList<String>) elList.get( hash("GlAcc") );
         
         String initVal = "", accnt = "";
         GLAcctModel account;

@@ -1,7 +1,7 @@
 package interfaces;
 
 import foundation.AssociativeList;
-import static interfaces.Utilities.$;
+import static interfaces.Utilities.hash;
 
 /**
  * Interface AcctingGrps - To create structures of Balance Sheet and Income Statement
@@ -21,72 +21,72 @@ public interface AcctingGrps
         AssociativeList groupsList  = new AssociativeList();
 
         groupsList.set( "root", new String[]
-				                { $( "CA" ), 
-				                  $( "LTA" ), 
-				                  $( "CL" ), 
-				                  $( "LTL" ),
-				                  $( "SHE" ) } );
+				                { hash( "CA" ), 
+				                  hash( "LTA" ), 
+				                  hash( "CL" ), 
+				                  hash( "LTL" ),
+				                  hash( "SHE" ) } );
 
-        groupsList.set( $( "CA" ), new String[]
-                                  { $( "CCE" ),
-                                	$( "STI" ),
-                                	$( "AR" ),
-                                	$( "INV" ),
-                                	$( "PE" ) } );
+        groupsList.set( hash( "CA" ), new String[]
+                                  { hash( "CCE" ),
+                                	hash( "STI" ),
+                                	hash( "AR" ),
+                                	hash( "INV" ),
+                                	hash( "PE" ) } );
 
-        groupsList.set( $( "AR" ), new String[]
-                                   { $( "CR" ),
-                                	 $( "TXR" ),
-                                	 $( "NR" ),
-                                	 $( "DR" ) } );
+        groupsList.set( hash( "AR" ), new String[]
+                                   { hash( "CR" ),
+                                	 hash( "TXR" ),
+                                	 hash( "NR" ),
+                                	 hash( "DR" ) } );
 
-        groupsList.set( $( "INV" ), new String[]
-                                     { $( "MRZ" ),
-                                       $( "DM" ),
-                                       $( "WIP" ),
-                                       $( "FG" ) } );
+        groupsList.set( hash( "INV" ), new String[]
+                                     { hash( "MRZ" ),
+                                       hash( "DM" ),
+                                       hash( "WIP" ),
+                                       hash( "FG" ) } );
 		
-        groupsList.set( $( "LTA" ), new String[]
-                                    { $( "FA" ),
-                                      $( "NTA" ),
-                                      $( "LTI" ),
-                                      $( "DPR" ) } );
+        groupsList.set( hash( "LTA" ), new String[]
+                                    { hash( "FA" ),
+                                      hash( "NTA" ),
+                                      hash( "LTI" ),
+                                      hash( "DPR" ) } );
 
-        groupsList.set( $( "DPR" ), new String[]
-                                    { $( "FAD" ),
-                                      $( "NTAD" ) } );
+        groupsList.set( hash( "DPR" ), new String[]
+                                    { hash( "FAD" ),
+                                      hash( "NTAD" ) } );
 
-        groupsList.set( $( "CL" ), new String[]
-                                   { $( "SVP" ),
-                                	 $( "CCP" ),
-                                	 $( "SR" ),
-                                	 $( "PP" ),
-                                	 $( "TXP" ),
-                                	 $( "AOE" ),
-                                	 $( "IP" ),
-                                	 $( "CPLTD" ),
-                                	 $( "NP" ),
-                                	 $( "BP" ),
-                                	 $( "FPITX" ),
-                                	 $( "DIVP" ) } );
+        groupsList.set( hash( "CL" ), new String[]
+                                   { hash( "SVP" ),
+                                	 hash( "CCP" ),
+                                	 hash( "SR" ),
+                                	 hash( "PP" ),
+                                	 hash( "TXP" ),
+                                	 hash( "AOE" ),
+                                	 hash( "IP" ),
+                                	 hash( "CPLTD" ),
+                                	 hash( "NP" ),
+                                	 hash( "BP" ),
+                                	 hash( "FPITX" ),
+                                	 hash( "DIVP" ) } );
 
-        groupsList.set( $( "TXP" ), new String[]
-                                     { $( "INTX" ),
-                                       $( "SLTX" ),
-                                       $( "PRTX" ),
-                                       $( "OTTX" ) } );
+        groupsList.set( hash( "TXP" ), new String[]
+                                     { hash( "INTX" ),
+                                       hash( "SLTX" ),
+                                       hash( "PRTX" ),
+                                       hash( "OTTX" ) } );
 		
-        groupsList.set( $( "DIVP" ), new String[]
-                                     { $( "PSDIV" ),
-                                       $( "CSDIV" ) } );
+        groupsList.set( hash( "DIVP" ), new String[]
+                                     { hash( "PSDIV" ),
+                                       hash( "CSDIV" ) } );
 
-        groupsList.set( $( "LTL" ), new String[]
-                                     { $( "CRL" ),
-                                       $( "WL" ) } );
+        groupsList.set( hash( "LTL" ), new String[]
+                                     { hash( "CRL" ),
+                                       hash( "WL" ) } );
 
-        groupsList.set( $( "SHE" ), new String[]
-                                    { $( "CST" ),
-                                      $( "RE" ) } );
+        groupsList.set( hash( "SHE" ), new String[]
+                                    { hash( "CST" ),
+                                      hash( "RE" ) } );
 
         return groupsList;
 	
@@ -101,34 +101,34 @@ public interface AcctingGrps
         AssociativeList groupsList = new AssociativeList();
 
         groupsList.set( "root", new String[]
-                                { $( "SLR" ),
-                                  $( "INTI" ),
-                                  $( "INVI" ),
-                                  $( "FEG" ),
-                                  $( "COGS" ),
-                                  $( "OPE" ),
-                                  $( "DPR" ),
-                                  $( "FEXL" ),
-                                  $( "OPRI" ),
-                                  $( "INVL" ),
-                                  $( "IBIT" ),
-                                  $( "INTE" ),
-                                  $( "INCTX" ),
-                                  $( "NI" ) } );
+                                { hash( "SLR" ),
+                                  hash( "INTI" ),
+                                  hash( "INVI" ),
+                                  hash( "FEG" ),
+                                  hash( "COGS" ),
+                                  hash( "OPE" ),
+                                  hash( "DPR" ),
+                                  hash( "FEXL" ),
+                                  hash( "OPRI" ),
+                                  hash( "INVL" ),
+                                  hash( "IBIT" ),
+                                  hash( "INTE" ),
+                                  hash( "INCTX" ),
+                                  hash( "NI" ) } );
 		
-        groupsList.set( $( "SLR" ), new String[]
-                                     { $( "CRSL" ),
-                                       $( "CSSL" ) } );
+        groupsList.set( hash( "SLR" ), new String[]
+                                     { hash( "CRSL" ),
+                                       hash( "CSSL" ) } );
 		
-        groupsList.set( $( "OPRI" ), new String[]
-                                      { $( "RD" ),
-                                    	$( "DSN" ),
-                                    	$( "PCH" ),
-                                    	$( "PRD" ),
-                                    	$( "MKT" ),
-                                    	$( "DST" ),
-                                    	$( "CSS" ),
-                                    	$( "ADM" ) } );
+        groupsList.set( hash( "OPRI" ), new String[]
+                                      { hash( "RD" ),
+                                    	hash( "DSN" ),
+                                    	hash( "PCH" ),
+                                    	hash( "PRD" ),
+                                    	hash( "MKT" ),
+                                    	hash( "DST" ),
+                                    	hash( "CSS" ),
+                                    	hash( "ADM" ) } );
         return groupsList;
 
     } // End of method ** incStt **
