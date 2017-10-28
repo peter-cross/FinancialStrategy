@@ -10,7 +10,12 @@ import foundation.AssociativeList;
  */
 public interface Lambda 
 {
-    // Interface for menu action listener
+    public interface DialogRunnable extends Runnable
+    {
+    	void run( Event e );
+    }
+	
+	// Interface for menu action listener
     public interface MenuItemAction
     {
     	void run( Event e );

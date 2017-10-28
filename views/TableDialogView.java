@@ -1147,7 +1147,6 @@ public class TableDialogView implements Buttons, Encapsulation
                     // If item is not empty
                     if ( !empty  )
                     	updateFileChooserItem( this );
-                    	
                     else
                         setGraphic( null );
 
@@ -1190,14 +1189,11 @@ public class TableDialogView implements Buttons, Encapsulation
             // Create text field object
             TextField textField = createTextField();
 
-            // Create button object
-            Button btn = createFileChooserBtn( textField );
-
             // Create horizontal box for file field
             HBox fileField = new HBox(); 
             textField.setPrefHeight(20);
             // Add text field and button to file field box
-            fileField.getChildren().addAll( textField, btn );
+            fileField.getChildren().addAll( textField, createFileChooserBtn( textField ) );
 
             // Set value of created text field to what is stored in current data model cell
             textField.setText( (String) row.get(colNum).get() );
@@ -1218,14 +1214,11 @@ public class TableDialogView implements Buttons, Encapsulation
     	// Create text field object
         TextField textField = createTextField();
 
-        // Create button object
-        Button btn = createFileChooserBtn( textField );
-
         // Create horizontal box for file field
         HBox fileField = new HBox(); 
         
         // Add text field and button to file field box
-        fileField.getChildren().addAll( textField, btn );
+        fileField.getChildren().addAll( textField, createFileChooserBtn( textField ) );
 
         // Set file field as graphic to display
         cell.setGraphic( fileField ); 
@@ -1923,7 +1916,7 @@ public class TableDialogView implements Buttons, Encapsulation
             // Create button object with anonymous class extending TableCell
             TableCell controlButton = new TableCell()
             {
-            	TableView tbl =  ((TableColumn) e).getTableView();
+            	TableView tbl = ((TableColumn) e).getTableView();
                 
                 @Override  
                 public void startEdit() 

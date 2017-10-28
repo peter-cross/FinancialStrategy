@@ -69,6 +69,11 @@ public class TAcct
 	 */
 	public TAcct( String acctName, MouseEvent e, ChOfAccs chart )
 	{
+		update( acctName, e, chart );
+	}
+	
+	public void update( String acctName, MouseEvent e, ChOfAccs chart )
+	{
 		name = Cipher.crypt( acctName );
 		col = TractnsModelView.getColumn( e );
 		row = TractnsModelView.getRow( e );
@@ -77,6 +82,13 @@ public class TAcct
 		corrCx = new ArrayList<>();
                 
 		chOfAccs = chart;
+	}
+	
+	public void update( String acctName, MouseEvent e, ChOfAccs chart, GL glAcc )
+	{
+		update( acctName, e, chart );
+	
+		gl = glAcc;
 	}
 	
 	/**
@@ -88,9 +100,7 @@ public class TAcct
 	 */
 	public TAcct( String acctName, MouseEvent e, ChOfAccs chart, GL glAcc )
 	{
-		this( acctName, e, chart );
-	
-		gl = glAcc;
+		update( acctName, e, chart, glAcc );
 	}
 	
 	/**
@@ -175,6 +185,14 @@ public class TAcct
 	public GL getGL()
 	{
 		return gl;
+	}
+	
+	/**
+	 * Returns name of T-acct
+	 */
+	public String getName()
+	{
+		return Cipher.decrypt(name);
 	}
 	
 	/**
@@ -389,6 +407,8 @@ public class TAcct
 		// Get index for ChOfAccs for current Tab
 		int idx = chartIndex();
 		
+		clearTAcctNameCells( idx );
+		
 		// If G/L Acct for T-acct is specified
 		if ( gl != null )
 			// Display number of G/L acct above T-acct name
@@ -500,16 +520,21 @@ public class TAcct
 		TractnsModelView.addToDelTAccts( this );
 	}
 	
+	private void clearTAcctNameCells( int idx )
+	{
+		// Clear content around T-acct's cell to the top and to the right
+		tg[idx].clearCellContent( row-1, col );
+		tg[idx].clearCellContent( row-1, col+1 );
+		tg[idx].clearCellContent( row, col+1 );
+	}
+	
 	/**
 	 * Clears T-Acct cells and cells to the top and to the right of 1st cell
 	 * @param idx ChOfAccs index
 	 */
 	private void clearTAcctCellsAndArountdIt( int idx )
 	{
-		// Clear content around T-acct's cell to the top and to the right
-		tg[idx].clearCellContent( row-1, col );
-		tg[idx].clearCellContent( row-1, col+1 );
-		tg[idx].clearCellContent( row, col+1 );
+		clearTAcctNameCells( idx );
 		
 		// Loop though each row of T-acct
 		for ( int r = row; r <= getMaxRow(); r++ )

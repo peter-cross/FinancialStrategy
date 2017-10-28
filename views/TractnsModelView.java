@@ -6,14 +6,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.collections.ObservableList;
 
 import java.util.Vector;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ import java.util.List;
 import application.Database;
 import application.Main;
 import entities.ChOfAccs;
-import entities.HashMap;
 import entities.GL;
 import entities.LglEntity;
 import entities.TAcct;
@@ -40,7 +40,7 @@ import interfaces.Utilities;
 
 import static interfaces.Utilities.enterTAcctInfo;
 import static interfaces.Utilities.hash;
-
+import static interfaces.Utilities.displayMessage;
 /**
  * Class TractnsSimulationModel - Modeling accting tractns
  * @author Peter Cross
@@ -392,8 +392,12 @@ public class TractnsModelView extends NodeView implements Utilities
 			
 			// Otherwise
 			else
-				// Assign event type Mouse Click event
-				eventType = MouseEventType.CLICK;
+				if ( ((MouseEvent) e).getButton() == MouseButton.PRIMARY )
+					// Assign event type Mouse Click event
+					eventType = MouseEventType.CLICK;
+				else
+					// Assign event type Mouse Right Click event
+					eventType = MouseEventType.RIGHT_CLICK;
 		}
 		catch ( Exception ex )
 		{
@@ -481,6 +485,10 @@ public class TractnsModelView extends NodeView implements Utilities
 			else if ( eventType == MouseEventType.DOUBLE_CLICK )
 				// Clear grid cell on which click happened
 	    		clearCell(e);	
+    		
+    		// If this is RightClick event
+			else if ( eventType == MouseEventType.RIGHT_CLICK )
+				new UserDialog( () -> onRightClickCell(e) ).start();
 	    	
 			// Remove last mouse event from the variable
     		mouseEvent = null;
@@ -513,6 +521,49 @@ public class TractnsModelView extends NodeView implements Utilities
 		else
 			// Invoke selecting cell
 			selectCell(e);
+	}
+	
+	/**
+	 * Handles mouse Right Click event
+	 * @param e
+	 */
+	private void onRightClickCell( MouseEvent e )
+	{
+		TAcct tAcc = getCurrentCell( e );
+		
+		if ( tAcc != null )
+		{
+			GL gl = tAcc.getGL();
+			int chartIndex = 0;
+			
+			ChOfAccs chart = selectedChOfAccs();
+			if ( chart != null )
+				chartIndex = ChOfAccsModel.getIndexByName( chart.getName() );
+			
+			String glNum = gl.getGlNumber();
+			String accName = tAcc.getName();
+			
+			// Enter T-acct info through the dialog window
+	        String[] tAccInfo = enterTAcctInfo( this, chartIndex, fields, glNum, accName );
+	        
+	        // Get G/L number and name
+	        String glCode = tAccInfo[0];
+	        String acctName = tAccInfo[1];
+	        
+	        // If G/L number is specified
+	        if ( glCode == null || glCode.isEmpty() )
+		        // Enter T-acct name and create object for T-acct
+	        	tAcc.update( acctName, e, chart );
+	        else
+	        {
+	        	GL glAcc = getGLAcct( glCode, chartIndex );
+	        	
+	        	// Create T-acct database entity object
+	        	tAcc.update( acctName, e, chart, glAcc );
+	        }
+			
+	        tAcc.drawTAcct();
+		}
 	}
 	
 	/**
@@ -1237,7 +1288,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	 */
 	private enum MouseEventType
     {
-    	CLICK, DOUBLE_CLICK;
+    	CLICK, DOUBLE_CLICK, RIGHT_CLICK;
     }
 	
 } // End of class ** TractnsModelView **

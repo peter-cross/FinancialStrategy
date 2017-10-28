@@ -95,6 +95,11 @@ public interface Utilities extends Encapsulation
 	 */
 	public static String[] enterTAcctInfo( NodeView owner, int chartIndex, AssociativeList fields )
 	{
+		return enterTAcctInfo( owner, chartIndex, fields, "", "" );
+	}
+	
+	public static String[] enterTAcctInfo( NodeView owner, int chartIndex, AssociativeList fields, String dftGlAcct, String dftAcctName )
+	{
 		// Create dialog element for dialog field
 		DialogElement glAcct = new DialogElement( glAcctStr );
 		glAcct.width = 70;
@@ -104,10 +109,15 @@ public interface Utilities extends Encapsulation
 		// Set lambda expression that will be executed on change of field value
 		glAcct.onChange = onGLAcctChange( chartIndex );
 		
+		if ( !dftGlAcct.isEmpty() )
+			glAcct.textValue = dftGlAcct;
+		
 		String acctNameStr = "Account Name";
 		
 		// Create dialog element for dialog field
 		DialogElement acctName = new DialogElement( acctNameStr );
+		if ( !dftAcctName.isEmpty() )
+			acctName.textValue = dftAcctName;
 		
 		// Invoke OneColumnDialog window and return entered information
 		String[][] result = new OneColumnView( owner, "Enter " + acctNameStr, new DialogElement[]{ glAcct, acctName } ).result();
@@ -115,13 +125,17 @@ public interface Utilities extends Encapsulation
 		// If there is entered information - return it, otherwise - just return empty string
 		return result != null ? result[0] : new String[] {null, null};
 	}
-	
 	/**
 	 * Displays window to enter information about Tractn description
 	 * @param owner Object from which to invoke this new form
 	 * @return Result as string array
 	 */
 	public static String[] enterTractnInfo( NodeView owner )
+	{
+		return enterTractnInfo( owner, "" );
+	}
+	
+	public static String[] enterTractnInfo( NodeView owner, String dftTractnDscr )
 	{
 		DialogElement tractnCode = new DialogElement( tractnStr );
 		tractnCode.width = 100;
@@ -132,6 +146,9 @@ public interface Utilities extends Encapsulation
 		String tractnDescr = "Description";
 		
 		DialogElement tractnDscr = new DialogElement( tractnDescr );
+		
+		if ( !dftTractnDscr.isEmpty() )
+			tractnDscr.textValue = dftTractnDscr;
 		
 		String[][] result = new OneColumnView( owner, "Enter " + tractnStr + " " + tractnDescr, new DialogElement[]{ tractnCode, tractnDscr } ).result();
 		
@@ -166,11 +183,14 @@ public interface Utilities extends Encapsulation
 				// Get value of form field with name 'Acct Name'
 				TextField nameField  = (TextField) elList.get( "Account Name" );
 				
-				// Make field non-editable
-				nameField.setEditable( false );
-	        
-	            // Set G/L acct model name as text value of 'Acct Name' field
-				nameField.setText( glModel.getName() );
+				if ( nameField  != null )
+				{
+					// Make field non-editable
+					nameField.setEditable( false );
+		        
+		            // Set G/L acct model name as text value of 'Acct Name' field
+					nameField.setText( glModel.getName() );
+				}
 			}
 		};
 	}
