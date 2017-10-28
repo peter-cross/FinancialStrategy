@@ -27,6 +27,7 @@ import javafx.collections.FXCollections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ import foundation.Item;
 import interfaces.Buttons;
 import interfaces.Encapsulation;
 import interfaces.Lambda.DialogAction;
+import interfaces.Lambda.ElementValidation;
 
 import static interfaces.Utilities.createModelClass;
 import static interfaces.Utilities.arrayCount;
@@ -90,8 +92,6 @@ public class TableDialogView implements Buttons, Encapsulation
         // Get dialog elements for current object
         DialogElement[][] dialogElement = (DialogElement[][]) dlgElementsList.get( "dialogElement" );
         
-        int numRows; // Number of rows passed
-        
         // Add buttons to the form
         addTableButtons();
         
@@ -115,6 +115,7 @@ public class TableDialogView implements Buttons, Encapsulation
         int[] rows = new int[tableElement.length];
         int maxRows = 0;
         ObservableList items;
+        int numRows; // Number of rows passed
         
         // Loop to count the number of rows on each tab and find the max
         // Loop for each table element
@@ -270,9 +271,9 @@ public class TableDialogView implements Buttons, Encapsulation
         {
             // Get items for for current table view
         	ObservableList items = (ObservableList) table.get(t).getItems();
-	
         	int numRows = items.size();
-            
+        	ElementValidation elVldtn;
+        	
             // Loop for each table row
             for ( int i = 0; i < numRows; i++ )
             {
@@ -288,10 +289,12 @@ public class TableDialogView implements Buttons, Encapsulation
                     if ( val == null )
                         val = "";
 
+                    elVldtn = tableElement[t][j].validation;
+                    
                     // If there is lambda expression for validating field value and row is not empty
-                    if ( tableElement[t][j].validation != null && rowEntered(i, t) )
+                    if ( elVldtn != null && rowEntered(i, t) )
                         // If the current element does not pass validation
-                        if ( !tableElement[t][j].validation.run( val ) )
+                        if ( !elVldtn.run( val ) )
                             return false;
 
                 } // End for loop ** each table column **
@@ -382,9 +385,6 @@ public class TableDialogView implements Buttons, Encapsulation
         TableCell cell;     // To hold current table cell		
         int barWidth = 15;	// Set scroll bar width
         
-        // Create Tab pane object
-        TabPane tabPane = createTabPane(); 
-
         // Create main arrays: table, elementsList, data
         createMainArrays();
 	
@@ -393,6 +393,9 @@ public class TableDialogView implements Buttons, Encapsulation
         // Set this object as TableDialog
         elList.set( "TableDialog", this );
         
+        // Create Tab pane object
+        TabPane tabPane = createTabPane(); 
+
         // Loop for each table tab
         for ( int i = 0; i < tableElement.length; i++ )
         {
@@ -545,13 +548,14 @@ public class TableDialogView implements Buttons, Encapsulation
         final String labelName = tblEl.columnName;
         
         ArrayList<String> initVal = new ArrayList<>();
+        String[] elTxtVal = tblEl.textValue;
         
         // If there is text value specified for column rows
-        if ( tblEl.textValue != null && tblEl.textValue.length > 0 )
+        if ( elTxtVal != null && elTxtVal.length > 0 )
         	// Loop for text values for each row
-            for ( int v = 0; v < tblEl.textValue.length; v++ )
+            for ( int v = 0; v < elTxtVal.length; v++ )
             	// Add text value to ArrayList for initialization
-                initVal.add( tblEl.textValue[v] );
+                initVal.add( elTxtVal[v] );
         
         // Create data element for current column
         elList.set( column.getText(), initVal );
@@ -573,24 +577,26 @@ public class TableDialogView implements Buttons, Encapsulation
      */
     private void createTableElement( TableColumn column, TableElement tblEl, AssociativeList elList )
     {
+    	String elValType = tblEl.valueType;
+        
     	// If List reference  or text choices are passed
         if ( tblEl.textChoices.length > 0 || tblEl.list != null )
             createComboBox( column, tblEl, elList );
-
+        
         // If field should contain a date
-        else if ( tblEl.valueType.contains( "Date" ) )
+        else if ( elValType.contains( "Date" ) )
             createDateDialog( column, tblEl, elList );
 		
         // If field should contain File type field
-        else if ( tblEl.valueType.contains( "File" ) )
+        else if ( elValType.contains( "File" ) )
             createFileChooser( column, tblEl, elList );
 
         // If field should contain Tree List type field
-        else if ( tblEl.valueType.contains( "Tree" ) )
+        else if ( elValType.contains( "Tree" ) )
             createTreeList( column, tblEl, elList );
         
         // If field should contain Analytical Dimensions field
-        else if ( tblEl.valueType.contains( "Dimension" ) )
+        else if ( elValType.contains( "Dimension" ) )
             createDimensions( column, tblEl, elList );
         
         // Otherwise - it's a text field    
@@ -650,7 +656,7 @@ public class TableDialogView implements Buttons, Encapsulation
      */
     public void updateTableView( TableView<ArrayList<Data>> tbl )
     {
-        int tabNum = table.indexOf(tbl);
+        int tabNum = table.indexOf( tbl );
         
         // Update Table View 
         tbl.setItems( null );
@@ -771,7 +777,6 @@ public class TableDialogView implements Buttons, Encapsulation
     private int calculateColumnsWidth( int tabNum )
     {
         int barWidth = 8; // Set scroll bar width
-        
         int columnsWidth =  barWidth + ctrlBtnWidth; // For empty column and  control button column
         
         // Get the number of columns for table in specified tab
@@ -805,23 +810,21 @@ public class TableDialogView implements Buttons, Encapsulation
     private void createComboBox( TableColumn column, TableElement tblEl, AssociativeList elList )
     {
     	String[] textChoices = null; // Array for text choices
-		
+		LinkedHashSet tblLst = tblEl.list;
+    	
         // If there are choices specified for the current element
         if ( tblEl.textChoices.length > 0 )
             textChoices = tblEl.textChoices;
 
         // If List reference is passed
-        else if ( tblEl.list != null )
+        else if ( tblLst != null )
         {
             Item itm;
             
-            // Get size of list elements for combo box
-            int listSize = tblEl.list.size();
-            
             // Create string array for text choices
-            textChoices = new String[ listSize ];
+            textChoices = new String[ tblLst.size() ];
             
-            Iterator it = tblEl.list.iterator();
+            Iterator it = tblLst.iterator();
             int p = 0;
             
             // Fill array of text choices with text values
@@ -945,15 +948,7 @@ public class TableDialogView implements Buttons, Encapsulation
         // Get current row number
         int rowNum = cell.getTableRow().getIndex();
             
-        ArrayList<Data> row;
-        
-        // If row number is specified
-        if ( rowNum >= 0 )
-            // Get row from data model
-            row = (ArrayList<Data>) tblItems.get( rowNum );
-        else
-            // Get row from table view
-            row = (ArrayList<Data>) cell.getTableRow().getItem();
+        ArrayList<Data> row = getDataRow( rowNum, cell, tblItems );
         
         String cellVal = "";
         
@@ -970,19 +965,52 @@ public class TableDialogView implements Buttons, Encapsulation
             // Get element value for current column
         	ArrayList<String> attr = elList.get( column.getText() );
             
-        	// If current column element value is not defined
-            if ( attr == null )
-            	// Create there empty ArrayList
-                attr = new ArrayList<>();
-            
-            // If current row number is greater than size of Column ArrayList
-            if ( rowNum >= attr.size() )
-            	// Add Cell value to ArrayList
-                attr.add( cellVal );
-            else
-            	// Set Cell value for current row
-                attr.set( rowNum, cellVal );
+        	setCellAttr( attr, rowNum, cellVal );
         } 
+    }
+    
+    /**
+     * Sets Cell's attribute
+     * @param attr ArrayList of attributes for the cell
+     * @param rowNum Row number
+     * @param txtVal Text value of attribute
+     */
+    private void setCellAttr( ArrayList<String> attr, int rowNum, String txtVal )
+    {
+    	// If current column element value is not defined
+        if ( attr == null )
+        	// Create there empty ArrayList
+            attr = new ArrayList<>();
+        
+        // If current row number is greater than size of Column ArrayList
+        if ( rowNum >= attr.size() )
+        	// Add Cell value to ArrayList
+            attr.add( txtVal );
+        else
+        	// Set Cell value for current row
+            attr.set( rowNum, txtVal );
+    }
+    
+    /**
+     * Gets Data row for table view items
+     * @param rowNum Row number
+     * @param cell Current cell
+     * @param tblItems Table items of table view
+     * @return ArrayList with Data items of specified row
+     */
+    private ArrayList<Data> getDataRow( int rowNum, ComboBoxTableCell cell, ObservableList tblItems )
+    {
+    	ArrayList<Data> row;
+        
+        // If row number is specified
+        if ( rowNum >= 0 )
+            // Get row from data model
+            row = (ArrayList<Data>) tblItems.get( rowNum );
+        else
+            // Get row from table view
+            row = (ArrayList<Data>) cell.getTableRow().getItem();
+        
+        return row;
     }
     
     /**

@@ -83,10 +83,7 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         		// Do query for Entity class in DB and return results of query
         		return (List<T>)lst;
             }
-        	catch ( Exception e )
-        	{
-        		return null;
-        	}
+        	catch ( Exception e ) {	}
 		
         return null;
     }
@@ -154,25 +151,18 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         Class<T> cls = createModelClass( modelClass );
         // List of Objects from database
         List<T> dbObjects = null;
-        
+        Method constructor = null;
+		
         try 
         {
         	Method getFromDB = cls.getMethod( "getFromDB", null );
         	
         	dbObjects = (List<T>) getFromDB.invoke(null);
-    		
+        	constructor = cls.getMethod( "getInstance", Object.class );
 		} 
         catch ( Exception e ) { }
 		
-        Method constructor = null;
-		
-        try 
-        {
-			constructor = cls.getMethod( "getInstance", Object.class );
-		} 
-        catch ( Exception e ) { }
-		
-    	// If list is not empty
+        // If list is not empty
         if ( dbObjects != null && dbObjects.size() > 0 && constructor != null )
             // Loop for each Object
             for ( T obj : dbObjects )
@@ -235,12 +225,12 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
         
         try 
         {
-        	Class c = createModelClass( typeName );
-            
         	Object obj = fields.get( fieldName );
             
-            if ( c!= null )
-                textValue = (String) c.getMethod( "toString" ).invoke(obj);
+        	Class cls = createModelClass( typeName );
+            
+        	if ( cls!= null )
+                textValue = (String) cls.getMethod( "toString" ).invoke(obj);
         }
         catch ( Exception e ) {}
        

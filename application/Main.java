@@ -11,7 +11,7 @@ import interfaces.Utilities;
  * Class Main - starts the program
  * @author Peter Cross
  * requires : eclipselink.jar, 
- * 			  javax.persistence.jar, 
+ *   		  javax.persistence.jar, 
  * 			  javax.transaction-api.jar, 
  * 			  mysql-connector-java.jar
  */
