@@ -4,7 +4,7 @@ import javafx.stage.Stage;
 import javafx.event.Event;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+
 import views.NodeView;
 import views.RegistryView;
 import interfaces.Constants;
@@ -12,8 +12,6 @@ import interfaces.Utilities;
 import foundation.AssociativeList;
 
 import static interfaces.Buttons.newMenuButton;
-
-import entities.HashMap;
 
 /**
  * Class Controller - GUI controller implementation

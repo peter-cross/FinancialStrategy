@@ -11,7 +11,6 @@ import foundation.AssociativeList;
 import application.Database;
 import entities.ChOfAccs;
 import entities.Crcy;
-import entities.HashMap;
 
 import static interfaces.Utilities.hash;
 import static interfaces.Utilities.getListElementBy;

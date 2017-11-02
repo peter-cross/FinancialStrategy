@@ -56,8 +56,7 @@ public class HashMap
 	public static  List[] createList()
     {
     	if ( list == null )
-            //createNewList();
-    		loadListFromDB();
+            loadListFromDB();
         
         return new List[] { list };
     }

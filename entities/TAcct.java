@@ -407,8 +407,6 @@ public class TAcct
 		// Get index for ChOfAccs for current Tab
 		int idx = chartIndex();
 		
-		clearTAcctNameCells( idx );
-		
 		// If G/L Acct for T-acct is specified
 		if ( gl != null )
 			// Display number of G/L acct above T-acct name
@@ -520,21 +518,16 @@ public class TAcct
 		TractnsModelView.addToDelTAccts( this );
 	}
 	
-	private void clearTAcctNameCells( int idx )
-	{
-		// Clear content around T-acct's cell to the top and to the right
-		tg[idx].clearCellContent( row-1, col );
-		tg[idx].clearCellContent( row-1, col+1 );
-		tg[idx].clearCellContent( row, col+1 );
-	}
-	
 	/**
 	 * Clears T-Acct cells and cells to the top and to the right of 1st cell
 	 * @param idx ChOfAccs index
 	 */
 	private void clearTAcctCellsAndArountdIt( int idx )
 	{
-		clearTAcctNameCells( idx );
+		// Clear content around T-acct's cell to the top and to the right
+		tg[idx].clearCellContent( row-1, col );
+		tg[idx].clearCellContent( row-1, col+1 );
+		tg[idx].clearCellContent( row, col+1 );
 		
 		// Loop though each row of T-acct
 		for ( int r = row; r <= getMaxRow(); r++ )

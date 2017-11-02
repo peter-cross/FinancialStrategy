@@ -1,6 +1,5 @@
 package foundation;
 
-import interfaces.Lambda.DialogRunnable;
 import javafx.application.Platform;
 
 /**

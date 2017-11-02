@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2017 at 01:35 PM
+-- Generation Time: Nov 02, 2017 at 08:02 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -415,7 +415,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '11350');
+('SEQ_GEN', '12500');
 
 -- --------------------------------------------------------
 
@@ -468,10 +468,13 @@ INSERT INTO `tacct` (`TACCTID`, `COL`, `NAME`, `ROW`, `CHOFACCS_CHOFACCSID`, `GL
 (10051, 4, 'LXY', 7, 6301, NULL),
 (10151, 23, 'Hwjiny Hfwix', 6, 6151, NULL),
 (10251, 4, 'UXY', 10, 6301, NULL),
-(10401, 0, 'Rfwpjyfgqj Xjhzwnynjx', 1, 6151, 6501),
-(10402, 5, 'Kncji Fxxjyx', 1, 6151, 8701),
-(10701, 0, 'Fhhtzsyx Wjhjnafgqj', 4, 6151, 6701),
-(10702, 5, 'Frtwynefynts tk Kncji Fxxjyx', 4, 6151, 8709);
+(12151, 9, 'F/U', 1, 6151, NULL),
+(12159, 14, 'Nsajsytwd', 1, 6151, NULL),
+(12351, 14, 'Rfyjwnfqx', 4, 6151, NULL),
+(12401, 0, 'Rfwpjyfgqj Xjhzwnynjx', 1, 6151, 6501),
+(12402, 5, 'Nsajsytwd ktw Xfqj', 1, 6151, 6751),
+(12451, 0, 'Fhhtzsyx Wjhjnafgqj', 4, 6151, 6701),
+(12452, 5, 'Uwjufni Jcujsxjx', 4, 6151, 6801);
 
 -- --------------------------------------------------------
 
@@ -523,8 +526,8 @@ INSERT INTO `tacct_corrcx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (9202, 6),
 (10151, 6),
 (10251, 10),
-(10402, 1),
-(10702, 4);
+(12159, 1),
+(12351, 4);
 
 -- --------------------------------------------------------
 
@@ -576,8 +579,10 @@ INSERT INTO `tacct_corrdx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (9304, 6),
 (10151, 6),
 (9751, 10),
-(10401, 1),
-(10701, 4);
+(12151, 1),
+(12151, 4),
+(12401, 1),
+(12451, 4);
 
 -- --------------------------------------------------------
 
@@ -633,8 +638,10 @@ INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTI
 (10152, 'Ufni gd hwjiny hfwi', 6, 9304, 10151, 6151),
 (10153, 'Hwjiny ufdrjsyx', 6, 10151, 9202, 6151),
 (10252, 'UXY ufni', 10, 9751, 10251, 6301),
-(10403, 'opmpqopopoo;pqpqp', 1, 10401, 10402, 6151),
-(10751, 'Xjwanhjx wjhjnaji', 4, 10701, 10702, 6151);
+(12161, 'Nsajsytwd uzwhmfxj', 1, 12151, 12159, 6151),
+(12352, 'Rfyjwnfqx uzwhmfxj', 4, 12151, 12351, 6151),
+(12403, 'Uwtizhynts jcujsxjx', 1, 12401, 12402, 6151),
+(12453, 'Sts-tujwfyntsfq jcujsxjx', 4, 12451, 12452, 6151);
 
 -- --------------------------------------------------------
 
@@ -736,10 +743,13 @@ INSERT INTO `tractnsmodel_tacct` (`TractnsModel_TRACTNSMODELID`, `taccts_TACCTID
 (1108, 10051),
 (1108, 10151),
 (1108, 10251),
-(2204, 10401),
-(2204, 10402),
-(2204, 10701),
-(2204, 10702),
+(2204, 12151),
+(2204, 12159),
+(2204, 12351),
+(2204, 12401),
+(2204, 12402),
+(2204, 12451),
+(2204, 12452),
 (8865, 8851),
 (8865, 8852),
 (8865, 8853),
@@ -792,8 +802,10 @@ INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACT
 (1108, 10152),
 (1108, 10153),
 (1108, 10252),
-(2204, 10403),
-(2204, 10751),
+(2204, 12161),
+(2204, 12352),
+(2204, 12403),
+(2204, 12453),
 (8865, 8859),
 (8865, 8860),
 (8865, 8861),

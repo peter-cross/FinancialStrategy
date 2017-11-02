@@ -11,10 +11,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.collections.ObservableList;
 
 import java.util.Vector;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import java.util.List;
 import application.Database;
 import application.Main;
 import entities.ChOfAccs;
+import entities.HashMap;
 import entities.GL;
 import entities.LglEntity;
 import entities.TAcct;
@@ -40,7 +41,7 @@ import interfaces.Utilities;
 
 import static interfaces.Utilities.enterTAcctInfo;
 import static interfaces.Utilities.hash;
-import static interfaces.Utilities.displayMessage;
+
 /**
  * Class TractnsSimulationModel - Modeling accting tractns
  * @author Peter Cross
@@ -485,7 +486,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			else if ( eventType == MouseEventType.DOUBLE_CLICK )
 				// Clear grid cell on which click happened
 	    		clearCell(e);	
-    		
+	    	
     		// If this is RightClick event
 			else if ( eventType == MouseEventType.RIGHT_CLICK )
 				new UserDialog( () -> onRightClickCell(e) ).start();
@@ -530,39 +531,52 @@ public class TractnsModelView extends NodeView implements Utilities
 	private void onRightClickCell( MouseEvent e )
 	{
 		TAcct tAcc = getCurrentCell( e );
+		int chIdx = 0; // Default ChOfAccs number 
 		
+		ChOfAccs chart = selectedChOfAccs();
+		
+		// If there is selected ChOfAccs
+		if ( chart != null )
+			// Assign index of selected ChOfAccs
+			chIdx = ChOfAccsModel.getIndexByName( chart.getName() );
+		
+		// If in current cell there is T-acct
 		if ( tAcc != null )
 		{
+			// Get G/L # of T-acct
 			GL gl = tAcc.getGL();
-			int chartIndex = 0;
+			String glNum = "";
 			
-			ChOfAccs chart = selectedChOfAccs();
-			if ( chart != null )
-				chartIndex = ChOfAccsModel.getIndexByName( chart.getName() );
+			// If there is G/L # for T-acct
+			if ( gl != null )
+				glNum = gl.getGlNumber();
 			
-			String glNum = gl.getGlNumber();
 			String accName = tAcc.getName();
 			
 			// Enter T-acct info through the dialog window
-	        String[] tAccInfo = enterTAcctInfo( this, chartIndex, fields, glNum, accName );
+	        String[] tAccInfo = enterTAcctInfo( this, chIdx, fields, glNum, accName );
 	        
-	        // Get G/L number and name
+	        // Get G/L # and name
 	        String glCode = tAccInfo[0];
 	        String acctName = tAccInfo[1];
 	        
-	        // If G/L number is specified
+	        // If G/L # is specified
 	        if ( glCode == null || glCode.isEmpty() )
 		        // Enter T-acct name and create object for T-acct
 	        	tAcc.update( acctName, e, chart );
 	        else
 	        {
-	        	GL glAcc = getGLAcct( glCode, chartIndex );
+	        	gl = getGLAcct( glCode, chIdx );
 	        	
 	        	// Create T-acct database entity object
-	        	tAcc.update( acctName, e, chart, glAcc );
+	        	tAcc.update( acctName, e, chart, gl );
 	        }
 			
 	        tAcc.drawTAcct();
+	    }
+		else
+		{
+			
 		}
 	}
 	

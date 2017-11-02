@@ -9,7 +9,6 @@ import java.util.List;
 
 import application.Database;
 import entities.ChOfAccs;
-import entities.HashMap;
 import entities.LglEntity;
 import entities.TractnsModel;
 import views.OneColumnTableView;
