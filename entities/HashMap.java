@@ -20,7 +20,7 @@ public class HashMap
 	private long hashMapId;
 	
 	private String hashKey;
-	private String value;
+	private String hashValue;
 	
 	private static  List<HashMap> list;       // List of Items
     	
@@ -37,7 +37,7 @@ public class HashMap
 	public void update( String key, String value )
 	{
 		this.hashKey = key;
-		this.value = Cipher.crypt( value );
+		this.hashValue = Cipher.crypt( value );
 	}
 
 	public static String getByKey( String key )
@@ -48,7 +48,7 @@ public class HashMap
 		if ( list != null )
 			for ( HashMap d : list )
 				if ( d.hashKey.equals( key ) )
-					return Cipher.decrypt( d.value );
+					return Cipher.decrypt( d.hashValue );
 		
 		return "";
 	}

@@ -7,12 +7,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-import static interfaces.Utilities.enterTAcctInfo;
-import static interfaces.Utilities.enterTractnInfo;
-
 import java.util.ArrayList;
 
-import foundation.AssociativeList;
 import foundation.Cipher;
 import interfaces.Utilities;
 import models.TractnsGraphics;
@@ -159,7 +155,7 @@ public class TrActn
 	 * Sets transaction description
 	 * @param description TrActn description
 	 */
-	private void setDescription( String description )
+	public void setDescription( String description )
 	{
 		this.description = Cipher.crypt( description );
 	}
@@ -207,7 +203,7 @@ public class TrActn
 	/**
 	 * Draws transaction middle part on Canvas
 	 */
-	private void drawTractnMiddlePart()
+	public void drawTractnMiddlePart()
 	{
 		int idx = chartIndex();
 		

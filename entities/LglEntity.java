@@ -29,7 +29,7 @@ public class LglEntity
 	
 	private String	iD;				// Lgl Entity ID in the system
 	private String	name;			// Common name
-	private String	lglName;		// Official legal name
+	private String	lglName;		// Official lgl name
 	private String	phone;			// Phone number
 	private String	contact;		// Contact in the company
 	private String	address;		// Address

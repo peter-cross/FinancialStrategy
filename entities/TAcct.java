@@ -69,6 +69,9 @@ public class TAcct
 	 */
 	public TAcct( String acctName, MouseEvent e, ChOfAccs chart )
 	{
+		corrDx = new ArrayList<>(); 
+		corrCx = new ArrayList<>();
+    
 		update( acctName, e, chart );
 	}
 	
@@ -78,9 +81,6 @@ public class TAcct
 		col = TractnsModelView.getColumn( e );
 		row = TractnsModelView.getRow( e );
 		
-		corrDx = new ArrayList<>(); 
-		corrCx = new ArrayList<>();
-                
 		chOfAccs = chart;
 	}
 	
@@ -399,6 +399,15 @@ public class TAcct
 		}
 	}
 	
+	private void clearTAcctNameCells( int idx )
+	{
+		// Clear content around T-acct's cell to the top and to the right
+		tg[idx].clearCellContent( row-1, col );
+		tg[idx].clearCellContent( row-1, col+1 );
+		tg[idx].clearCellContent( row-1, col+2 );
+		tg[idx].clearCellContent( row-1, col+3 );
+	}
+	
 	/**
 	 * Draws T-acct name on canvas
 	 */
@@ -407,13 +416,15 @@ public class TAcct
 		// Get index for ChOfAccs for current Tab
 		int idx = chartIndex();
 		
+		clearTAcctNameCells( idx );
+		
 		// If G/L Acct for T-acct is specified
 		if ( gl != null )
 			// Display number of G/L acct above T-acct name
-			tg[idx].drawText( gl.getGlNumber(), row-1, col, 0.80 );
+			tg[idx].drawText( gl.getGlNumber(), row-1, col, 0.35 );
 		
 		// Display name of T-acct
-		tg[idx].drawText( Cipher.decrypt(name), row, col, 0.15 );
+		tg[idx].drawText( Cipher.decrypt(name), row-1, col, 0.85 );
 	}
 	
 	/**

@@ -576,7 +576,37 @@ public class TractnsModelView extends NodeView implements Utilities
 	    }
 		else
 		{
+			// Get current column and row number
+			int row = getRow(e);
+			int col = getColumn(e);
 			
+			// Loop through list of all tractns
+			for ( TrActn t : getTractns() )
+				// If in current row there is tractn
+				if ( t.getRow() == row )
+				{
+					int cxCol = t.getCx().getColumn();
+					int dxCol = t.getDx().getColumn();
+					
+					// If current column belongs to tractn
+					if ( col > cxCol  && col < dxCol )
+					{
+						String dscr = t.getDescription();
+						
+						String[] transInfo = Utilities.enterTractnInfo( (NodeView)tg[chIdx].getOwner(), dscr );
+						
+						for ( int c = cxCol + 1; c < dxCol; c++ )
+							tg[chIdx].clearCellContent( row, c );
+						
+						// Enter transaction description
+						t.setDescription( transInfo[1] );
+						
+						t.drawTractn();
+						
+						break;
+					}
+				}
+					
 		}
 	}
 	

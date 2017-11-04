@@ -170,8 +170,8 @@ public class TractnsGraphics extends Canvas
 	private void drawTAcctHorizontalLine( int row, int col )
 	{
 		// Draw horizontal line for T-Acct
-		gc.moveTo( SHIFT_X + col*CELL_WIDTH  + CELL_WIDTH*0.06, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
-		gc.lineTo( SHIFT_X + col*CELL_WIDTH  + CELL_WIDTH*0.94, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 );
+		gc.moveTo( SHIFT_X + col*CELL_WIDTH  + CELL_WIDTH*0.06, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.1 ) ;
+		gc.lineTo( SHIFT_X + col*CELL_WIDTH  + CELL_WIDTH*0.94, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.1 );
 	}
 	
 	/**
@@ -182,7 +182,7 @@ public class TractnsGraphics extends Canvas
 	private void drawTAcctVerticalLine( int row, int col )
 	{
 		// Draw vertical line for T-account
-		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
+		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.05 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + (row+1)*CELL_HEIGHT ) ;
 	}
 	
@@ -334,7 +334,7 @@ public class TractnsGraphics extends Canvas
 		drawTAcctHorizontalLine( row, col );
 		
 		// Draw vertical line for T-acct
-		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
+		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.1 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
 		// Draw horizontal line for tractn
@@ -388,7 +388,7 @@ public class TractnsGraphics extends Canvas
 		drawTAcctHorizontalLine( row, col );
 		
 		// Draw vertical line for T-acct
-		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
+		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.1 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
 		// Draw horizontal line for tractn
@@ -412,7 +412,7 @@ public class TractnsGraphics extends Canvas
 		drawTAcctHorizontalLine( row, col );
 		
 		// Draw vertical line for T-acct
-		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.3 ) ;
+		gc.moveTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y + row*CELL_HEIGHT + CELL_HEIGHT*0.1 ) ;
 		gc.lineTo( SHIFT_X + col*CELL_WIDTH + CELL_WIDTH*0.5, SHIFT_Y - 2*STROKE + (row+1)*CELL_HEIGHT ) ;
 	
 		// Draw horizontal line for Left tractn
