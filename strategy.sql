@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 02, 2017 at 08:02 PM
+-- Generation Time: Nov 19, 2017 at 10:16 AM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -402,6 +402,28 @@ INSERT INTO `lglentity_lglentitycharts` (`LglEntity_LGLENTITYID`, `lglEntityChar
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `location`
+--
+
+CREATE TABLE `location` (
+  `locationID` bigint(20) NOT NULL,
+  `id` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `contact` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `location`
+--
+
+INSERT INTO `location` (`locationID`, `id`, `name`, `address`, `phone`, `contact`) VALUES
+(12601, '1', 'Mtrj tkknhj', '6883 Xjdrtzw Xywjjy', '159-704-3998', 'Ujyjw Hwtxx');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sequence`
 --
 
@@ -415,7 +437,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '12500');
+('SEQ_GEN', '12650');
 
 -- --------------------------------------------------------
 
@@ -470,11 +492,12 @@ INSERT INTO `tacct` (`TACCTID`, `COL`, `NAME`, `ROW`, `CHOFACCS_CHOFACCSID`, `GL
 (10251, 4, 'UXY', 10, 6301, NULL),
 (12151, 9, 'F/U', 1, 6151, NULL),
 (12159, 14, 'Nsajsytwd', 1, 6151, NULL),
-(12351, 14, 'Rfyjwnfqx', 4, 6151, NULL),
-(12401, 0, 'Rfwpjyfgqj Xjhzwnynjx', 1, 6151, 6501),
-(12402, 5, 'Nsajsytwd ktw Xfqj', 1, 6151, 6751),
+(12351, 14, 'Rfyjwnfq', 4, 6151, NULL),
+(12401, 0, 'Xythpx', 1, 6151, 6501),
+(12402, 5, 'Nsajsytwd', 1, 6151, 6751),
 (12451, 0, 'Fhhtzsyx Wjhjnafgqj', 4, 6151, 6701),
-(12452, 5, 'Uwjufni Jcujsxjx', 4, 6151, 6801);
+(12452, 5, 'Rfwpjyfgqj Xjhzwnynjx', 4, 6151, 6501),
+(12501, 14, 'Uwtizhynts Jcujsxjx', 7, 6151, NULL);
 
 -- --------------------------------------------------------
 
@@ -527,7 +550,10 @@ INSERT INTO `tacct_corrcx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (10151, 6),
 (10251, 10),
 (12159, 1),
-(12351, 4);
+(12351, 4),
+(12402, 1),
+(12452, 4),
+(12501, 7);
 
 -- --------------------------------------------------------
 
@@ -582,7 +608,8 @@ INSERT INTO `tacct_corrdx` (`TAcct_TACCTID`, `VALUE`) VALUES
 (12151, 1),
 (12151, 4),
 (12401, 1),
-(12451, 4);
+(12451, 4),
+(12151, 7);
 
 -- --------------------------------------------------------
 
@@ -641,7 +668,8 @@ INSERT INTO `tractn` (`TRACTNID`, `DESCRIPTION`, `ROW`, `CX_TACCTID`, `DX_TACCTI
 (12161, 'Nsajsytwd uzwhmfxj', 1, 12151, 12159, 6151),
 (12352, 'Rfyjwnfqx uzwhmfxj', 4, 12151, 12351, 6151),
 (12403, 'Uwtizhynts jcujsxjx', 1, 12401, 12402, 6151),
-(12453, 'Sts-tujwfyntsfq jcujsxjx', 4, 12451, 12452, 6151);
+(12453, 'Sts-tujwfyntsfq jcujsxjx', 4, 12451, 12452, 6151),
+(12502, 'Htsywfhyji Xjwanhjx ', 7, 12151, 12501, 6151);
 
 -- --------------------------------------------------------
 
@@ -750,6 +778,7 @@ INSERT INTO `tractnsmodel_tacct` (`TractnsModel_TRACTNSMODELID`, `taccts_TACCTID
 (2204, 12402),
 (2204, 12451),
 (2204, 12452),
+(2204, 12501),
 (8865, 8851),
 (8865, 8852),
 (8865, 8853),
@@ -806,6 +835,7 @@ INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACT
 (2204, 12352),
 (2204, 12403),
 (2204, 12453),
+(2204, 12502),
 (8865, 8859),
 (8865, 8860),
 (8865, 8861),
@@ -867,6 +897,12 @@ ALTER TABLE `lglentitycharts`
 --
 ALTER TABLE `lglentity_lglentitycharts`
   ADD KEY `LGLENTITYLGLENTITYCHARTSLglEntityLGLENTITYID` (`LglEntity_LGLENTITYID`);
+
+--
+-- Indexes for table `location`
+--
+ALTER TABLE `location`
+  ADD PRIMARY KEY (`locationID`);
 
 --
 -- Indexes for table `sequence`

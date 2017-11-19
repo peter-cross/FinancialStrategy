@@ -24,7 +24,6 @@ import java.util.List;
 import application.Database;
 import application.Main;
 import entities.ChOfAccs;
-import entities.HashMap;
 import entities.GL;
 import entities.LglEntity;
 import entities.TAcct;
@@ -225,11 +224,19 @@ public class TractnsModelView extends NodeView implements Utilities
 		TAcct.setGraphics(tg);
 		TrActn.setGraphics(tg);
 		
+		setChOfAccs();
+	}
+	
+	/**
+	 * Sets ChOfAccs TAcct and TrActn objects
+	 */
+	private void setChOfAccs()
+	{
 		String[] charts = {};
 		
 		// If Legal Entity database entity is specified
 		if ( lglEntity != null )
-			// Get names of ChOfAccs from Legal Entity database entity object
+			// Get names of ChOfAccs from Lgl Entity database entity object
 			charts = lglEntity.getChOfAccs();
 		
 		TAcct.setChOfAccs( charts );
@@ -250,6 +257,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		// Create ArrayList for selected T-accts
 		selectedTAccts = new ArrayList<>();
 		
+		// Create arrays for tractns that can be modified in current session
 		toAddTAccts = new ArrayList<>();
 		toDelTAccts = new ArrayList<>();
 		toAddTractns = new ArrayList<>();
@@ -266,6 +274,19 @@ public class TractnsModelView extends NodeView implements Utilities
 		// Create ArrayList for model T-accts
 		ArrayList<TAcct> acctList = new ArrayList<>();
 		
+		// Draw Tractns with T-Accs
+		drawTractns( acctList );
+			
+		// Draw T-Accs w/o tractns
+		drawTAccsWithoutTractns( acctList );
+	}
+	
+	/**
+	 * Draws Tractns with T-Accs
+	 * @param acctList
+	 */
+	private void drawTractns( ArrayList<TAcct> acctList )
+	{
 		// Loop for each model tractn
 		for ( TrActn tr : tractns )
 		{
@@ -282,7 +303,14 @@ public class TractnsModelView extends NodeView implements Utilities
 				acctList.add( trDx );
 			}
 		}
-			
+	}
+	
+	/**
+	 * Draws T-Accs w/o tractns
+	 * @param acctList
+	 */
+	private void drawTAccsWithoutTractns( ArrayList<TAcct> acctList )
+	{
 		// Loop for each model T-acct
 		for ( TAcct acct : accts )
 		{
@@ -295,7 +323,7 @@ public class TractnsModelView extends NodeView implements Utilities
 			if ( !acctList.contains( acct ) )
 				// Draw it 
 				acct.drawTAcct();
-		}			
+		}	
 	}
 	
 	/**
@@ -331,6 +359,7 @@ public class TractnsModelView extends NodeView implements Utilities
 	public static Vector<TrActn> getTractns()
 	{
 		Vector<TrActn> trList = new Vector( tractns );
+		
 		trList.addAll( toAddTractns );
 		trList.removeAll( toDelTractns );
 		
@@ -425,6 +454,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		int tabsSize = Math.max( 1, tabs.length );
 		
+		// For each ChOfAccs' tab
 		for ( int i = 0; i < tabsSize; i++ )
 			// Draw grid on canvas
 			tg[i].drawGrid();
@@ -442,6 +472,7 @@ public class TractnsModelView extends NodeView implements Utilities
 		
 		int tabsSize = Math.max( 1, tabs.length );
 		
+		// Create array for grid objects
 		grid = new ArrayList[tabsSize];
 		
 		for ( int i = 0; i < tabsSize; i++ )
@@ -531,82 +562,108 @@ public class TractnsModelView extends NodeView implements Utilities
 	private void onRightClickCell( MouseEvent e )
 	{
 		TAcct tAcc = getCurrentCell( e );
-		int chIdx = 0; // Default ChOfAccs number 
-		
-		ChOfAccs chart = selectedChOfAccs();
-		
-		// If there is selected ChOfAccs
-		if ( chart != null )
-			// Assign index of selected ChOfAccs
-			chIdx = ChOfAccsModel.getIndexByName( chart.getName() );
 		
 		// If in current cell there is T-acct
 		if ( tAcc != null )
-		{
-			// Get G/L # of T-acct
-			GL gl = tAcc.getGL();
-			String glNum = "";
+			changeTAcctDescr( e, tAcc );
 			
-			// If there is G/L # for T-acct
-			if ( gl != null )
-				glNum = gl.getGlNumber();
-			
-			String accName = tAcc.getName();
-			
-			// Enter T-acct info through the dialog window
-	        String[] tAccInfo = enterTAcctInfo( this, chIdx, fields, glNum, accName );
-	        
-	        // Get G/L # and name
-	        String glCode = tAccInfo[0];
-	        String acctName = tAccInfo[1];
-	        
-	        // If G/L # is specified
-	        if ( glCode == null || glCode.isEmpty() )
-		        // Enter T-acct name and create object for T-acct
-	        	tAcc.update( acctName, e, chart );
-	        else
-	        {
-	        	gl = getGLAcct( glCode, chIdx );
-	        	
-	        	// Create T-acct database entity object
-	        	tAcc.update( acctName, e, chart, gl );
-	        }
-			
-	        tAcc.drawTAcct();
-	    }
-		else
+	    else
 		{
 			// Get current column and row number
 			int row = getRow(e);
-			int col = getColumn(e);
 			
 			// Loop through list of all tractns
 			for ( TrActn t : getTractns() )
 				// If in current row there is tractn
 				if ( t.getRow() == row )
 				{
-					int cxCol = t.getCx().getColumn();
-					int dxCol = t.getDx().getColumn();
-					
-					// If current column belongs to tractn
-					if ( col > cxCol  && col < dxCol )
-					{
-						String dscr = t.getDescription();
-						
-						String[] transInfo = Utilities.enterTractnInfo( (NodeView)tg[chIdx].getOwner(), dscr );
-						
-						for ( int c = cxCol + 1; c < dxCol; c++ )
-							tg[chIdx].clearCellContent( row, c );
-						
-						// Enter transaction description
-						t.setDescription( transInfo[1] );
-						
-						t.drawTractn();
-						
-						break;
-					}
-				}
-					
+					changeTractnDescr( e, t );
+					break;
+				}		
+			
+		} // End of ** if ( tAcc != null ) **
+	}
+	
+	private void changeTAcctDescr( MouseEvent e, TAcct tAcc )
+	{
+		ChOfAccs chart = selectedChOfAccs();
+		
+		int chIdx = 0; // Default ChOfAccs number 
+		
+		// If there is selected ChOfAccs
+		if ( chart != null )
+			// Assign index of selected ChOfAccs
+			chIdx = ChOfAccsModel.getIndexByName( chart.getName() );
+		
+		// Get G/L # of T-acct
+		GL gl = tAcc.getGL();
+		String glNum = "";
+		
+		// If there is G/L # for T-acct
+		if ( gl != null )
+			glNum = gl.getGlNumber();
+		
+		String accName = tAcc.getName();
+		
+		// Enter T-acct info through the dialog window
+        String[] tAccInfo = enterTAcctInfo( this, chIdx, fields, glNum, accName );
+        
+        // Get G/L # and name
+        String glCode = tAccInfo[0];
+        String acctName = tAccInfo[1];
+        
+        // If G/L # is specified
+        if ( glCode == null || glCode.isEmpty() )
+	        // Enter T-acct name and create object for T-acct
+        	tAcc.update( acctName, e, chart );
+        else
+        {
+        	gl = getGLAcct( glCode, chIdx );
+        	
+        	// Create T-acct database entity object
+        	tAcc.update( acctName, e, chart, gl );
+        }
+		
+        tAcc.drawTAcct();
+	}
+	
+	
+	private void changeTractnDescr( MouseEvent e, TrActn t )
+	{
+		int col = getColumn(e);
+		
+		ChOfAccs chart = selectedChOfAccs();
+		
+		int chIdx = 0; // Default ChOfAccs number 
+		
+		// If there is selected ChOfAccs
+		if ( chart != null )
+			// Assign index of selected ChOfAccs
+			chIdx = ChOfAccsModel.getIndexByName( chart.getName() );
+		
+		int cxCol = t.getCx().getColumn();
+		int dxCol = t.getDx().getColumn();
+		
+		int row = t.getRow();
+		
+		// If current column belongs to tractn
+		if ( col > cxCol  && col < dxCol )
+		{
+			// Get tractn description
+			String dscr = t.getDescription();
+			
+			// Invoke dialog window to change existing description
+			String[] transInfo = Utilities.enterTractnInfo( (NodeView)tg[chIdx].getOwner(), dscr );
+			
+			// Clear cells for tractn row
+			for ( int c = cxCol + 1; c < dxCol; c++ )
+				tg[chIdx].clearCellContent( row, c );
+			
+			// Set tractn description for tractn object
+			t.setDescription( transInfo[1] );
+			
+			// Draw tractn again
+			t.drawTractn();
 		}
 	}
 	
