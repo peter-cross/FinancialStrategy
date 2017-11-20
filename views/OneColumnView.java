@@ -175,8 +175,8 @@ public class OneColumnView extends NodeView implements Encapsulation, Utilities
         // If element's width is specified
         if ( el.width > 0 )
             comboBox.setPrefWidth( el.width );
-        // If it's a Unit dialog element
-        else if ( el.labelName.contains( "Unit" ) )
+        // If it's a UnitModel dialog element
+        else if ( el.labelName.contains( "UnitModel" ) )
             // Set column with less that normally
             comboBox.setPrefWidth(105);
         // Otherwise

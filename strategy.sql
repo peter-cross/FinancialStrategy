@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2017 at 10:16 AM
+-- Generation Time: Nov 20, 2017 at 12:47 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -419,7 +419,8 @@ CREATE TABLE `location` (
 --
 
 INSERT INTO `location` (`locationID`, `id`, `name`, `address`, `phone`, `contact`) VALUES
-(12601, '1', 'Mtrj tkknhj', '6883 Xjdrtzw Xywjjy', '159-704-3998', 'Ujyjw Hwtxx');
+(12601, '1', 'Mtrj tkknhj', '6883 Xjdrtzw Xywjjy', '159-704-3998', 'Ujyjw Hwtxx'),
+(12651, '2', 'Qfslfwf Htqqjlj', '655 Bjxy 94 Faj., Afshtzajw', '159-878-0066', '');
 
 -- --------------------------------------------------------
 
@@ -437,7 +438,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '12650');
+('SEQ_GEN', '12700');
 
 -- --------------------------------------------------------
 
@@ -843,6 +844,22 @@ INSERT INTO `tractnsmodel_tractn` (`TractnsModel_TRACTNSMODELID`, `tractns_TRACT
 (8865, 8863),
 (8865, 8864);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `unit`
+--
+
+CREATE TABLE `unit` (
+  `unitId` bigint(20) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `unitType` varchar(255) DEFAULT NULL,
+  `baseUnit` varchar(255) DEFAULT NULL,
+  `rate` double DEFAULT NULL,
+  `decimals` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -957,6 +974,12 @@ ALTER TABLE `tractnsmodel_tacct`
 ALTER TABLE `tractnsmodel_tractn`
   ADD PRIMARY KEY (`TractnsModel_TRACTNSMODELID`,`tractns_TRACTNID`),
   ADD KEY `TRNSCTNSMODELTRACTNtractnsTRACTNID` (`tractns_TRACTNID`);
+
+--
+-- Indexes for table `unit`
+--
+ALTER TABLE `unit`
+  ADD PRIMARY KEY (`unitId`);
 
 --
 -- Constraints for dumped tables

@@ -123,16 +123,17 @@ public class Controller implements Constants, Utilities
     {
     	SubMenu menu = new SubMenu( "" );
     	
-    	MenuItem[] menuItems = new MenuItem[8];
+    	MenuItem[] menuItems = new MenuItem[9];
     	menuItems[0] = menu.createMenuItem( "Legal Entities", WIDTH * 0.95 );
     	menuItems[1] = menu.createMenuItem( "List of Charts Of Accounts", WIDTH * 0.5 );
     	menuItems[2] = menu.createMenuItem( "Charts Of Accounts", WIDTH * 0.5 );
     	menuItems[3] = menu.createMenuItem( "Currencies", WIDTH * 0.4 );
     	menuItems[4] = menu.createMenuItem( "Transactions Descriptions", WIDTH * 0.5 );
     	menuItems[5] = menu.createMenuItem( "Locations", WIDTH * 0.5 );
+    	menuItems[6] = menu.createMenuItem( "Units", WIDTH * 0.5 );
     	
-    	menuItems[6] = menu.createMenuItem( "Clock", this::clock );
-    	menuItems[7] = menu.createMenuItem( "About", this::about );
+    	menuItems[7] = menu.createMenuItem( "Clock", this::clock );
+    	menuItems[8] = menu.createMenuItem( "About", this::about );
     	
     	// Create Menu Button and return it
     	return newMenuButton( "Menu", menuItems );
@@ -152,6 +153,7 @@ public class Controller implements Constants, Utilities
     	registries.set( "Currencies", 						new RegistryView( stage, "List of Currencies", "CrcyModel" ) );
     	registries.set( "Transactions Descriptions", 		new RegistryView( stage, "List of Transactions Descriptions" , "TractnsDscrModel" ) );
     	registries.set( "Locations", 						new RegistryView( stage, "List of Locations" , "LocationModel" ) );
+    	registries.set( "Units", 							new RegistryView( stage, "List of Units" , "UnitModel" ) );
     }
     
     /**
