@@ -5,10 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.Location;
 import entities.Unit;
 import forms.DialogElement;
-import foundation.AssociativeList;
+
 import static interfaces.Utilities.getListElementBy;
 
 /**
@@ -19,11 +18,6 @@ public class UnitModel extends RegistryItemModel
 {
     private static  LinkedHashSet  list;  // List of Items
     
-    public static UnitModel getByUnit( Unit unit )
-    {
-    	return (UnitModel) getListElementBy( list, "unit", unit );
-    }
-    
     /**
      * Gets string representation of class object
      * @return UnitModel code
@@ -31,6 +25,11 @@ public class UnitModel extends RegistryItemModel
     public String toString()
     {
         return (String) fields.get( "code" );
+    }
+    
+    public static UnitModel getByUnit( Unit unit )
+    {
+    	return (UnitModel) getListElementBy( list, "unit", unit );
     }
     
     /**
@@ -94,6 +93,7 @@ public class UnitModel extends RegistryItemModel
         hdr.textValue = fieldTextValue( "baseUnit", "UnitModel" );
         hdr.editable = false;
         hdr.width = 100;
+        hdr.defaultChoice = -1;
         header[0][3] = hdr;
         
         hdr = new DialogElement( "Rate" );
@@ -126,7 +126,7 @@ public class UnitModel extends RegistryItemModel
             fields.set( "code", header[0][0] );
             fields.set( "name", header[0][1] );
             fields.set( "unitType", header[0][2] );
-            fields.set( "baseUnit", getByCode( header[0][3] ) );
+            fields.set( "baseUnit", header[0][3] );
             try
             {
                 fields.set( "rate", Double.parseDouble( header[0][4] ) );
@@ -148,7 +148,7 @@ public class UnitModel extends RegistryItemModel
     } // End of method ** init **
 
     
-    public Location  getUnit ()
+    public Unit  getUnit()
     {
     	return fields.get( "unit" );
     }
@@ -166,7 +166,6 @@ public class UnitModel extends RegistryItemModel
      * Creates List of Units
      * @return Array with List of Units
      */
-    /*
     public static LinkedHashSet[] createList()
     {
     	if ( list == null )
@@ -181,8 +180,8 @@ public class UnitModel extends RegistryItemModel
         
         createNewList( list, "UnitModel" );
     }
-    */
     
+    /*
     public static  LinkedHashSet[] createList()
     {
         // Create ArrayList object for List of Units
@@ -243,7 +242,7 @@ public class UnitModel extends RegistryItemModel
         
         return new LinkedHashSet[] { list };
     }
-    
+    */
     
     public UnitModel()
     {
@@ -330,5 +329,14 @@ public class UnitModel extends RegistryItemModel
     	fields.set( "rate", u.getRate() );
     	fields.set( "decimals", u.getDecimals() );
     }
-     
+    
+    /**
+     * Gets instance of created UnitModel object
+     * @param u Unit entity object
+     * @return UnitModel object
+     */
+    public static UnitModel getInstance( Object u )
+    {
+    	return new UnitModel( (Unit) u );
+    } 
 } // End of class ** UnitModel **

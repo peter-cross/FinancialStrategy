@@ -13,14 +13,19 @@
 		<class>entities.GL</class>
 		<class>entities.GLAnalytics</class>
 		<class>entities.HashMap</class>
+		<class>entities.Location</class>
+		<class>entities.Unit</class>
+		<class>entities.Expense</class>
 		<properties>
 		    <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/strategy"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <!--  <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/> -->
             <property name="eclipselink.create-ddl-jdbc-file-name" value="createDDL_ddlGeneration.jdbc"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <!-- <property name="eclipselink.ddl-generation.output-mode" value="both"/> -->
         </properties>
 	</persistence-unit>
 </persistence>

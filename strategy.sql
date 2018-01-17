@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2017 at 12:47 PM
+-- Generation Time: Jan 17, 2018 at 01:16 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -65,6 +65,27 @@ INSERT INTO `crcy` (`CRCYID`, `CODE`, `NAME`) VALUES
 (6052, 'ZXI', 'Z.X. itqqfw'),
 (6053, 'JZW', 'Jzwt'),
 (6351, 'OUD', 'Ofufsjxj Djs');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expense`
+--
+
+CREATE TABLE `expense` (
+  `expenseId` bigint(20) NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `expense`
+--
+
+INSERT INTO `expense` (`expenseId`, `code`, `name`, `category`) VALUES
+(12751, '001', 'Main Production Expenses', 'Production'),
+(12801, '002', 'Overhead Production Expenses', 'Production');
 
 -- --------------------------------------------------------
 
@@ -438,7 +459,7 @@ CREATE TABLE `sequence` (
 --
 
 INSERT INTO `sequence` (`SEQ_NAME`, `SEQ_COUNT`) VALUES
-('SEQ_GEN', '12700');
+('SEQ_GEN', '13200');
 
 -- --------------------------------------------------------
 
@@ -861,6 +882,20 @@ CREATE TABLE `unit` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `unit`
+--
+
+INSERT INTO `unit` (`unitId`, `code`, `name`, `unitType`, `baseUnit`, `rate`, `decimals`) VALUES
+(12851, 'item', 'item', 'Items', NULL, 0, 0),
+(12901, 'g', 'gram', 'Weight', NULL, 0, 0),
+(12951, 'L', 'Littres', 'Volume', NULL, 0, 0),
+(13001, 'mg', 'milligram', 'Weight', 'g', 0.001, 0),
+(13051, 'oz', 'ounce', 'Weight', 'g', 28.35, 0),
+(13101, 'lb', 'pound', 'Weight', 'g', 453.59, 0),
+(13102, 'kg', 'kilogram', 'Weight', 'g', 1000, 0),
+(13151, 'mL', 'millilittres', 'Volume', 'L', 0.001, 0);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -876,6 +911,12 @@ ALTER TABLE `chofaccs`
 --
 ALTER TABLE `crcy`
   ADD PRIMARY KEY (`CRCYID`);
+
+--
+-- Indexes for table `expense`
+--
+ALTER TABLE `expense`
+  ADD PRIMARY KEY (`expenseId`);
 
 --
 -- Indexes for table `gl`
