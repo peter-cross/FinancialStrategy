@@ -90,7 +90,7 @@ public class UnitModel extends RegistryItemModel
         hdr = new DialogElement( "Base Unit" );
         hdr.valueType = "List";
         hdr.list = UnitModel.getItemsList();
-        hdr.textValue = fieldTextValue( "baseUnit", "UnitModel" );
+        hdr.textValue = fieldTextValue( "baseUnit" );
         hdr.editable = false;
         hdr.width = 100;
         hdr.defaultChoice = -1;
@@ -246,13 +246,13 @@ public class UnitModel extends RegistryItemModel
     
     public UnitModel()
     {
-        super( "UnitModel" );
+        super( "Unit" );
         list.add( this );
     }
     
     public UnitModel( Stage stage ) throws Exception
     {
-        super( stage, "UnitModel" );
+        super( stage, "Unit" );
         
         if ( stage != null )
         	list.add( this );
@@ -319,7 +319,7 @@ public class UnitModel extends RegistryItemModel
     
     public UnitModel( Unit u )
     {
-    	super( "UnitModel" );
+    	super( "Unit" );
     	
     	fields.set( "unit", u );
     	fields.set( "code", u.getCode()  );

@@ -40,9 +40,9 @@ public class ChOfAccs
 	 * @param name ChOfAccs name
 	 * @param currency Crcy for ChOfAccs
 	 */
-	public ChOfAccs( String	code, String name, Crcy crcy ) 
+	public ChOfAccs( Object... args ) 
 	{
-		update( code, name, crcy );
+		update( args );
 	}
 	
 	/**
@@ -51,11 +51,11 @@ public class ChOfAccs
 	 * @param name ChOfAccs' name
 	 * @param currency Crcy for ChOfAccs
 	 */
-	public void update( String code, String name, Crcy crcy ) 
+	public void update( Object... args ) 
 	{
-		this.code = Cipher.crypt( code );
-		this.name = Cipher.crypt( name );
-		this.crcy = crcy;
+		code = Cipher.crypt( (String) args[0] );
+		name = Cipher.crypt( (String) args[1] );
+		crcy = (Crcy) args[2];
 	}
 	
 	// Returns ChOfAccs' code

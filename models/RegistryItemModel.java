@@ -33,7 +33,7 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
     protected String			tabName;		// Registry View Tab Name
     protected int				tabNum;			// Registry View Tab Number
     
-    private String ITEM_TYPE = "";   
+    private static String ITEM_TYPE = "";   
     
     // Assigns header and table values to corresponding object properties
     abstract protected void init( String[][] header, String[][][] table );
@@ -44,12 +44,22 @@ abstract public class RegistryItemModel extends Item implements Utilities, Const
     // method to save Model data to database
     abstract protected void saveToDB();
     
+    public static List getFromDB()
+    {
+    	return getFromDB( ITEM_TYPE );
+    }
+    
     // Method stub for removing registry item from DB
     public void removeFromDB() throws Exception
     { 
     	return;
     }
     
+    // Method stub 
+    public static RegistryItemModel getInstance( Object o )
+    {
+    	return null;
+    }
     /**
      * Removes object specified in the field from database
      * @param field Name of the object stored in the fields

@@ -594,7 +594,7 @@ public class GLAcctModel extends RegistryItemModel
 	 * Gets G/L Accts from database
 	 * @return List of GL objects
 	 */
-	protected static List<GL> getFromDB()
+	public static List<GL> getFromDB()
     {
     	return getFromDB( "GL" );
     }

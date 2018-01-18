@@ -71,7 +71,7 @@ public class CrcyModel extends RegistryItemModel
         hdr.validation = validationCode( hdr.labelName );
         header[0][0] = hdr;
         
-        hdr = new DialogElement( "Name" );
+        hdr = new DialogElement( "Name    " );
         hdr.valueType = "Text";
         hdr.width = 200;
         hdr.textValue = fieldTextValue( "name" );

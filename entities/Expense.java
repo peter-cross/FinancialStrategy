@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import foundation.Cipher;
+
 @Entity
 public class Expense 
 {
@@ -21,30 +23,30 @@ public class Expense
 		super();
 	}
 	
-	public Expense( String code, String name, String category )
+	public Expense( String... args )
 	{
-		update( code, name, category );
+		update( args );
 	}
 	
-	public void update( String code, String name, String category )
+	public void update( String... args )
 	{
-		this.code = code;
-		this.name = name;
-		this.category = category;
+		code = Cipher.crypt( args[0] );
+		name = Cipher.crypt( args[1] );
+		category = Cipher.crypt( args[2] );
 	}
 	
 	public String getCode()
 	{
-		return code;
+		return Cipher.decrypt( code );
 	}
 	
 	public String getName()
 	{
-		return name;
+		return Cipher.decrypt( name );
 	}
 	
 	public String getCategory()
 	{
-		return category;
+		return Cipher.decrypt( category );
 	}	
 }

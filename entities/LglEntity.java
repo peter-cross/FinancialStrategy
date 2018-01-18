@@ -55,9 +55,9 @@ public class LglEntity
 	 * @param contact Contact person
 	 * @param address Address of Lgl Entity
 	 */
-	public LglEntity( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChOfAccs> chOfAccs ) 
+	public LglEntity( Object... args ) 
 	{
-		update( iD, name, lglName, phone, contact, address, chartNames, chOfAccs );
+		update( args );
 	}
 	
 	/**
@@ -69,15 +69,18 @@ public class LglEntity
 	 * @param contact Contact person
 	 * @param address Address of Lgl Entity
 	 */
-	public void update( String iD, String name, String lglName, String phone, String contact, String address, List<String> chartNames, ArrayList<ChOfAccs> chOfAccs )
+	public void update( Object... args )
 	{
 		// Save provided info and crypt sensitive info
-		this.iD = iD;
-		this.name = Cipher.crypt( name );
-		this.lglName = Cipher.crypt( lglName );
-		this.phone = Cipher.crypt( phone );
-		this.contact = Cipher.crypt( contact );
-		this.address = Cipher.crypt( address );
+		iD = (String)args[0];
+		name = Cipher.crypt( (String)args[1] );
+		lglName = Cipher.crypt( (String)args[2] );
+		phone = Cipher.crypt( (String)args[3] );
+		contact = Cipher.crypt( (String)args[4] );
+		address = Cipher.crypt( (String)args[5] );
+		
+		List<String> chartNames = (List<String>) args[6];
+		ArrayList<ChOfAccs> chOfAccs = (ArrayList<ChOfAccs>) args[7];
 		
 		if ( lglEntityCharts != null && lglEntityCharts.size() > 0 )
 			Database.removeFromDB( lglEntityCharts );

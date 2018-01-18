@@ -305,7 +305,7 @@ public class TractnsSimulationModel extends RegistryItemModel
 	 * Gets Tractns Models from database
 	 * @return List of TractnsSimulationModel objects
 	 */
-	protected static List<TractnsModel> getFromDB()
+	public static List<TractnsModel> getFromDB()
     {
     	return getFromDB( "TractnsModel" );
     }

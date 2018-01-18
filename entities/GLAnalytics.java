@@ -34,11 +34,11 @@ public class GLAnalytics
 	 * @param analyticsControl Analytics Control name
 	 * @param analyticsType Analytics Control type
 	 */
-	public GLAnalytics( int lineNum, String analyticsControl, String analyticsType )
+	public GLAnalytics( Object... args )
 	{
-		this.lineNum = lineNum;
-		this.analyticsControl = Cipher.crypt( analyticsControl );
-		this.analyticsType = Cipher.crypt( analyticsType );
+		this.lineNum = (Integer) args[0];
+		this.analyticsControl = Cipher.crypt( (String) args[1] );
+		this.analyticsType = Cipher.crypt( (String) args[2] );
 	}
 	
 	// Returns line number in screen form

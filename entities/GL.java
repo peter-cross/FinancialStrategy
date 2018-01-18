@@ -31,7 +31,7 @@ public class GL
 	@ManyToOne( fetch=FetchType.EAGER )
 	private ChOfAccs chOfAccs;
 	
-	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.PERSIST )
+	@OneToMany( fetch=FetchType.EAGER, cascade=CascadeType.ALL )
 	private Vector<GLAnalytics> analytics;
 	
 	/**
@@ -55,9 +55,9 @@ public class GL
 	 * @param analyticsType List of types for Analytics Controls
 	 * @param chOfAccs ChOfAccs to which G/L acct belongs
 	 */
-	public GL( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, ChOfAccs chOfAccs )
+	public GL( Object... args )
 	{
-		update( glNumber, name, type, acctGrp, quantity, frgnCrcy, contraAcct, analyticsControl, analyticsType, chOfAccs );
+		update( args );
 	}
 	
 	/**
@@ -73,18 +73,20 @@ public class GL
 	 * @param analyticsType List of types for Analytics Controls
 	 * @param chOfAccs ChOfAccs to which G/L acct belongs
 	 */
-	public void update( String glNumber, String name, String type, String acctGrp, int quantity, int frgnCrcy, int contraAcct, List<String> analyticsControl, List<String> analyticsType, ChOfAccs chOfAccs )
+	public void update( Object... args )
 	{
-		this.chOfAccs = chOfAccs;
+		this.glNumber = Cipher.crypt( (String) args[0] );
+		this.name = Cipher.crypt( (String) args[1] );
+		this.type = Cipher.crypt( (String) args[2] );
+		this.acctGrp = Cipher.crypt( (String) args[3] );
 		
-		this.glNumber = Cipher.crypt( glNumber );
-		this.name = Cipher.crypt( name );
-		this.type = Cipher.crypt( type );
-		this.acctGrp = Cipher.crypt( acctGrp );
+		this.quantity = (Integer) args[4];
+		this.frgnCrcy = (Integer) args[5];
+		this.contraAcct = (Integer) args[6];
 		
-		this.quantity = quantity;
-		this.frgnCrcy = frgnCrcy;
-		this.contraAcct = contraAcct;
+		List<String> analyticsControl = (List<String>) args[7];
+		List<String> analyticsType = (List<String>) args[8];
+		chOfAccs = (ChOfAccs) args[9];
 		
 		if ( analytics != null && analytics.size() > 0 )
 			Database.removeFromDB( analytics );

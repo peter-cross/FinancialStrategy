@@ -42,9 +42,10 @@ public interface Utilities extends Encapsulation
 	static final String glAcctStr = "G/L Account";
 	static final String tractnStr = "Transaction";
 	
+	
 	public static String hash( String key )
     {
-    	return HashMap.getByKey(key);
+		return HashMap.getByKey(key);
     }
     
 	/**

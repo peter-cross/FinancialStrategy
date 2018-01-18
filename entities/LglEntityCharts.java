@@ -36,11 +36,11 @@ public class LglEntityCharts
 	 * @param chartName ChOfAccs' name specific to Legal entity
 	 * @param chOfAccs ChOfAccs
 	 */
-	public LglEntityCharts( int lineNum, String chartName, ChOfAccs chOfAccs )
+	public LglEntityCharts( Object... args )
 	{
-		this.lineNum = lineNum;
-		this.chartName = Cipher.crypt( chartName );
-		this.chOfAccs = chOfAccs;
+		this.lineNum = (Integer) args[0];
+		this.chartName = Cipher.crypt( (String) args[1] );
+		this.chOfAccs = (ChOfAccs) args[2];
 	}
 	
 	// Returns Line number in screen form

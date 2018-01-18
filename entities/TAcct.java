@@ -84,13 +84,6 @@ public class TAcct
 		chOfAccs = chart;
 	}
 	
-	public void update( String acctName, MouseEvent e, ChOfAccs chart, GL glAcc )
-	{
-		update( acctName, e, chart );
-	
-		gl = glAcc;
-	}
-	
 	/**
 	 * Class constructor
 	 * @param acctName T-acct name
@@ -101,6 +94,13 @@ public class TAcct
 	public TAcct( String acctName, MouseEvent e, ChOfAccs chart, GL glAcc )
 	{
 		update( acctName, e, chart, glAcc );
+	}
+	
+	public void update( String acctName, MouseEvent e, ChOfAccs chart, GL glAcc )
+	{
+		update( acctName, e, chart );
+	
+		gl = glAcc;
 	}
 	
 	/**

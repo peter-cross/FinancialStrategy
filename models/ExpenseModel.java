@@ -3,12 +3,12 @@ package models;
 import javafx.stage.Stage;
 
 import static interfaces.Utilities.getListElementBy;
+import static interfaces.Utilities.hash;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 
 import application.Database;
-import entities.Crcy;
 import entities.Expense;
 import forms.DialogElement;
 
@@ -19,6 +19,7 @@ import forms.DialogElement;
 public class ExpenseModel extends RegistryItemModel
 {
     private static  LinkedHashSet  list;       // List of Items
+    private static final String expenseStr = hash( "exp" );
     
     
     /**
@@ -58,6 +59,11 @@ public class ExpenseModel extends RegistryItemModel
     } // End of method ** getByName **
     
     
+    public Expense getExpense()
+    {
+    	return fields.get( "expense" );
+    }
+
     @Override
     protected DialogElement[][] createHeader() 
     {
@@ -72,14 +78,14 @@ public class ExpenseModel extends RegistryItemModel
         hdr.validation = validationCode( hdr.labelName );
         header[0][0] = hdr;
         
-        hdr = new DialogElement( "Name   " );
+        hdr = new DialogElement( "Name       " );
         hdr.valueType = "Text";
         hdr.width = 300;
         hdr.textValue = fieldTextValue( "name" );
         hdr.validation = validationCode( hdr.labelName );
         header[0][1] = hdr;
         
-        hdr = new DialogElement( "Category" );
+        hdr = new DialogElement( "Category   " );
         hdr.valueType = "List";
         hdr.textChoices = new String[] { "R & D",
                                          "Design",
@@ -110,11 +116,6 @@ public class ExpenseModel extends RegistryItemModel
         }
     }
     
-    public Expense getExpense()
-    {
-    	return fields.get( "expense" );
-    }
-
     public static LinkedHashSet getItemsList()
     {
         return list;
@@ -137,13 +138,13 @@ public class ExpenseModel extends RegistryItemModel
     
     public ExpenseModel()
     {
-        super( "ExpenseModel" );
+        super( expenseStr );
         list.add( this );
     }
     
     public ExpenseModel( Stage stage ) throws Exception
     {
-        super( stage, "ExpenseModel" );
+        super( stage, expenseStr, null );
         
         if ( stage != null )
         	list.add( this );
@@ -192,7 +193,7 @@ public class ExpenseModel extends RegistryItemModel
     
 	public ExpenseModel( Expense e )
 	{
-		super( "ExpenseModel" );
+		super( expenseStr );
 		
 		fields.set( "expense", e );
     	fields.set( "code", e.getCode()  );

@@ -35,9 +35,9 @@ public class TractnsDscr
 	 * @param code Code of Tractn Description
 	 * @param description The description of tractn
 	 */
-	public TractnsDscr( String code, String description )
+	public TractnsDscr( String... args )
 	{
-		update( code, description );
+		update( args );
 	}	
 	
 	/**
@@ -45,10 +45,10 @@ public class TractnsDscr
 	 * @param code Code of Tractn Description
 	 * @param description The description of tractn
 	 */
-	public void update( String code, String description )
+	public void update( String... args )
 	{
-		this.code = Cipher.crypt( code );
-		this.description = Cipher.crypt( description );
+		code = Cipher.crypt( args[0] );
+		description = Cipher.crypt( args[1] );
 	}
 	
 	/**

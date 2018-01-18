@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import foundation.Cipher;
+
 @Entity
 public class Unit 
 {
@@ -24,39 +26,39 @@ public class Unit
 		super();
 	}
 	
-	public Unit( String code, String name, String unitType, String baseUnit, double rate, int decimals )
+	public Unit( Object... args )
 	{
-		update( code, name, unitType, baseUnit, rate, decimals );
+		update( args );
 	}
 	
-	public void update( String code, String name, String unitType, String baseUnit, double rate, int decimals )
+	public void update( Object... args )
 	{
-		this.code = code;
-		this.name = name;
-		this.unitType = unitType;
-		this.baseUnit = baseUnit;
-		this.rate = rate;
-		this.decimals = decimals;
+		code = Cipher.crypt( (String) args[0] );
+		name = Cipher.crypt( (String) args[1] );
+		unitType = Cipher.crypt( (String) args[2] );
+		baseUnit = Cipher.crypt( (String) args[3] );
+		rate = (Double) args[4];
+		decimals = (Integer) args[5];
 	}
 	
 	public String getCode()
 	{
-		return code;
+		return Cipher.decrypt( code );
 	}
 	
 	public String getName()
 	{
-		return name;
+		return Cipher.decrypt( name );
 	}
 	
 	public String getUnitType()
 	{
-		return unitType;
+		return Cipher.decrypt( unitType );
 	}
 	
 	public String getBaseUnit()
 	{
-		return baseUnit;
+		return Cipher.decrypt( baseUnit );
 	}
 	
 	public double getRate()

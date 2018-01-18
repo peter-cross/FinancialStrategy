@@ -29,15 +29,15 @@ public class HashMap
 		super();
 	}
 	
-	public HashMap( String key, String value )
+	public HashMap( String... args )
 	{
-		update( key, value );
+		update( args );
 	}
 	
-	public void update( String key, String value )
+	public void update( String... args )
 	{
-		this.hashKey = key;
-		this.hashValue = Cipher.crypt( value );
+		this.hashKey = args[0];
+		this.hashValue = Cipher.crypt( args[1] );
 	}
 
 	public static String getByKey( String key )
@@ -83,6 +83,8 @@ public class HashMap
         if ( em != null )
         	try
         	{
+        		//Database.persistToDB( new HashMap( "GL", "G/L Account" ) );
+        		
         		List lst = em.createQuery( "SELECT c FROM HashMap AS c" ).getResultList();
         		// Do query for Entity class in DB and return results of query
         		return (List<HashMap>)lst;

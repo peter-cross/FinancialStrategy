@@ -35,9 +35,9 @@ public class Crcy
 	 * @param code Crcy code
 	 * @param name Crcy name
 	 */
-	public Crcy( String	code, String name ) 
+	public Crcy( String... args ) 
 	{
-		update( code, name );
+		update( args );
 	}
 	
 	/**
@@ -45,10 +45,10 @@ public class Crcy
 	 * @param code Crcy code
 	 * @param name Crcy name
 	 */
-	public void update( String code, String name ) 
+	public void update( String... args ) 
 	{
-		this.code = Cipher.crypt( code );
-		this.name = Cipher.crypt( name );
+		code = Cipher.crypt( args[0] );
+		name = Cipher.crypt( args[1] );
 	}
 	
 	// Returns Crcy code

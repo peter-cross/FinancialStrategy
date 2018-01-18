@@ -8,65 +8,56 @@ import javax.persistence.Id;
 import foundation.Cipher;
 
 @Entity
-public class Location 
+public class Employee 
 {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO )
-	private long 	locationId;
+	private long 	employeeId;
 	
-	private String	iD;				// Location ID in the system
+	private String	iD;				// Employee ID in the system
 	private String	name;			// Common name
-	private String	address;		// Address
 	private String	phone;			// Phone number
-	private String	contact;		// Contact name at location
-	
-	public Location()
+	private String	address;		// Address
+
+	public Employee()
 	{
 		super();
 	}
 	
-	public Location( String... args )
+	public Employee( String... args )
 	{
 		update( args );
 	}
 	
+	
 	public void update( String... args )
 	{
-		// Save provided info and crypt sensitive info
-		iD = args[0];
+		iD = Cipher.crypt( args[0] );
 		name = Cipher.crypt( args[1] );
-		address = Cipher.crypt( args[2] );
-		phone = Cipher.crypt( args[3] );
-		contact = Cipher.crypt( args[4] );
+		phone = Cipher.crypt( args[2] );
+		address = Cipher.crypt( args[3] );
 	}
 	
-	// Returns ID of Location
+	// Returns ID of Employee
 	public String getId()
 	{
-		return iD;
+		return Cipher.decrypt( iD );
 	}
 	
-	// Returns name of Location
+	// Returns name of Lgl Entity
 	public String getName()
 	{
 		return Cipher.decrypt( name );
 	}
 		
-	// Returns phone of Location
 	public String getPhone()
 	{
 		return Cipher.decrypt( phone );
 	}
 	
-	// Returns contact person info of Location
-	public String getContact()
-	{
-		return Cipher.decrypt( contact );
-	}
-	
-	// Returns address of Location
+	// Returns address of Employee
 	public String getAddress()
 	{
 		return Cipher.decrypt( address );
-	}			
+	}		
 }
